@@ -56,7 +56,7 @@
       .brand img { height: 2rem; width: auto; }
       .links { display: flex; gap: 1.75rem; font-size: 0.9rem; color: var(--muted); }
       .links a:hover { color: var(--ink); }
-      .hero { padding: 5rem 0 6rem; }
+      .hero { padding: 7rem 0 8rem; }
       .kicker { font-size: 0.9rem; font-weight: 500; color: var(--muted); }
       .hero img { margin-top: 2.5rem; width: min(100%, 40rem); height: auto; }
       .lede { margin-top: 2.5rem; max-width: 36rem; font-size: 1.2rem; line-height: 1.55; color: var(--muted); }
@@ -68,8 +68,8 @@
       }
       .btn-ink { background: var(--ink); color: var(--paper); }
       .btn-line { border: 1px solid var(--line); }
-      .band { border-block: 1px solid var(--line); background: color-mix(in srgb, var(--raised) 60%, transparent); padding: 5.5rem 0; }
-      .section { padding: 5.5rem 0; }
+      .band { border-block: 1px solid var(--line); background: color-mix(in srgb, var(--raised) 60%, transparent); padding: 7.5rem 0; }
+      .section { padding: 7.5rem 0; }
       .label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--subtle); }
       .timeline {
         display: grid; gap: 1.75rem;
@@ -84,26 +84,26 @@
       .timeline .note { font-size: 0.9rem; color: var(--muted); margin: 0.4rem 0 0; line-height: 1.45; }
       .era-line { font-size: clamp(1.6rem, 3vw, 2.35rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.15; margin: 1.4rem 0 1rem; max-width: 44rem; }
       .thesis { margin-top: 2.5rem; max-width: 48rem; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 500; letter-spacing: -0.035em; line-height: 1.1; color: var(--ink); }
-      .file-river { display: grid; gap: 0.55rem; margin-top: 2.5rem; padding: 1rem 0; border-block: 1px solid var(--line); }
+      .file-river { display: grid; gap: 0.85rem; margin-top: 4rem; padding: 1.75rem 0; border-block: 1px solid var(--line); }
       .file-river-mask { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
       .file-river-track { display: flex; width: max-content; gap: 0.75rem; animation: file-flow 42s linear infinite; }
       .file-river-mask.reverse .file-river-track { animation-direction: reverse; animation-duration: 48s; }
-      .file-chip { flex-shrink: 0; padding: 0.4rem 0.85rem; border: 1px solid var(--line); border-radius: 999px; background: var(--raised); font-family: "IBM Plex Mono", monospace; font-size: 0.8rem; }
+      .file-chip { flex-shrink: 0; padding: 0.55rem 1.05rem; border: 1px solid var(--line); border-radius: 999px; background: var(--raised); font-family: "IBM Plex Mono", monospace; font-size: 0.95rem; }
       @keyframes file-flow { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-      .work-pair { display: grid; gap: 0.75rem; margin-top: 2.5rem; }
+      .work-pair { display: grid; gap: 1.5rem; margin-top: 4rem; }
       @media (min-width: 900px) { .work-pair { grid-template-columns: 1fr 1fr; } }
-      .work-scene { border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); padding: 1.4rem 1.5rem 1.2rem; min-height: 20rem; display: flex; flex-direction: column; }
+      .work-scene { border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); padding: 2rem 2.1rem 1.6rem; min-height: 28rem; display: flex; flex-direction: column; }
       .work-scene.after { background: var(--ink); color: var(--paper); border-color: var(--ink); }
       .work-kicker { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--subtle); margin: 0; }
       .work-scene.after .work-kicker { color: color-mix(in srgb, white 50%, transparent); }
-      .work-title { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.03em; margin: 0.45rem 0 0; }
+      .work-title { font-size: 1.55rem; font-weight: 500; letter-spacing: -0.03em; margin: 0.7rem 0 0; }
       .work-note { margin-top: auto; padding-top: 1rem; font-size: 0.9rem; color: var(--muted); }
       .work-scene.after .work-note { color: color-mix(in srgb, white 60%, transparent); }
-      .work-stage { display: flex; align-items: center; gap: 0.75rem; min-height: 10.5rem; margin-top: 1.5rem; }
+      .work-stage { display: flex; align-items: center; gap: 1.25rem; min-height: 14rem; margin-top: 2.25rem; }
       .work-stage.after-stage { display: grid; grid-template-columns: 4.2rem minmax(0,1fr) 5.8rem; align-items: center; gap: 1rem; }
       .work-human { display: grid; justify-items: center; gap: 0.35rem; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--subtle); }
       .work-scene.after .work-human { color: color-mix(in srgb, white 45%, transparent); }
-      .actor { width: 2.4rem; height: auto; fill: none; stroke: currentColor; stroke-width: 2.2; }
+      .actor { width: 3.1rem; height: auto; fill: none; stroke: currentColor; stroke-width: 2.2; }
       .actor.agent { fill: currentColor; stroke: none; }
       .work-scene.after .actor { color: var(--paper); }
       .work-contributors { display: grid; gap: 0.85rem; }
@@ -111,13 +111,13 @@
       .work-scene.after .work-arrow { background: color-mix(in srgb, white 25%, transparent); }
       .pre-arrow::after { content: ""; position: absolute; right: 0; top: -3px; width: 7px; height: 7px; border-right: 1.5px solid var(--ink); border-top: 1.5px solid var(--ink); transform: rotate(45deg); animation: pre-write 9s cubic-bezier(0.23,1,0.32,1) infinite; }
       .work-files { display: grid; gap: 0.45rem; list-style: none; margin: 0; padding: 0; }
-      .work-files li { padding: 0.35rem 0.7rem; border: 1px solid var(--line); border-radius: 999px; font-family: "IBM Plex Mono", monospace; font-size: 0.78rem; opacity: 0.28; }
+      .work-files li { padding: 0.5rem 0.9rem; border: 1px solid var(--line); border-radius: 999px; font-family: "IBM Plex Mono", monospace; font-size: 0.9rem; opacity: 0.28; }
       .work-scene.after .work-files li { border-color: color-mix(in srgb, white 22%, transparent); }
       .work-scene.pre .f1 { animation: file-lit 9s infinite; }
       .work-scene.pre .f2 { animation: file-lit 9s infinite 3s; }
       .work-scene.pre .f3 { animation: file-lit 9s infinite 6s; }
       .work-prim { display: grid; justify-items: center; gap: 0.4rem; min-width: 4.5rem; font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; }
-      .work-prim img { height: 2.6rem; width: auto; filter: invert(1); }
+      .work-prim img { height: 3.4rem; width: auto; filter: invert(1); }
       .work-files.out .o1, .work-files.out .o2, .work-files.out .o3 { animation: file-out 9s cubic-bezier(0.23,1,0.32,1) infinite; }
       .work-files.out .o2 { animation-delay: 0.15s; }
       .work-files.out .o3 { animation-delay: 0.3s; }
@@ -144,7 +144,7 @@
         --ease: cubic-bezier(0.23, 1, 0.32, 1);
         position: relative; overflow: hidden;
         border: 1px solid var(--line); border-radius: var(--radius);
-        background: var(--raised); min-height: 20rem; margin-top: 0.75rem;
+        background: var(--raised); min-height: 26rem; margin-top: 2rem;
       }
       .factory-stage .rail { position: absolute; left: 5%; right: 5%; top: 50%; height: 1px; background: #cfcbc3; }
       .factory-stage .bin {
@@ -190,14 +190,14 @@
         40%, 54% { transform: scaleY(1); }
         62%, 100% { transform: scaleY(0); }
       }
-      .film { margin-top: 0.75rem; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #111; }
+      .film { margin-top: 5rem; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #111; }
       .film video { display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; }
       .film figcaption { border-top: 1px solid color-mix(in srgb, white 12%, transparent); padding: 0.75rem 1.2rem; font-size: 0.9rem; color: color-mix(in srgb, white 60%, transparent); background: #111; }
-      .teach { display: grid; gap: 2rem; margin-top: 3rem; }
+      .teach { display: grid; gap: 2rem; margin-top: 5rem; }
       @media (min-width: 900px) { .teach { grid-template-columns: 1fr 1fr; } }
       .grid-2 { display: grid; gap: 4rem; }
       @media (min-width: 900px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
-      .shots { display: grid; gap: 0.75rem; margin-top: 2.75rem; }
+      .shots { display: grid; gap: 1.5rem; margin-top: 2.75rem; }
       @media (min-width: 700px) { .shots { grid-template-columns: 1fr 1fr; } }
       .shot { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--paper); }
       .shot img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; }
@@ -365,7 +365,7 @@
           </video>
           <figcaption>A factory exists so a person isn’t the machine. Prim is that, for knowledge.</figcaption>
         </figure>
-        <div id="enterprise" style="margin-top:4.5rem">
+        <div id="enterprise" style="margin-top:7rem">
           <h2>Enterprises love Prims because the work lasts, moves, and belongs to the company.</h2>
           <div class="props">
             <article>
@@ -382,7 +382,7 @@
             </article>
           </div>
         </div>
-        <div id="agents" style="margin-top:4.5rem">
+        <div id="agents" style="margin-top:7rem">
           <h2>AIs love Prims because they can finally hold the work.</h2>
           <div class="props">
             <article class="ink">
