@@ -37,16 +37,43 @@
       --medium: #f2c14e;
     }
     * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; }
+    html, body { margin: 0; height: 100%; width: 100%; overflow: hidden; }
     body {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
       background: var(--paper);
       color: var(--ink);
       font-family: "Instrument Sans", "Segoe UI", sans-serif;
       -webkit-font-smoothing: antialiased;
     }
-    .stage { display: flex; flex-direction: column; flex: 1; min-height: 0; background: var(--paper); }
+    .inbox {
+      display: flex; flex-direction: column; min-height: 0;
+      border-right: 1px solid var(--line); background: var(--paper);
+    }
+    .inbox-head {
+      height: 4rem; display: flex; align-items: center; gap: 10px;
+      padding: 0 1rem; border-bottom: 1px solid var(--line);
+    }
+    .inbox-head img { height: 1.75rem; }
+    .inbox-head b { font-weight: 500; letter-spacing: -0.02em; }
+    .chats { flex: 1; overflow: auto; padding: 8px; }
+    .chat-item {
+      display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 10px; align-items: center;
+      width: 100%; margin: 0 0 4px; padding: 10px; border: 1px solid transparent;
+      border-radius: 14px; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer;
+    }
+    .chat-item:hover { background: var(--raised); }
+    .chat-item.on { background: var(--raised); border-color: var(--line); }
+    .chat-item .face { width: 36px; height: 36px; }
+    .chat-item .name { font-weight: 500; letter-spacing: -0.02em; }
+    .chat-item .preview { color: var(--muted); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .scrim { display: none; }
+    .menu {
+      display: none; width: 36px; height: 36px; margin-right: 4px;
+      border: 1px solid var(--line); border-radius: 10px; background: var(--raised);
+      font: inherit; cursor: pointer;
+    }
+    .stage { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--paper); }
     .chat-bar {
       height: 4rem; display: flex; align-items: center; gap: 12px;
       padding: 0 1.25rem;
@@ -207,19 +234,65 @@
     .prop { display: grid; grid-template-columns: 92px 1fr; align-items: center; min-height: 32px; color: var(--faint); font-size: 12px; }
     .notes { min-height: 140px; color: #d0d6e0; font-size: 14px; line-height: 1.55; }
     .empty { color: var(--faint); padding: 28px 16px; }
-    .thread { max-width: 52rem; margin: 0 auto; width: 100%; }
+    .row.tool .bubble { width: 100%; }
+    .editor-card { height: min(70vh, 820px); }
+    @media (max-width: 860px) {
+      body { grid-template-columns: 1fr; }
+      .inbox {
+        position: fixed; inset: 0 auto 0 0; width: min(88vw, 300px); z-index: 20;
+        transform: translateX(-105%); transition: transform 180ms ease;
+        box-shadow: 16px 0 40px rgba(17,17,17,0.08);
+      }
+      body.show-chats .inbox { transform: none; }
+      .scrim {
+        display: none; position: fixed; inset: 0; z-index: 15;
+        background: color-mix(in srgb, var(--ink) 28%, transparent);
+      }
+      body.show-chats .scrim { display: block; }
+      .menu { display: grid; place-items: center; }
+      .row { max-width: 100%; }
+      .composer { margin: 0 0.85rem 0.85rem; }
+      .thread { padding: 1rem; }
+    }
   </style>
 </head>
 <body>
+  <div class="scrim" id="scrim"></div>
+  <aside class="inbox" id="inbox">
+    <div class="inbox-head">
+      <a href="/"><img src="../../mark.png" alt="Prim"></a>
+      <b>Chats</b>
+    </div>
+    <nav class="chats">
+      <button class="chat-item on" type="button" data-chat="docket">
+        <span class="face"><img src="../../mark.png" alt=""></span>
+        <span><span class="name">Docket</span><span class="preview">Send me the prim.</span></span>
+      </button>
+      <button class="chat-item" type="button" data-chat="deck">
+        <span class="face"><img src="../../mark.png" alt=""></span>
+        <span><span class="name">Deck</span><span class="preview">Don’t send the slides.</span></span>
+      </button>
+      <button class="chat-item" type="button" data-chat="invoice">
+        <span class="face"><img src="../../mark.png" alt=""></span>
+        <span><span class="name">Invoice</span><span class="preview">The pack is the bill.</span></span>
+      </button>
+      <button class="chat-item" type="button" data-chat="session">
+        <span class="face"><img src="../../mark.png" alt=""></span>
+        <span><span class="name">Session</span><span class="preview">Pick up the same file.</span></span>
+      </button>
+    </nav>
+  </aside>
   <section class="stage">
     <div class="chat-bar">
+      <button class="menu" id="menu" type="button" aria-label="Chats">☰</button>
       <a class="home" href="/"><img src="../../mark.png" alt="Prim"></a>
-      <div class="who"><b>Prim</b><small>docket bot · the file is the message</small></div>
+      <div class="who"><b id="title">Docket</b><small id="sub">bot · the file is the message</small></div>
       <a class="dl" href="./atlas.docket.prim" download="atlas.docket.prim">atlas.docket.prim</a>
     </div>
     <div class="thread" id="thread">
       <div class="day">Today</div>
       <div id="log"></div>
+      <div id="other" hidden></div>
       <div class="drop" id="drop" hidden>
         <div>
           <p class="label">Attach</p>
@@ -255,6 +328,40 @@
     drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("over"); if (e.dataTransfer.files[0]) openFile(e.dataTransfer.files[0]); });
     file.addEventListener("change", () => { if (file.files[0]) openFile(file.files[0]); });
     document.getElementById("attach").addEventListener("click", () => file.click());
+    document.getElementById("menu").addEventListener("click", () => document.body.classList.toggle("show-chats"));
+    document.getElementById("scrim").addEventListener("click", () => document.body.classList.remove("show-chats"));
+    document.querySelectorAll("[data-chat]").forEach((el) => {
+      el.addEventListener("click", () => openChat(el.dataset.chat));
+    });
+
+    const rooms = {
+      docket: { title: "Docket", sub: "bot · the file is the message" },
+      deck: { title: "Deck", sub: "bot · slides come out of the file" },
+      invoice: { title: "Invoice", sub: "bot · the pack is the bill" },
+      session: { title: "Session", sub: "bot · pick up the same file" },
+    };
+    function openChat(id) {
+      document.querySelectorAll("[data-chat]").forEach((el) => el.classList.toggle("on", el.dataset.chat === id));
+      document.getElementById("title").textContent = rooms[id].title;
+      document.getElementById("sub").textContent = rooms[id].sub;
+      document.body.classList.remove("show-chats");
+      const other = document.getElementById("other");
+      const live = id === "docket";
+      log.hidden = !live;
+      drop.hidden = !live || pack.tasks.length > 0;
+      other.hidden = live;
+      if (live) return;
+      const lines = {
+        deck: "This thread would open a deck prim. Same split: file + editor. Switch to Docket to drop a file.",
+        invoice: "This thread would open an invoice prim. The pack is the bill. Docket is the live bot in this demo.",
+        session: "A session is a prim too. This demo only opens a docket. Switch back to drop the file.",
+      };
+      other.innerHTML = `
+        <div class="row them" style="opacity:1;transform:none">
+          <div class="face"><img src="../../mark.png" alt=""></div>
+          <div class="stack"><div class="meta">Prim</div><div class="bubble">${lines[id]}</div></div>
+        </div>`;
+    }
     document.getElementById("composer").addEventListener("submit", (e) => {
       e.preventDefault();
       const text = prompt.value.trim();
