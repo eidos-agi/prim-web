@@ -100,7 +100,7 @@
       .work-note { margin-top: auto; padding-top: 1rem; font-size: 0.9rem; color: var(--muted); }
       .work-scene.after .work-note { color: color-mix(in srgb, white 60%, transparent); }
       .work-stage { display: flex; align-items: center; gap: 0.75rem; min-height: 10.5rem; margin-top: 1.5rem; }
-      .work-stage.after-stage { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.85rem; }
+      .work-stage.after-stage { display: grid; grid-template-columns: 4.2rem minmax(0,1fr) 5.8rem; align-items: center; gap: 1rem; }
       .work-human { display: grid; justify-items: center; gap: 0.35rem; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--subtle); }
       .work-scene.after .work-human { color: color-mix(in srgb, white 45%, transparent); }
       .actor { width: 2.4rem; height: auto; fill: none; stroke: currentColor; stroke-width: 2.2; }
@@ -135,8 +135,8 @@
         82% { top: 2.4rem; }
       }
       @keyframes file-out {
-        0%, 40% { opacity: 0.2; transform: translateX(-8px); }
-        55%, 90% { opacity: 1; transform: translateX(0); }
+        0%, 40% { opacity: 0.2; }
+        55%, 90% { opacity: 1; }
         100% { opacity: 0.2; }
       }
       .factory-stage {
