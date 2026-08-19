@@ -137,6 +137,7 @@
       }
       .film { margin-top: 0.75rem; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #111; }
       .film video { display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; }
+      .film figcaption { border-top: 1px solid color-mix(in srgb, white 12%, transparent); padding: 0.75rem 1.2rem; font-size: 0.9rem; color: color-mix(in srgb, white 60%, transparent); background: #111; }
       .teach { display: grid; gap: 2rem; margin-top: 3rem; }
       @media (min-width: 900px) { .teach { grid-template-columns: 1fr 1fr; } }
       .grid-2 { display: grid; gap: 4rem; }
@@ -206,6 +207,8 @@
         </a>
         <nav class="links">
           <a href="#factory">Factory</a>
+          <a href="#enterprise">Enterprise</a>
+          <a href="#agents">AIs</a>
           <a href="#why">Why</a>
           <a href="#portable">Portable</a>
           <a href="#what">What</a>
@@ -221,30 +224,71 @@
         <p class="kicker">The primitive unit of knowledge and memory for AI</p>
         <img src="./logo.png" alt="Prim" />
         <h1 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Prim</h1>
-        <p class="lede thesis">Knowledge work is a factory.<br />Prim is the file that moves through it.</p>
-        <p class="lede">Put the problem in the box. Pull the curtain. A finished product comes out.</p>
+        <p class="lede thesis">Get out of Excel hell.</p>
+        <p class="lede">The spreadsheet was never the work. It was the room people couldn’t leave. Prim holds the idea. The grid is generated.</p>
       </section>
 
       <section id="factory" class="section wrap" style="padding-top:0">
-        <div class="factory-stage" aria-hidden="true">
-          <p class="legend legend-l">Raw</p>
-          <p class="legend legend-r">Finished</p>
-          <div class="rail"></div>
-          <div class="pack pack-in">the problem</div>
-          <div class="bin">
-            <div class="curtain"></div>
-            <img src="./mark.png" alt="" />
+        <div class="shots" style="margin-top:0">
+          <figure class="shot">
+            <img src="./then-excel.jpg" alt="1980s office worker at a CRT, trapped in a spreadsheet." />
+            <figcaption><span>This is the job we gave people.</span></figcaption>
+          </figure>
+          <div class="factory-stage" aria-hidden="true">
+            <p class="legend legend-l">Hell</p>
+            <p class="legend legend-r">Out</p>
+            <div class="rail"></div>
+            <div class="pack pack-in">Excel hell</div>
+            <div class="bin">
+              <div class="curtain"></div>
+              <img src="./mark.png" alt="" />
+            </div>
+            <div class="pack pack-out">the sheet, generated</div>
           </div>
-          <div class="pack pack-out">the product</div>
+        </div>
+        <div class="teach">
+          <p class="era-line" style="margin-top:0">You shouldn’t spend eight hours in a grid to hold one idea.</p>
+          <p class="muted">Humans and AIs contribute to a Prim. The spreadsheet comes out the other side — along with the deck, the company, the mission, the trip. The file moves. You don’t live in it.</p>
         </div>
         <figure class="film">
           <video autoplay muted loop playsinline poster="./factory-poster.jpg">
             <source src="./factory.mp4" type="video/mp4" />
           </video>
+          <figcaption>A factory exists so a person isn’t the machine. Prim is that, for knowledge.</figcaption>
         </figure>
-        <div class="teach">
-          <p class="era-line" style="margin-top:0">AIs and humans contribute to Prims. Prims become anything — a sheet, a deck, a company, a mission, a trip, a shared vision.</p>
-          <p class="muted">Factories convert raw materials into finished products. Knowledge workers already do this. Now AIs can too. Prim is what you save — the format that lets that knowledge move through the factory.</p>
+        <div id="enterprise" style="margin-top:4.5rem">
+          <h2>Enterprises love Prims because the work lasts, moves, and belongs to the company.</h2>
+          <div class="props">
+            <article>
+              <h3>Time capsules</h3>
+              <p class="muted">The work survives the person, the session, and the vendor. Open it in ten years. It’s still the Prim.</p>
+            </article>
+            <article>
+              <h3>Shareable</h3>
+              <p class="muted">One file. Desk to desk, agent to agent, counsel to the board. You send the prim — not a zip of conflicting sheets.</p>
+            </article>
+            <article>
+              <h3>Company property</h3>
+              <p class="muted">The knowledge is the firm’s. Not trapped in someone’s laptop, a chat log, or a tool that walks out the door.</p>
+            </article>
+          </div>
+        </div>
+        <div id="agents" style="margin-top:4.5rem">
+          <h2>AIs love Prims because they can finally hold the work.</h2>
+          <div class="props">
+            <article class="ink">
+              <h3>They can read it</h3>
+              <p style="color:color-mix(in srgb, white 70%, transparent);font-size:0.95rem;line-height:1.6">No scraping a deck. No guessing which tab is the source of truth. The file is native — agents reason over it without a translation layer.</p>
+            </article>
+            <article class="ink">
+              <h3>They can trust it</h3>
+              <p style="color:color-mix(in srgb, white 70%, transparent);font-size:0.95rem;line-height:1.6">Claims carry evidence, hashes, and provenance. Validation is fail-closed. An agent doesn’t have to hope the spreadsheet is right.</p>
+            </article>
+            <article class="ink">
+              <h3>They can continue it</h3>
+              <p style="color:color-mix(in srgb, white 70%, transparent);font-size:0.95rem;line-height:1.6">A session is a Prim. The next agent picks up the same file. Work doesn’t die when the window closes.</p>
+            </article>
+          </div>
         </div>
         <div class="actions">
           <a class="btn btn-ink" href="https://github.com/eidos-agi/prim">Read the spec</a>
