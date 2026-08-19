@@ -39,28 +39,14 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; }
     body {
-      display: grid;
-      grid-template-columns: 320px 1fr;
+      display: flex;
+      flex-direction: column;
       background: var(--paper);
       color: var(--ink);
       font-family: "Instrument Sans", "Segoe UI", sans-serif;
       -webkit-font-smoothing: antialiased;
     }
-    .rail { padding: 28px 24px; border-right: 1px solid var(--line); }
-    .brand { height: 28px; }
-    .rail h1 { font-size: 28px; font-weight: 500; letter-spacing: -0.03em; margin: 28px 0 10px; }
-    .rail p { color: var(--muted); line-height: 1.5; margin: 0 0 22px; }
-    .steps { list-style: none; padding: 0; margin: 0 0 22px; }
-    .steps li { display: flex; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; }
-    .num { width: 1.4rem; font-family: "IBM Plex Mono", monospace; font-size: 12px; color: #8a8a84; }
-    .btn {
-      display: inline-flex; align-items: center; height: 44px; padding: 0 16px;
-      border-radius: 12px; background: var(--ink); color: var(--paper);
-      font: inherit; font-weight: 500; text-decoration: none; border: 0; cursor: pointer;
-    }
-    .fine { margin-top: 18px; font-size: 13px; color: var(--muted); }
-    .fine a { color: inherit; }
-    .stage { display: flex; flex-direction: column; min-width: 0; background: var(--paper); }
+    .stage { display: flex; flex-direction: column; flex: 1; min-height: 0; background: var(--paper); }
     .chat-bar {
       height: 4rem; display: flex; align-items: center; gap: 12px;
       padding: 0 1.25rem;
@@ -68,10 +54,17 @@
       background: color-mix(in srgb, var(--paper) 90%, transparent);
       backdrop-filter: blur(8px);
     }
+    .chat-bar a.home { display: flex; align-items: center; }
     .chat-bar img { height: 1.75rem; width: auto; }
     .who { display: grid; line-height: 1.2; }
     .who b { font-weight: 500; letter-spacing: -0.02em; }
     .who small { color: var(--subtle); font-size: 12px; font-weight: 400; }
+    .chat-bar .dl {
+      margin-left: auto; font-family: "IBM Plex Mono", monospace; font-size: 12px;
+      color: var(--muted); text-decoration: none; border: 1px solid var(--line);
+      border-radius: 999px; padding: 6px 10px; background: var(--raised);
+    }
+    .chat-bar .dl:hover { color: var(--ink); }
     .thread { flex: 1; min-height: 0; overflow: auto; padding: 1.5rem 1.5rem 1rem; }
     .day {
       display: flex; align-items: center; gap: 1rem;
@@ -79,7 +72,8 @@
       font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
     }
     .day::before, .day::after { content: ""; flex: 1; height: 1px; background: var(--line); }
-    .row { display: flex; gap: 10px; margin: 0 0 14px; max-width: 40rem; opacity: 0; transform: translateY(8px); animation: in 420ms ease forwards; }
+    .row { display: flex; gap: 10px; margin: 0 0 14px; max-width: 36rem; opacity: 0; transform: translateY(8px); animation: in 420ms ease forwards; }
+    .row.tool { max-width: none; }
     .row.them { }
     .row.me { margin-left: auto; flex-direction: row-reverse; }
     .face {
@@ -99,6 +93,7 @@
       border: 1px solid var(--line); background: var(--raised);
     }
     .row.me .bubble { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .bubble a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
     .typing { display: flex; gap: 5px; padding: 14px 16px; width: fit-content; }
     .typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--subtle); animation: pulse 1s infinite; }
     .typing i:nth-child(2) { animation-delay: 0.15s; }
@@ -132,12 +127,12 @@
     .composer input {
       flex: 1; border: 0; background: transparent; font: inherit; color: var(--ink); outline: none;
     }
-    .editor-card {
-      display: none; margin: 8px 0 1rem; height: min(72vh, 760px);
-      border: 1px solid var(--ink); border-radius: var(--radius); overflow: hidden; background: #08090a;
+    .composer button {
+      height: 34px; padding: 0 12px; border: 0; border-radius: 10px;
+      background: var(--ink); color: var(--paper); font: inherit; font-weight: 500; cursor: pointer;
     }
-    body.open .drop, body.open .composer { display: none; }
-    body.open .editor-card { display: block; }
+    .row.tool .bubble { padding: 0; overflow: hidden; width: min(100%, 72rem); background: #08090a; border-color: var(--ink); }
+    .editor-card { height: min(58vh, 620px); background: #08090a; }
     .app { width: 100%; min-width: 0; height: 100%; }
     .app {
       display: grid;
@@ -212,29 +207,15 @@
     .prop { display: grid; grid-template-columns: 92px 1fr; align-items: center; min-height: 32px; color: var(--faint); font-size: 12px; }
     .notes { min-height: 140px; color: #d0d6e0; font-size: 14px; line-height: 1.55; }
     .empty { color: var(--faint); padding: 28px 16px; }
-    @media (max-width: 900px) {
-      body { grid-template-columns: 1fr; }
-      .rail { border-right: 0; border-bottom: 1px solid var(--line); }
-    }
+    .thread { max-width: 52rem; margin: 0 auto; width: 100%; }
   </style>
 </head>
 <body>
-  <aside class="rail">
-    <a href="/"><img class="brand" src="../../logo.png" alt="Prim"></a>
-    <h1>Drop the file. The chat becomes the editor.</h1>
-    <p>The docket is the Prim. The 30 KB surface cites it. Nothing is a render tree.</p>
-    <ol class="steps">
-      <li><span class="num">01</span><span>Download the docket file.</span></li>
-      <li><span class="num">02</span><span>Drag it onto the chat.</span></li>
-      <li><span class="num">03</span><span>It opens as the editor.</span></li>
-    </ol>
-    <a class="btn" id="dl" href="./atlas.docket.prim" download="atlas.docket.prim">Download atlas.docket.prim</a>
-    <p class="fine">2 KB sample pack. Same format as a real docket prim. <a href="https://github.com/eidos-agi/prim">Spec</a></p>
-  </aside>
   <section class="stage">
     <div class="chat-bar">
-      <img src="../../mark.png" alt="">
-      <div class="who"><b>Prim</b><small>docket · file is the message</small></div>
+      <a class="home" href="/"><img src="../../mark.png" alt="Prim"></a>
+      <div class="who"><b>Prim</b><small>docket bot · the file is the message</small></div>
+      <a class="dl" href="./atlas.docket.prim" download="atlas.docket.prim">atlas.docket.prim</a>
     </div>
     <div class="thread" id="thread">
       <div class="day">Today</div>
@@ -242,17 +223,17 @@
       <div class="drop" id="drop" hidden>
         <div>
           <p class="label">Attach</p>
-          <strong>Drop atlas.docket.prim here</strong>
+          <strong>Drop a .prim here</strong>
           or click to choose the file
         </div>
         <input id="file" type="file" accept=".prim,.zip,.json,.jsonl" hidden>
       </div>
-      <div class="editor-card" id="frame"></div>
     </div>
-    <div class="composer" id="composer" hidden>
-      <span class="tag">.prim</span>
-      <input value="The file is the message." readonly>
-    </div>
+    <form class="composer" id="composer">
+      <button class="tag" type="button" id="attach">.prim</button>
+      <input id="prompt" placeholder="Message Prim…" autocomplete="off">
+      <button type="submit">Send</button>
+    </form>
   </section>
   <script type="module">
     import { unzipSync, strFromU8 } from "https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js";
@@ -267,27 +248,29 @@
     const file = document.getElementById("file");
     const log = document.getElementById("log");
     const thread = document.getElementById("thread");
+    const prompt = document.getElementById("prompt");
     drop.addEventListener("click", () => file.click());
     drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
     drop.addEventListener("dragleave", () => drop.classList.remove("over"));
     drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("over"); if (e.dataTransfer.files[0]) openFile(e.dataTransfer.files[0]); });
     file.addEventListener("change", () => { if (file.files[0]) openFile(file.files[0]); });
-    document.getElementById("dl").addEventListener("click", () => {
-      if (!document.getElementById("sent-file")) {
-        add("me", attachHTML("atlas.docket.prim", "2 KB · docket prim"), "sent-file");
-        thread.scrollTop = thread.scrollHeight;
-      }
+    document.getElementById("attach").addEventListener("click", () => file.click());
+    document.getElementById("composer").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const text = prompt.value.trim();
+      if (!text) return;
+      prompt.value = "";
+      add("me", esc(text));
+      reply(text);
     });
 
-    function add(who, html, id) {
+    function add(who, html, extra) {
       const row = document.createElement("div");
-      row.className = "row " + who;
-      if (id) row.id = id;
-      const name = who === "me" ? "You" : "Prim";
+      row.className = "row " + who + (extra ? " " + extra : "");
       row.innerHTML = `
         <div class="face"><img src="../../mark.png" alt=""></div>
         <div class="stack">
-          <div class="meta">${name}</div>
+          <div class="meta">${who === "me" ? "You" : "Prim"}</div>
           <div class="bubble">${html}</div>
         </div>`;
       log.appendChild(row);
@@ -298,30 +281,57 @@
       return `<div class="attach"><div><span class="mono">${name}</span><small>${note}</small></div></div>`;
     }
     function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
-    async function play() {
+    async function say(html) {
       const typing = add("them", `<div class="typing"><i></i><i></i><i></i></div>`);
-      await sleep(700);
+      await sleep(480);
       typing.remove();
-      add("them", "Don’t send the spreadsheet.");
-      await sleep(650);
-      add("them", "Send me the prim.");
-      await sleep(800);
-      add("me", "It’s a docket. One file.");
-      await sleep(700);
-      add("them", "Drop it on this thread. I’ll open the editor. The pack stays the file.");
+      add("them", html);
+    }
+    async function play() {
+      await say("Don’t send the spreadsheet.");
+      await say("Send me the prim. I can open a docket editor on it.");
+      await say(`Need a file? <a href="./atlas.docket.prim" download="atlas.docket.prim">Download atlas.docket.prim</a> — 2 KB — then drop it here or tap <span class="mono">.prim</span>.`);
       drop.hidden = false;
-      document.getElementById("composer").hidden = false;
-      thread.scrollTop = thread.scrollHeight;
     }
     play();
 
+    async function reply(text) {
+      const q = text.toLowerCase();
+      if (!pack.tasks.length) {
+        if (/download|sample|file|docket|prim/.test(q)) {
+          await say(`Here: <a href="./atlas.docket.prim" download="atlas.docket.prim">atlas.docket.prim</a>. Drop it on the thread and I’ll open it.`);
+          drop.hidden = false;
+          return;
+        }
+        await say("I need the file first. Download the sample or attach a .prim.");
+        return;
+      }
+      const blocked = pack.tasks.filter((t) => t.blocked_reason);
+      const todo = pack.tasks.filter((t) => t.status === "To Do");
+      if (/block/.test(q)) {
+        await say(blocked.length ? blocked.map((t) => `${t.id} ${t.title} — ${t.blocked_reason}`).join("<br>") : "Nothing is blocked.");
+        return;
+      }
+      if (/todo|to do|open/.test(q)) {
+        await say(`${todo.length} to do: ${todo.map((t) => t.title).join("; ") || "none"}.`);
+        return;
+      }
+      if (/what|status|how many|board/.test(q)) {
+        await say(`${pack.project.name}: ${pack.tasks.length} issues. The board above cites this file. Drag a card to change status.`);
+        return;
+      }
+      await say("Still this thread. The editor is just a tool I opened on the file you sent.");
+    }
+
     async function openFile(f) {
       pack = await readPack(f);
-      add("me", attachHTML(f.name || "atlas.docket.prim", "dropped · opening"));
-      add("them", "Opened. The editor cites it.");
-      document.body.classList.add("open");
+      add("me", attachHTML(f.name || "atlas.docket.prim", "attached"));
+      await say("Opened. The editor cites the pack — it isn’t a copy.");
+      const tool = add("them", `<div class="editor-card" id="frame"></div>`, "tool");
+      drop.hidden = true;
       render();
-      thread.scrollTop = thread.scrollHeight;
+      await say("You can keep talking. Ask what’s blocked, or what’s to do.");
+      thread.scrollTop = tool.offsetTop;
     }
 
     async function readPack(f) {
