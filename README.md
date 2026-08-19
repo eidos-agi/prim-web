@@ -13,4 +13,6 @@ The Prim is the source of truth. Everything else is a view.
 
 Open `index.html` or serve the repo root.
 
+Docket wizard: [`/demo/docket/`](https://prim.eidosagi.com/demo/docket/) — download a `.prim` file, drop it on the chat, it becomes the editor.
+
 MIT — Eidos AGI

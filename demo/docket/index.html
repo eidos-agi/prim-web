@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Docket demo — Prim</title>
+  <meta name="description" content="Download a docket prim. Drop it on the chat. It becomes the editor.">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f4f3ef;
+      --ink: #111;
+      --muted: #6a6a66;
+      --line: #e4e2dc;
+      --bg: #08090a;
+      --side: #0f1011;
+      --elev: #141516;
+      --hover: #18191b;
+      --active: #1c1c1f;
+      --eline: #232326;
+      --text: #f7f8f8;
+      --mute: #8a8f98;
+      --faint: #62666d;
+      --accent: #5e6ad2;
+      --todo: #8a8f98;
+      --progress: #f2c14e;
+      --blocked: #eb5757;
+      --done: #5e6ad2;
+      --draft: #6b7180;
+      --high: #eb5757;
+      --medium: #f2c14e;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Instrument Sans", "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .rail { padding: 28px 24px; border-right: 1px solid var(--line); }
+    .brand { height: 28px; }
+    .rail h1 { font-size: 28px; font-weight: 500; letter-spacing: -0.03em; margin: 28px 0 10px; }
+    .rail p { color: var(--muted); line-height: 1.5; margin: 0 0 22px; }
+    .steps { list-style: none; padding: 0; margin: 0 0 22px; }
+    .steps li { display: flex; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; }
+    .num { width: 1.4rem; font-family: "IBM Plex Mono", monospace; font-size: 12px; color: #8a8a84; }
+    .btn {
+      display: inline-flex; align-items: center; height: 44px; padding: 0 16px;
+      border-radius: 12px; background: var(--ink); color: var(--paper);
+      font: inherit; font-weight: 500; text-decoration: none; border: 0; cursor: pointer;
+    }
+    .fine { margin-top: 18px; font-size: 13px; color: var(--muted); }
+    .fine a { color: inherit; }
+    .stage { display: flex; flex-direction: column; min-width: 0; background: #e8e6e1; }
+    .chat-bar {
+      height: 48px; display: flex; align-items: center; gap: 10px;
+      padding: 0 14px; background: #f4f3ef; border-bottom: 1px solid var(--line); font-weight: 500;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: #34c759; }
+    .thread { flex: 1; min-height: 0; overflow: auto; padding: 22px 18px 28px; }
+    .row { display: flex; margin: 8px 0; }
+    .row.them { justify-content: flex-start; }
+    .row.me { justify-content: flex-end; }
+    .bubble {
+      max-width: 36rem;
+      padding: 10px 14px;
+      border-radius: 18px;
+      line-height: 1.4;
+      font-size: 15px;
+    }
+    .them .bubble { background: #fff; }
+    .me .bubble { background: #0b84ff; color: #fff; }
+    .drop {
+      margin: 18px auto 0;
+      max-width: 36rem;
+      min-height: 132px;
+      border: 1.5px dashed #b7b4ac;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.55);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--muted);
+      padding: 22px;
+    }
+    .drop.over { border-color: var(--ink); background: #fff; color: var(--ink); }
+    .drop strong { display: block; color: var(--ink); margin-bottom: 4px; }
+    .editor-frame {
+      display: none;
+      height: calc(100vh - 48px);
+      border-top: 1px solid #111;
+    }
+    body.open { grid-template-columns: 1fr; }
+    body.open .rail { display: none; }
+    body.open .thread { display: none; }
+    body.open .editor-frame { display: block; width: 100%; height: calc(100vh - 48px); }
+    .app { width: 100%; min-width: 0; }
+    .app {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, "SF Pro Text", sans-serif;
+      font-size: 13px;
+    }
+    .app.sheet-on { grid-template-columns: 220px minmax(0, 1fr) minmax(300px, 400px); }
+    aside { background: var(--side); border-right: 1px solid var(--eline); padding: 14px 10px; overflow: auto; }
+    .workspace { display: flex; align-items: center; gap: 10px; padding: 4px 8px 14px; }
+    .mark-team { width: 18px; height: 18px; border-radius: 5px; background: linear-gradient(135deg, #5e6ad2, #8b93e8); }
+    .workspace h1 { margin: 0; font-size: 13px; font-weight: 500; }
+    .workspace small { display: block; color: var(--faint); font-size: 11px; }
+    .nav-item, .new {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; height: 30px; padding: 0 8px; border: 0; border-radius: 6px;
+      background: transparent; color: var(--mute); font: inherit; cursor: pointer;
+    }
+    .new { height: 32px; margin-bottom: 12px; border: 1px solid var(--eline); background: var(--elev); color: var(--text); }
+    .nav-item.on, .nav-item:hover, .new:hover { background: var(--active); color: var(--text); }
+    .nav-item span { display: flex; align-items: center; gap: 8px; }
+    .count { color: var(--faint); font-variant-numeric: tabular-nums; font-size: 11px; }
+    main.ed { display: flex; flex-direction: column; min-width: 0; }
+    .toolbar { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; border-bottom: 1px solid var(--eline); }
+    .toolbar h2 { margin: 0; font-size: 13px; font-weight: 500; }
+    .views { display: flex; gap: 2px; padding: 2px; border: 1px solid var(--eline); border-radius: 7px; }
+    .views button { width: 28px; height: 24px; border: 0; border-radius: 5px; background: transparent; color: var(--faint); cursor: pointer; }
+    .views button.on { background: var(--active); color: var(--text); }
+    .list { flex: 1; min-height: 0; overflow: auto; }
+    .list:has(.board) { overflow: hidden; display: flex; }
+    .rowi {
+      display: grid; grid-template-columns: 16px 52px minmax(0,1fr) auto auto;
+      align-items: center; gap: 10px; height: 36px; padding: 0 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer;
+    }
+    .rowi:hover { background: var(--hover); }
+    .rowi.on { background: var(--active); }
+    .tid { font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: var(--faint); }
+    .title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+    .chip { padding: 1px 7px; border: 1px solid var(--eline); border-radius: 999px; color: var(--mute); font-size: 11px; }
+    .icon { width: 14px; height: 14px; display: block; }
+    .icon circle { fill: none; stroke-width: 1.5; }
+    .icon.todo circle { stroke: var(--todo); }
+    .icon.draft circle { stroke: var(--draft); stroke-dasharray: 2.2 1.8; }
+    .icon.progress circle { stroke: var(--progress); }
+    .icon.progress path { fill: var(--progress); stroke: none; }
+    .icon.blocked circle, .icon.blocked path { stroke: var(--blocked); }
+    .icon.done circle { fill: var(--done); stroke: var(--done); }
+    .icon.done path { fill: none; stroke: #fff; stroke-width: 1.6; stroke-linecap: round; }
+    .pri { width: 14px; height: 14px; color: var(--faint); }
+    .pri.high { color: var(--high); }
+    .pri.medium { color: var(--medium); }
+    .board { display: flex; gap: 10px; flex: 1; padding: 12px; overflow: auto; }
+    .col { display: flex; flex-direction: column; flex: 0 0 260px; border: 1px solid var(--eline); border-radius: 8px; background: #0c0d0e; }
+    .col.over { outline: 1px solid var(--accent); }
+    .col-head { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 10px; color: var(--mute); font-size: 12px; }
+    .col-head .count { margin-left: auto; }
+    .col-body { flex: 1; overflow: auto; padding: 8px; }
+    .card { padding: 10px; margin-bottom: 8px; border: 1px solid var(--eline); border-radius: 8px; background: var(--elev); cursor: grab; }
+    .card-title { font-weight: 500; margin-bottom: 8px; }
+    .card-meta { display: flex; align-items: center; gap: 8px; }
+    .sheet { overflow: auto; background: var(--elev); border-left: 1px solid var(--eline); padding: 22px; }
+    .issue-id { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--faint); }
+    .title-edit, .notes, .sheet select, .blocked-edit {
+      width: 100%; background: transparent; color: var(--text); border: 1px solid transparent;
+      border-radius: 6px; font: inherit;
+    }
+    .title-edit { font-size: 22px; font-weight: 600; letter-spacing: -0.03em; margin: 6px 0 16px; resize: none; }
+    .prop { display: grid; grid-template-columns: 92px 1fr; align-items: center; min-height: 32px; color: var(--faint); font-size: 12px; }
+    .notes { min-height: 140px; color: #d0d6e0; font-size: 14px; line-height: 1.55; }
+    .empty { color: var(--faint); padding: 28px 16px; }
+    @media (max-width: 900px) {
+      body { grid-template-columns: 1fr; }
+      .rail { border-right: 0; border-bottom: 1px solid var(--line); }
+    }
+  </style>
+</head>
+<body>
+  <aside class="rail">
+    <a href="/"><img class="brand" src="../../logo.png" alt="Prim"></a>
+    <h1>Drop the file. The chat becomes the editor.</h1>
+    <p>The docket is the Prim. The 30 KB surface cites it. Nothing is a render tree.</p>
+    <ol class="steps">
+      <li><span class="num">01</span><span>Download the docket file.</span></li>
+      <li><span class="num">02</span><span>Drag it onto the chat.</span></li>
+      <li><span class="num">03</span><span>It opens as the editor.</span></li>
+    </ol>
+    <a class="btn" href="./atlas.docket.prim" download="atlas.docket.prim">Download atlas.docket.prim</a>
+    <p class="fine">2 KB sample pack. Same format as a real docket prim. <a href="https://github.com/eidos-agi/prim">Spec</a></p>
+  </aside>
+  <section class="stage">
+    <div class="chat-bar"><span class="dot"></span> Chat</div>
+    <div class="thread" id="thread">
+      <div class="row them"><div class="bubble">Send me the docket.</div></div>
+      <div class="row me"><div class="bubble">It’s a file. Download it, then drop it here.</div></div>
+      <div class="drop" id="drop">
+        <div>
+          <strong>Drop atlas.docket.prim on this chat</strong>
+          or click to choose the file
+        </div>
+        <input id="file" type="file" accept=".prim,.zip,.json,.jsonl" hidden>
+      </div>
+    </div>
+    <div class="editor-frame" id="frame"></div>
+  </section>
+  <script type="module">
+    import { unzipSync, strFromU8 } from "https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js";
+
+    const COLUMNS = ["To Do", "In Progress", "Done", "Draft"];
+    let pack = { project: { name: "docket" }, tasks: [], milestones: [] };
+    let selected = "";
+    let view = "board";
+    let filter = "all";
+
+    const drop = document.getElementById("drop");
+    const file = document.getElementById("file");
+    drop.addEventListener("click", () => file.click());
+    drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
+    drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+    drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("over"); if (e.dataTransfer.files[0]) openFile(e.dataTransfer.files[0]); });
+    file.addEventListener("change", () => { if (file.files[0]) openFile(file.files[0]); });
+
+    async function openFile(f) {
+      pack = await readPack(f);
+      document.body.classList.add("open");
+      render();
+    }
+
+    async function readPack(f) {
+      const buf = new Uint8Array(await f.arrayBuffer());
+      if (buf[0] === 0x50 && buf[1] === 0x4b) {
+        const files = unzipSync(buf);
+        const get = (name) => {
+          const key = Object.keys(files).find((k) => k.replace(/^.*\//, "") === name);
+          return key ? strFromU8(files[key]) : "";
+        };
+        return fromTexts(get("docket.json"), get("tasks.jsonl"), get("milestones.jsonl"));
+      }
+      const text = new TextDecoder().decode(buf);
+      if (text.trim().startsWith("{") && text.includes('"tasks"')) {
+        const j = JSON.parse(text);
+        return { project: j.project || { name: j.name || f.name }, tasks: j.tasks || [], milestones: j.milestones || [] };
+      }
+      return fromTexts("{}", text, "");
+    }
+
+    function fromTexts(meta, tasks, miles) {
+      let project = { name: "docket" };
+      try { if (meta.trim()) project = { name: "docket", ...JSON.parse(meta) }; } catch {}
+      return {
+        project,
+        tasks: jsonl(tasks),
+        milestones: jsonl(miles),
+      };
+    }
+    function jsonl(s) {
+      return String(s || "").split(/\n/).map((l) => l.trim()).filter(Boolean).map((l) => JSON.parse(l));
+    }
+
+    function kind(t) {
+      if (t.blocked_reason) return "blocked";
+      if (t.status === "In Progress") return "progress";
+      if (t.status === "Done") return "done";
+      if (t.status === "Draft") return "draft";
+      return "todo";
+    }
+    function statusMark(t) {
+      const k = kind(t);
+      if (k === "done") return `<svg class="icon done" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6"/><path d="M4.2 7.1l1.8 1.8 3.8-3.8"/></svg>`;
+      if (k === "progress") return `<svg class="icon progress" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6"/><path d="M7 2.2A4.8 4.8 0 0 1 11.8 7H7z"/></svg>`;
+      if (k === "blocked") return `<svg class="icon blocked" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6"/><path d="M4.2 4.2l5.6 5.6"/></svg>`;
+      return `<svg class="icon ${k}" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6"/></svg>`;
+    }
+    function priMark(p) {
+      const n = p === "high" ? 3 : p === "medium" ? 2 : p === "low" ? 1 : 0;
+      if (!n) return `<svg class="pri" viewBox="0 0 14 14"><circle cx="7" cy="7" r="4.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="1.6 1.5"/></svg>`;
+      return `<svg class="pri ${p}" viewBox="0 0 14 14">${[[3,10],[6,8],[9,6]].slice(0,n).map(([x,h]) => `<rect x="${x}" y="${12-h}" width="2" height="${h}" rx="0.6" fill="currentColor"/>`).join("")}</svg>`;
+    }
+    function msTitle(id) {
+      return (pack.milestones.find((m) => m.id === id) || {}).title || id;
+    }
+    function visible() {
+      return pack.tasks.filter((t) => {
+        if (filter === "blocked") return !!t.blocked_reason;
+        if (filter !== "all" && t.status !== filter) return false;
+        return true;
+      });
+    }
+    function counts() {
+      const c = { all: pack.tasks.length, "To Do": 0, "In Progress": 0, Done: 0, Draft: 0, blocked: 0 };
+      for (const t of pack.tasks) {
+        c[t.status] = (c[t.status] || 0) + 1;
+        if (t.blocked_reason) c.blocked += 1;
+      }
+      return c;
+    }
+
+    function render() {
+      const c = counts();
+      const t = pack.tasks.find((x) => x.id === selected);
+      const filters = [["all","All issues"],["To Do","Todo"],["In Progress","In Progress"],["Done","Done"],["Draft","Draft"],["blocked","Blocked"]];
+      document.getElementById("frame").innerHTML = `
+        <div class="app ${t ? "sheet-on" : ""}" id="app">
+          <aside>
+            <div class="workspace"><div class="mark-team"></div><div><h1>${esc(pack.project.name || "docket")}</h1><small>docket editor · cites this file</small></div></div>
+            ${filters.map(([id, label]) => `<button class="nav-item ${filter===id?"on":""}" data-filter="${id}"><span>${statusMark({status:id==="In Progress"?"In Progress":id==="Done"?"Done":id==="Draft"?"Draft":"To Do", blocked_reason:id==="blocked"?"x":""})}${label}</span><span class="count">${c[id]||0}</span></button>`).join("")}
+          </aside>
+          <main class="ed">
+            <div class="toolbar">
+              <h2>${filter==="all"?"All issues":filter}</h2>
+              <div class="views">
+                <button type="button" data-view="list" class="${view==="list"?"on":""}" title="List">≡</button>
+                <button type="button" data-view="board" class="${view==="board"?"on":""}" title="Board">▣</button>
+              </div>
+            </div>
+            <div class="list">${view==="board"?boardHTML():listHTML()}</div>
+          </main>
+          ${t ? sheetHTML(t) : ""}
+        </div>`;
+      bind();
+    }
+
+    function listHTML() {
+      const rows = visible();
+      if (!rows.length) return '<div class="empty">No issues.</div>';
+      return rows.map((t) => `
+        <div class="rowi ${t.id===selected?"on":""}" data-id="${t.id}">
+          ${statusMark(t)}<span class="tid">${t.id.replace("TASK-","")}</span>
+          <span class="title">${esc(t.title)}</span>
+          ${t.milestone?`<span class="chip">${esc(msTitle(t.milestone))}</span>`:"<span></span>"}
+          ${priMark(t.priority)}
+        </div>`).join("");
+    }
+
+    function boardHTML() {
+      const cols = filter !== "all" && filter !== "blocked" ? [filter] : COLUMNS;
+      return `<div class="board">${cols.map((status) => {
+        const cards = visible().filter((t) => t.status === status);
+        return `<section class="col" data-status="${status}">
+          <div class="col-head">${statusMark({status})}${status==="To Do"?"Todo":status}<span class="count">${cards.length}</span></div>
+          <div class="col-body">${cards.map((t) => `
+            <article class="card" data-id="${t.id}" draggable="true">
+              <div class="card-title">${esc(t.title)}</div>
+              <div class="card-meta">
+                <span class="tid">${t.id.replace("TASK-","")}</span>
+                ${t.blocked_reason?'<span class="chip" style="color:var(--blocked)">Blocked</span>':""}
+                ${t.milestone?`<span class="chip">${esc(msTitle(t.milestone))}</span>`:""}
+                <span style="margin-left:auto">${priMark(t.priority)}</span>
+              </div>
+            </article>`).join("")}</div>
+        </section>`;
+      }).join("")}</div>`;
+    }
+
+    function sheetHTML(t) {
+      const ms = pack.milestones.map((m) => `<option value="${esc(m.id)}" ${m.id===t.milestone?"selected":""}>${esc(m.title)}</option>`).join("");
+      return `<section class="sheet">
+        <div class="issue-id">${esc(t.id)}</div>
+        <textarea class="title-edit" data-field="title">${esc(t.title)}</textarea>
+        <label class="prop"><span>Status</span><select data-field="status">${["To Do","In Progress","Done","Draft"].map((s)=>`<option ${s===t.status?"selected":""}>${s}</option>`).join("")}</select></label>
+        <label class="prop"><span>Priority</span><select data-field="priority">${["","high","medium","low"].map((s)=>`<option value="${s}" ${s===(t.priority||"")?"selected":""}>${s||"No priority"}</option>`).join("")}</select></label>
+        <label class="prop"><span>Milestone</span><select data-field="milestone"><option value="">No milestone</option>${ms}</select></label>
+        <label class="prop"><span>Blocked</span><input class="blocked-edit" data-field="blocked_reason" value="${esc(t.blocked_reason||"")}"></label>
+        <textarea class="notes" data-field="notes" placeholder="Add description…">${esc(t.notes||"")}</textarea>
+      </section>`;
+    }
+
+    function bind() {
+      document.querySelectorAll("[data-filter]").forEach((el) => el.addEventListener("click", () => { filter = el.dataset.filter; render(); }));
+      document.querySelectorAll("[data-view]").forEach((el) => el.addEventListener("click", () => { view = el.dataset.view; render(); }));
+      document.querySelectorAll(".rowi, .card").forEach((el) => el.addEventListener("click", () => { selected = el.dataset.id; render(); }));
+      document.querySelectorAll("[data-field]").forEach((el) => {
+        const ev = el.tagName === "SELECT" ? "change" : "blur";
+        el.addEventListener(ev, () => {
+          const t = pack.tasks.find((x) => x.id === selected);
+          if (t) { t[el.dataset.field] = el.value; render(); }
+        });
+      });
+      document.querySelectorAll(".card").forEach((el) => {
+        el.addEventListener("dragstart", (e) => e.dataTransfer.setData("text/plain", el.dataset.id));
+      });
+      document.querySelectorAll(".col").forEach((col) => {
+        col.addEventListener("dragover", (e) => { e.preventDefault(); col.classList.add("over"); });
+        col.addEventListener("dragleave", () => col.classList.remove("over"));
+        col.addEventListener("drop", (e) => {
+          e.preventDefault();
+          col.classList.remove("over");
+          const t = pack.tasks.find((x) => x.id === e.dataTransfer.getData("text/plain"));
+          if (t) { t.status = col.dataset.status; render(); }
+        });
+      });
+    }
+
+    function esc(s) {
+      return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+    }
+  </script>
+</body>
+</html>

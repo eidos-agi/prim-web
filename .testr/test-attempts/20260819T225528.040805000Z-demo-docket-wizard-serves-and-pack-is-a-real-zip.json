@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-08-19T22:55:28.041003Z",
+  "goal": "demo/docket wizard serves and pack is a real zip",
+  "notes": "Local GET /demo/docket/ 200; atlas.docket.prim 2226B zip with tasks.jsonl; browser drop opens Atlas Launch board.",
+  "product_id": "prim-web",
+  "proofs": [
+    "http://127.0.0.1:8766/demo/docket/ 200 title Docket demo",
+    "atlas.docket.prim zip namelist docket.json,tasks.jsonl,milestones.jsonl"
+  ],
+  "schema_version": 1,
+  "status": "passed",
+  "test_commands_snapshot": [
+    "define product-specific test command before claiming green"
+  ]
+}

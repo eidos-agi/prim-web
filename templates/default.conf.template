@@ -4,4 +4,11 @@ server {
     server_name _;
     root /usr/share/nginx/html;
     index index.html;
+    include /etc/nginx/mime.types;
+    types {
+        application/zip prim;
+    }
+    location /demo/docket {
+        try_files $uri $uri/ /demo/docket/index.html;
+    }
 }
