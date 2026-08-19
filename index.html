@@ -71,7 +71,17 @@
       .band { border-block: 1px solid var(--line); background: color-mix(in srgb, var(--raised) 60%, transparent); padding: 5.5rem 0; }
       .section { padding: 5.5rem 0; }
       .label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--subtle); }
-      .era { font-size: clamp(4.5rem, 12vw, 8rem); font-weight: 500; letter-spacing: -0.045em; line-height: 0.9; margin: 0; }
+      .timeline {
+        display: grid; gap: 1.75rem;
+        margin-top: 2.5rem; padding-top: 1.5rem;
+        border-top: 1px solid var(--ink);
+        list-style: none;
+      }
+      @media (min-width: 800px) { .timeline { grid-template-columns: repeat(5, 1fr); gap: 1rem; } }
+      .timeline .decade { font-size: clamp(2.4rem, 4vw, 3.25rem); font-weight: 500; letter-spacing: -0.04em; line-height: 1; margin: 0; }
+      .timeline .when { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.75rem; color: var(--subtle); margin: 0.35rem 0 0; }
+      .timeline .work { font-size: 0.95rem; font-weight: 500; margin: 1rem 0 0; line-height: 1.3; }
+      .timeline .note { font-size: 0.9rem; color: var(--muted); margin: 0.4rem 0 0; line-height: 1.45; }
       .era-line { font-size: clamp(1.6rem, 3vw, 2.35rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.15; margin: 1.4rem 0 1rem; max-width: 44rem; }
       .grid-2 { display: grid; gap: 4rem; }
       @media (min-width: 900px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
@@ -166,6 +176,38 @@
       <section id="why" class="band">
         <div class="wrap">
           <h2 class="era">Pre-AI</h2>
+          <ol class="timeline">
+            <li>
+              <p class="decade">80s</p>
+              <p class="when">1982–89</p>
+              <p class="work">Lotus 1-2-3, WordPerfect, floppy disks</p>
+              <p class="note">One program. One file. One disk.</p>
+            </li>
+            <li>
+              <p class="decade">90s</p>
+              <p class="when">1990–99</p>
+              <p class="work">Excel, Word, PowerPoint</p>
+              <p class="note">The suite becomes the job.</p>
+            </li>
+            <li>
+              <p class="decade">00s</p>
+              <p class="when">2000–09</p>
+              <p class="work">PDF, email the attachment</p>
+              <p class="note">The file leaves the building.</p>
+            </li>
+            <li>
+              <p class="decade">10s</p>
+              <p class="when">2010–19</p>
+              <p class="work">Drive, Dropbox, Slack</p>
+              <p class="note">Cloud copies of the same files.</p>
+            </li>
+            <li>
+              <p class="decade">20s</p>
+              <p class="when">2020–</p>
+              <p class="work">Copilot, ChatGPT</p>
+              <p class="note">Agents arrive. Still opening those files.</p>
+            </li>
+          </ol>
           <p class="era-line">We made each file to represent a single concept.</p>
           <p class="muted" style="max-width:40rem">Spreadsheets for structure. Documents for decisions. Decks for the story. Notes for memory. Each file was a projection we had to author by hand — on whatever machine held that format.</p>
           <div class="shots">
