@@ -1,0 +1,46 @@
+{
+  "blocker_records": [],
+  "blockers": [],
+  "created_at": "2026-08-19T18:35:01.519343Z",
+  "gate_summary": [],
+  "goal": "Deploy prim-web to Railway with prim.eidosagi.com subdomain",
+  "learning_prompts": [
+    "What broke or slowed this release?",
+    "What proof was missing until late?",
+    "Which gate should become automatic next time?",
+    "Which human approval should remain explicit?"
+  ],
+  "next_actions": [
+    "route lessons to learning-forge",
+    "watch rollback and support signals"
+  ],
+  "notes": "railguey service-bootstrap (tarball; GitHub app-create 400s on new repos). ROOT CAUSE of 502 saga: Railway runtime injects PORT=8080; nginx must listen on ${PORT} via /etc/nginx/templates envsubst. Custom domain targetPort must match (set via direct GraphQL customDomainUpdate; railguey domain-update has stale schema). Future deploys: railguey upload-source ~/repos-eidos-agi/prim-web prim-web",
+  "product_id": "prim-web",
+  "proofs": [
+    "https://prim-web-production.up.railway.app/ -\u003e 200"
+  ],
+  "release_model_snapshot": {
+    "approval_gates": [
+      "credentials",
+      "payments",
+      "production mutations",
+      "public publish/tag",
+      "customer/outbound messaging"
+    ],
+    "artifact_types": [],
+    "distribution_channels": [],
+    "forge_stack": [
+      "testr"
+    ],
+    "license": null,
+    "open_source_status": "unknown",
+    "proof_commands": [
+      "define product-specific test command before claiming green"
+    ],
+    "proof_source": "testr",
+    "repository_visibility": "unknown"
+  },
+  "schema_version": 1,
+  "source": null,
+  "status": "shipped"
+}
