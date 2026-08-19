@@ -88,7 +88,8 @@
       .file-river-mask { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
       .file-river-track { display: flex; width: max-content; gap: 0.75rem; animation: file-flow 42s linear infinite; }
       .file-river-mask.reverse .file-river-track { animation-direction: reverse; animation-duration: 48s; }
-      .file-chip { flex-shrink: 0; padding: 0.55rem 1.05rem; border: 1px solid var(--line); border-radius: 999px; background: var(--raised); font-family: "IBM Plex Mono", monospace; font-size: 0.95rem; }
+      .file-chip { display: inline-flex; flex-shrink: 0; align-items: center; gap: 0.45rem; padding: 0.5rem 0.95rem 0.5rem 0.55rem; border: 1px solid var(--line); border-radius: 999px; background: var(--raised); font-family: "IBM Plex Mono", monospace; font-size: 0.9rem; }
+      .file-chip img, .work-files img, .pack-icons img { width: 1.35rem; height: 1.35rem; display: block; }
       @keyframes file-flow { from { transform: translateX(0); } to { transform: translateX(-50%); } }
       .work-pair { display: grid; gap: 1.5rem; margin-top: 4rem; }
       @media (min-width: 900px) { .work-pair { grid-template-columns: 1fr 1fr; } }
@@ -111,7 +112,7 @@
       .work-scene.after .work-arrow { background: color-mix(in srgb, white 25%, transparent); }
       .pre-arrow::after { content: ""; position: absolute; right: 0; top: -3px; width: 7px; height: 7px; border-right: 1.5px solid var(--ink); border-top: 1.5px solid var(--ink); transform: rotate(45deg); animation: pre-write 9s cubic-bezier(0.23,1,0.32,1) infinite; }
       .work-files { display: grid; gap: 0.45rem; list-style: none; margin: 0; padding: 0; }
-      .work-files li { padding: 0.5rem 0.9rem; border: 1px solid var(--line); border-radius: 999px; font-family: "IBM Plex Mono", monospace; font-size: 0.9rem; opacity: 0.28; }
+      .work-files li { display: flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.85rem 0.45rem 0.45rem; border: 1px solid var(--line); border-radius: 999px; font-size: 0.85rem; font-weight: 500; opacity: 0.28; }
       .work-scene.after .work-files li { border-color: color-mix(in srgb, white 22%, transparent); }
       .work-scene.pre .f1 { animation: file-lit 9s infinite; }
       .work-scene.pre .f2 { animation: file-lit 9s infinite 3s; }
@@ -161,7 +162,7 @@
       }
       .factory-stage .pack {
         position: absolute; top: 50%; z-index: 3;
-        display: flex; height: 2.25rem; align-items: center; justify-content: center;
+        display: flex; height: 2.5rem; align-items: center; justify-content: center; gap: 0.35rem;
         padding: 0 0.85rem; border: 1px solid #111; border-radius: 0.5rem;
         background: #fffcf8; font-size: 0.8rem; font-weight: 500; letter-spacing: -0.02em; white-space: nowrap;
       }
@@ -283,10 +284,10 @@
         <p class="lede">Excel, Word, PowerPoint, PDF — built for a person at a machine. That’s file hell. Prim is the file for after.</p>
         <div class="file-river" aria-hidden="true">
           <div class="file-river-mask"><div class="file-river-track">
-            <span class="file-chip">.xls</span><span class="file-chip">.xlsx</span><span class="file-chip">.doc</span><span class="file-chip">.docx</span><span class="file-chip">.ppt</span><span class="file-chip">.pptx</span><span class="file-chip">.pdf</span><span class="file-chip">.csv</span><span class="file-chip">.txt</span><span class="file-chip">.rtf</span><span class="file-chip">.mdb</span><span class="file-chip">.wpd</span><span class="file-chip">.xls</span><span class="file-chip">.xlsx</span><span class="file-chip">.doc</span><span class="file-chip">.docx</span><span class="file-chip">.ppt</span><span class="file-chip">.pptx</span><span class="file-chip">.pdf</span><span class="file-chip">.csv</span><span class="file-chip">.txt</span><span class="file-chip">.rtf</span><span class="file-chip">.mdb</span><span class="file-chip">.wpd</span>
+            <span class="file-chip"><img src="./file-xls.svg" alt="">.xlsx</span><span class="file-chip"><img src="./file-doc.svg" alt="">.docx</span><span class="file-chip"><img src="./file-ppt.svg" alt="">.pptx</span><span class="file-chip"><img src="./file-pdf.svg" alt="">.pdf</span><span class="file-chip"><img src="./file-xls.svg" alt="">.csv</span><span class="file-chip"><img src="./file-txt.svg" alt="">.txt</span><span class="file-chip"><img src="./file-mail.svg" alt="">.eml</span><span class="file-chip"><img src="./file-zip.svg" alt="">.zip</span><span class="file-chip"><img src="./file-xls.svg" alt="">.xlsx</span><span class="file-chip"><img src="./file-doc.svg" alt="">.docx</span><span class="file-chip"><img src="./file-ppt.svg" alt="">.pptx</span><span class="file-chip"><img src="./file-pdf.svg" alt="">.pdf</span><span class="file-chip"><img src="./file-xls.svg" alt="">.csv</span><span class="file-chip"><img src="./file-txt.svg" alt="">.txt</span><span class="file-chip"><img src="./file-mail.svg" alt="">.eml</span><span class="file-chip"><img src="./file-zip.svg" alt="">.zip</span>
           </div></div>
           <div class="file-river-mask reverse"><div class="file-river-track">
-            <span class="file-chip">.numbers</span><span class="file-chip">.pages</span><span class="file-chip">.key</span><span class="file-chip">.odt</span><span class="file-chip">.ods</span><span class="file-chip">.odp</span><span class="file-chip">.eml</span><span class="file-chip">.msg</span><span class="file-chip">.zip</span><span class="file-chip">.numbers</span><span class="file-chip">.pages</span><span class="file-chip">.key</span><span class="file-chip">.odt</span><span class="file-chip">.ods</span><span class="file-chip">.odp</span><span class="file-chip">.eml</span><span class="file-chip">.msg</span><span class="file-chip">.zip</span>
+            <span class="file-chip"><img src="./file-xls.svg" alt="">.numbers</span><span class="file-chip"><img src="./file-doc.svg" alt="">.pages</span><span class="file-chip"><img src="./file-ppt.svg" alt="">.key</span><span class="file-chip"><img src="./file-data.svg" alt="">.mdb</span><span class="file-chip"><img src="./file-mail.svg" alt="">.msg</span><span class="file-chip"><img src="./file-zip.svg" alt="">.zip</span><span class="file-chip"><img src="./file-pdf.svg" alt="">.pdf</span><span class="file-chip"><img src="./file-xls.svg" alt="">.numbers</span><span class="file-chip"><img src="./file-doc.svg" alt="">.pages</span><span class="file-chip"><img src="./file-ppt.svg" alt="">.key</span><span class="file-chip"><img src="./file-data.svg" alt="">.mdb</span><span class="file-chip"><img src="./file-mail.svg" alt="">.msg</span><span class="file-chip"><img src="./file-zip.svg" alt="">.zip</span><span class="file-chip"><img src="./file-pdf.svg" alt="">.pdf</span>
           </div></div>
         </div>
         <div class="work-pair">
@@ -300,9 +301,9 @@
               </div>
               <div class="work-arrow pre-arrow"></div>
               <ol class="work-files">
-                <li class="f1">.xlsx</li>
-                <li class="f2">.docx</li>
-                <li class="f3">.pptx</li>
+                <li class="f1"><img src="./file-xls.svg" alt="">Spreadsheet</li>
+                <li class="f2"><img src="./file-doc.svg" alt="">Document</li>
+                <li class="f3"><img src="./file-ppt.svg" alt="">Deck</li>
               </ol>
             </div>
             <p class="work-note">One person. Three formats. Three jobs.</p>
@@ -323,9 +324,9 @@
               </div>
               <div class="work-prim"><img src="./mark.png" alt="" /><span>.prim</span></div>
               <ol class="work-files out">
-                <li class="o1">.xlsx</li>
-                <li class="o2">.docx</li>
-                <li class="o3">.pptx</li>
+                <li class="o1"><img src="./file-xls.svg" alt="">Spreadsheet</li>
+                <li class="o2"><img src="./file-doc.svg" alt="">Document</li>
+                <li class="o3"><img src="./file-ppt.svg" alt="">Deck</li>
               </ol>
             </div>
             <p class="work-note">Same files. The arrow flipped.</p>
@@ -347,7 +348,12 @@
             <p class="legend legend-l">File hell</p>
             <p class="legend legend-r">After</p>
             <div class="rail"></div>
-            <div class="pack pack-in">.xlsx .docx .pptx</div>
+            <div class="pack pack-in pack-icons">
+              <img src="./file-xls.svg" alt="">
+              <img src="./file-doc.svg" alt="">
+              <img src="./file-ppt.svg" alt="">
+              <img src="./file-pdf.svg" alt="">
+            </div>
             <div class="bin">
               <div class="curtain"></div>
               <img src="./mark.png" alt="" />
