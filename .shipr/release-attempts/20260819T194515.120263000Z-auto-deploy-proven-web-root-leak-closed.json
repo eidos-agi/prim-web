@@ -1,0 +1,46 @@
+{
+  "blocker_records": [],
+  "blockers": [],
+  "created_at": "2026-08-19T19:45:15.120317Z",
+  "gate_summary": [],
+  "goal": "Auto-deploy proven + web-root leak closed",
+  "learning_prompts": [
+    "What broke or slowed this release?",
+    "What proof was missing until late?",
+    "Which gate should become automatic next time?",
+    "Which human approval should remain explicit?"
+  ],
+  "next_actions": [
+    "route lessons to learning-forge",
+    "watch rollback and support signals"
+  ],
+  "notes": "Push-to-main -\u003e railway up CI proven with a real change (2bd4b1b): run green, site 200, /.shipr leak 404. .dockerignore keeps repo internals out of the web root.",
+  "product_id": "prim-web",
+  "proofs": [
+    "CI completed:success, site=200, shipr-leak=404"
+  ],
+  "release_model_snapshot": {
+    "approval_gates": [
+      "credentials",
+      "payments",
+      "production mutations",
+      "public publish/tag",
+      "customer/outbound messaging"
+    ],
+    "artifact_types": [],
+    "distribution_channels": [],
+    "forge_stack": [
+      "testr"
+    ],
+    "license": null,
+    "open_source_status": "unknown",
+    "proof_commands": [
+      "define product-specific test command before claiming green"
+    ],
+    "proof_source": "testr",
+    "repository_visibility": "unknown"
+  },
+  "schema_version": 1,
+  "source": null,
+  "status": "shipped"
+}
