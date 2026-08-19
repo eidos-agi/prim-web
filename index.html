@@ -73,7 +73,13 @@
       .label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--subtle); }
       .grid-2 { display: grid; gap: 4rem; }
       @media (min-width: 900px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
-      .compare { display: grid; gap: 0.75rem; margin-top: 3.5rem; }
+      .shots { display: grid; gap: 0.75rem; margin-top: 2.75rem; }
+      @media (min-width: 700px) { .shots { grid-template-columns: 1fr 1fr; } }
+      .shot { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--paper); }
+      .shot img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+      .shot figcaption { display: flex; justify-content: space-between; gap: 1rem; padding: 0.75rem 1.2rem; border-top: 1px solid var(--line); }
+      .nowbox { margin-top: 3.5rem; display: grid; gap: 2.5rem; }
+      @media (min-width: 900px) { .nowbox { grid-template-columns: 1fr 1fr; align-items: start; } }
       @media (min-width: 800px) {
         .compare { grid-template-columns: 1fr auto 1fr; align-items: center; }
       }
@@ -156,39 +162,50 @@
       </section>
 
       <section id="why" class="band">
-        <div class="wrap grid-2">
-          <div>
-            <p class="label">Pre-AI</p>
-            <h2>We made each file to represent a single concept.</h2>
-            <p class="muted">Spreadsheets for structure. Documents for decisions. Decks for the story. Notes for memory. Each file was a projection we had to author by hand.</p>
+        <div class="wrap">
+          <p class="label">Pre-AI</p>
+          <h2>We made each file to represent a single concept.</h2>
+          <p class="muted" style="max-width:40rem">Spreadsheets for structure. Documents for decisions. Decks for the story. Notes for memory. Each file was a projection we had to author by hand — on whatever machine held that format.</p>
+          <div class="shots">
+            <figure class="shot">
+              <img src="./then-excel.jpg" alt="1980s office worker at a beige PC, green spreadsheet on a CRT." />
+              <figcaption><span>Spreadsheet</span><span class="muted">structure</span></figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="./then-word.jpg" alt="1980s office worker typing a report on an early word processor." />
+              <figcaption><span>Document</span><span class="muted">decisions</span></figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="./then-slides.jpg" alt="1980s conference room watching an overhead projector." />
+              <figcaption><span>Slides</span><span class="muted">the story</span></figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="./then-notes.jpg" alt="1980s desk with a legal pad, floppy disks, and a CRT." />
+              <figcaption><span>Notes</span><span class="muted">memory</span></figcaption>
+            </figure>
           </div>
-          <div>
-            <p class="label">Reverse the order</p>
-            <h2>Store the concept. Use that to make each of the files.</h2>
-            <p class="muted">The Prim is the single concept. The spreadsheet, the deck, the UI — those are generated views. Adobe cracked portable documents with PDF. This is that, for AI work.</p>
+          <div class="nowbox">
+            <div>
+              <p class="label">Now</p>
+              <h2>Store the concept. Generate the files.</h2>
+              <p class="muted">Reverse the order. The Prim holds the idea once. Excel, Word, the deck, the notes — those come out of it. Same four files. The arrow flipped.</p>
+            </div>
+            <div class="card card-ink">
+              <p class="label" style="color: color-mix(in srgb, white 50%, transparent)">One file</p>
+              <h3 style="margin:1rem 0 1.2rem">The Prim is the concept.</h3>
+              <ul>
+                <li>Spreadsheet — generated</li>
+                <li>Document — generated</li>
+                <li>Deck — generated</li>
+                <li>Notes — generated</li>
+              </ul>
+            </div>
           </div>
+          <figure class="dia">
+            <img src="./diagram-inversion.png" alt="Then: files point into a reconstructed idea. Now: a Prim generates those same files." />
+            <figcaption>Same four files. The arrow flipped.</figcaption>
+          </figure>
         </div>
-        <div class="wrap compare">
-          <div class="card">
-            <p class="label">Before</p>
-            <ul>
-              <li>Excel for structure</li>
-              <li>Word for decisions</li>
-              <li>Slides for the story</li>
-              <li>Notes for memory</li>
-            </ul>
-          </div>
-          <div style="text-align:center;color:var(--subtle)">→</div>
-          <div class="card card-ink">
-            <p class="label" style="color: color-mix(in srgb, white 55%, transparent)">After</p>
-            <h3 style="margin:1.2rem 0 0.6rem">One Prim.</h3>
-            <p style="margin:0;color:color-mix(in srgb, white 70%, transparent);font-size:0.95rem;line-height:1.55">Agents and humans share the same file. Views are generated on demand. The deck is never the source of truth again.</p>
-          </div>
-        </div>
-        <figure class="dia wrap">
-          <img src="./diagram-inversion.png" alt="Before: files fan into an agent that guesses. After: one Prim generates sheet, deck, UI, and a native agent read." />
-          <figcaption>Pre-AI we made each file to represent a concept. Now we store the concept and generate the files.</figcaption>
-        </figure>
       </section>
 
       <section id="portable" class="section wrap">
