@@ -12,9 +12,12 @@
   <style>
     :root {
       --paper: #f4f3ef;
-      --ink: #111;
+      --raised: #fffcf8;
+      --ink: #111111;
       --muted: #6a6a66;
+      --subtle: #8a8a84;
       --line: #e4e2dc;
+      --radius: 20px;
       --bg: #08090a;
       --side: #0f1011;
       --elev: #141516;
@@ -57,50 +60,85 @@
     }
     .fine { margin-top: 18px; font-size: 13px; color: var(--muted); }
     .fine a { color: inherit; }
-    .stage { display: flex; flex-direction: column; min-width: 0; background: #e8e6e1; }
+    .stage { display: flex; flex-direction: column; min-width: 0; background: var(--paper); }
     .chat-bar {
-      height: 48px; display: flex; align-items: center; gap: 10px;
-      padding: 0 14px; background: #f4f3ef; border-bottom: 1px solid var(--line); font-weight: 500;
+      height: 4rem; display: flex; align-items: center; gap: 12px;
+      padding: 0 1.25rem;
+      border-bottom: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+      background: color-mix(in srgb, var(--paper) 90%, transparent);
+      backdrop-filter: blur(8px);
     }
-    .dot { width: 10px; height: 10px; border-radius: 50%; background: #34c759; }
-    .thread { flex: 1; min-height: 0; overflow: auto; padding: 22px 18px 28px; }
-    .row { display: flex; margin: 8px 0; }
-    .row.them { justify-content: flex-start; }
-    .row.me { justify-content: flex-end; }
+    .chat-bar img { height: 1.75rem; width: auto; }
+    .who { display: grid; line-height: 1.2; }
+    .who b { font-weight: 500; letter-spacing: -0.02em; }
+    .who small { color: var(--subtle); font-size: 12px; font-weight: 400; }
+    .thread { flex: 1; min-height: 0; overflow: auto; padding: 1.5rem 1.5rem 1rem; }
+    .day {
+      display: flex; align-items: center; gap: 1rem;
+      margin: 0 0 1.25rem; color: var(--subtle);
+      font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .day::before, .day::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+    .row { display: flex; gap: 10px; margin: 0 0 14px; max-width: 40rem; opacity: 0; transform: translateY(8px); animation: in 420ms ease forwards; }
+    .row.them { }
+    .row.me { margin-left: auto; flex-direction: row-reverse; }
+    .face {
+      width: 28px; height: 28px; border-radius: 8px; flex: none;
+      display: grid; place-items: center; background: var(--ink);
+    }
+    .face img { height: 14px; width: auto; filter: invert(1); }
+    .row.me .face { background: var(--raised); border: 1px solid var(--line); }
+    .row.me .face img { filter: none; }
+    .stack { min-width: 0; }
+    .meta {
+      font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--subtle); margin: 0 0 5px;
+    }
     .bubble {
-      max-width: 36rem;
-      padding: 10px 14px;
-      border-radius: 18px;
-      line-height: 1.4;
-      font-size: 15px;
+      padding: 12px 16px; border-radius: var(--radius); line-height: 1.45; font-size: 1.02rem;
+      border: 1px solid var(--line); background: var(--raised);
     }
-    .them .bubble { background: #fff; }
-    .me .bubble { background: #0b84ff; color: #fff; }
+    .row.me .bubble { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .typing { display: flex; gap: 5px; padding: 14px 16px; width: fit-content; }
+    .typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--subtle); animation: pulse 1s infinite; }
+    .typing i:nth-child(2) { animation-delay: 0.15s; }
+    .typing i:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes pulse { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+    @keyframes in { to { opacity: 1; transform: none; } }
     .drop {
-      margin: 18px auto 0;
-      max-width: 36rem;
-      min-height: 132px;
-      border: 1.5px dashed #b7b4ac;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.55);
-      display: grid;
-      place-items: center;
-      text-align: center;
-      color: var(--muted);
-      padding: 22px;
+      margin: 8px 0 0; max-width: 40rem; min-height: 7.5rem;
+      border: 1px dashed var(--line); border-radius: var(--radius);
+      background: var(--raised); display: grid; place-items: center;
+      text-align: center; color: var(--muted); padding: 1.4rem 1.5rem; cursor: pointer;
     }
-    .drop.over { border-color: var(--ink); background: #fff; color: var(--ink); }
-    .drop strong { display: block; color: var(--ink); margin-bottom: 4px; }
-    .editor-frame {
-      display: none;
-      height: calc(100vh - 48px);
-      border-top: 1px solid #111;
+    .drop.over { border-style: solid; border-color: var(--ink); color: var(--ink); }
+    .drop .label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--subtle); }
+    .drop strong { display: block; margin: 0.4rem 0 0.2rem; font-weight: 500; letter-spacing: -0.02em; color: var(--ink); }
+    .attach {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper);
     }
-    body.open { grid-template-columns: 1fr; }
-    body.open .rail { display: none; }
-    body.open .thread { display: none; }
-    body.open .editor-frame { display: block; width: 100%; height: calc(100vh - 48px); }
-    .app { width: 100%; min-width: 0; }
+    .attach .mono { font-family: "IBM Plex Mono", monospace; font-size: 12px; }
+    .attach small { display: block; color: var(--subtle); font-size: 11px; }
+    .composer {
+      display: flex; align-items: center; gap: 10px;
+      margin: 0 1.5rem 1.25rem; padding: 10px 12px;
+      border: 1px solid var(--line); border-radius: 16px; background: var(--raised);
+    }
+    .composer .tag {
+      font-family: "IBM Plex Mono", monospace; font-size: 11px;
+      padding: 4px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--subtle);
+    }
+    .composer input {
+      flex: 1; border: 0; background: transparent; font: inherit; color: var(--ink); outline: none;
+    }
+    .editor-card {
+      display: none; margin: 8px 0 1rem; height: min(72vh, 760px);
+      border: 1px solid var(--ink); border-radius: var(--radius); overflow: hidden; background: #08090a;
+    }
+    body.open .drop, body.open .composer { display: none; }
+    body.open .editor-card { display: block; }
+    .app { width: 100%; min-width: 0; height: 100%; }
     .app {
       display: grid;
       grid-template-columns: 220px minmax(0, 1fr);
@@ -111,7 +149,7 @@
       font-size: 13px;
     }
     .app.sheet-on { grid-template-columns: 220px minmax(0, 1fr) minmax(300px, 400px); }
-    aside { background: var(--side); border-right: 1px solid var(--eline); padding: 14px 10px; overflow: auto; }
+    .app aside { background: var(--side); border-right: 1px solid var(--eline); padding: 14px 10px; overflow: auto; }
     .workspace { display: flex; align-items: center; gap: 10px; padding: 4px 8px 14px; }
     .mark-team { width: 18px; height: 18px; border-radius: 5px; background: linear-gradient(135deg, #5e6ad2, #8b93e8); }
     .workspace h1 { margin: 0; font-size: 13px; font-weight: 500; }
@@ -125,7 +163,7 @@
     .nav-item.on, .nav-item:hover, .new:hover { background: var(--active); color: var(--text); }
     .nav-item span { display: flex; align-items: center; gap: 8px; }
     .count { color: var(--faint); font-variant-numeric: tabular-nums; font-size: 11px; }
-    main.ed { display: flex; flex-direction: column; min-width: 0; }
+    main.ed { display: flex; flex-direction: column; min-width: 0; min-height: 0; height: 100%; }
     .toolbar { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; border-bottom: 1px solid var(--eline); }
     .toolbar h2 { margin: 0; font-size: 13px; font-weight: 500; }
     .views { display: flex; gap: 2px; padding: 2px; border: 1px solid var(--eline); border-radius: 7px; }
@@ -190,23 +228,31 @@
       <li><span class="num">02</span><span>Drag it onto the chat.</span></li>
       <li><span class="num">03</span><span>It opens as the editor.</span></li>
     </ol>
-    <a class="btn" href="./atlas.docket.prim" download="atlas.docket.prim">Download atlas.docket.prim</a>
+    <a class="btn" id="dl" href="./atlas.docket.prim" download="atlas.docket.prim">Download atlas.docket.prim</a>
     <p class="fine">2 KB sample pack. Same format as a real docket prim. <a href="https://github.com/eidos-agi/prim">Spec</a></p>
   </aside>
   <section class="stage">
-    <div class="chat-bar"><span class="dot"></span> Chat</div>
+    <div class="chat-bar">
+      <img src="../../mark.png" alt="">
+      <div class="who"><b>Prim</b><small>docket · file is the message</small></div>
+    </div>
     <div class="thread" id="thread">
-      <div class="row them"><div class="bubble">Send me the docket.</div></div>
-      <div class="row me"><div class="bubble">It’s a file. Download it, then drop it here.</div></div>
-      <div class="drop" id="drop">
+      <div class="day">Today</div>
+      <div id="log"></div>
+      <div class="drop" id="drop" hidden>
         <div>
-          <strong>Drop atlas.docket.prim on this chat</strong>
+          <p class="label">Attach</p>
+          <strong>Drop atlas.docket.prim here</strong>
           or click to choose the file
         </div>
         <input id="file" type="file" accept=".prim,.zip,.json,.jsonl" hidden>
       </div>
+      <div class="editor-card" id="frame"></div>
     </div>
-    <div class="editor-frame" id="frame"></div>
+    <div class="composer" id="composer" hidden>
+      <span class="tag">.prim</span>
+      <input value="The file is the message." readonly>
+    </div>
   </section>
   <script type="module">
     import { unzipSync, strFromU8 } from "https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js";
@@ -219,16 +265,63 @@
 
     const drop = document.getElementById("drop");
     const file = document.getElementById("file");
+    const log = document.getElementById("log");
+    const thread = document.getElementById("thread");
     drop.addEventListener("click", () => file.click());
     drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
     drop.addEventListener("dragleave", () => drop.classList.remove("over"));
     drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("over"); if (e.dataTransfer.files[0]) openFile(e.dataTransfer.files[0]); });
     file.addEventListener("change", () => { if (file.files[0]) openFile(file.files[0]); });
+    document.getElementById("dl").addEventListener("click", () => {
+      if (!document.getElementById("sent-file")) {
+        add("me", attachHTML("atlas.docket.prim", "2 KB · docket prim"), "sent-file");
+        thread.scrollTop = thread.scrollHeight;
+      }
+    });
+
+    function add(who, html, id) {
+      const row = document.createElement("div");
+      row.className = "row " + who;
+      if (id) row.id = id;
+      const name = who === "me" ? "You" : "Prim";
+      row.innerHTML = `
+        <div class="face"><img src="../../mark.png" alt=""></div>
+        <div class="stack">
+          <div class="meta">${name}</div>
+          <div class="bubble">${html}</div>
+        </div>`;
+      log.appendChild(row);
+      thread.scrollTop = thread.scrollHeight;
+      return row;
+    }
+    function attachHTML(name, note) {
+      return `<div class="attach"><div><span class="mono">${name}</span><small>${note}</small></div></div>`;
+    }
+    function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+    async function play() {
+      const typing = add("them", `<div class="typing"><i></i><i></i><i></i></div>`);
+      await sleep(700);
+      typing.remove();
+      add("them", "Don’t send the spreadsheet.");
+      await sleep(650);
+      add("them", "Send me the prim.");
+      await sleep(800);
+      add("me", "It’s a docket. One file.");
+      await sleep(700);
+      add("them", "Drop it on this thread. I’ll open the editor. The pack stays the file.");
+      drop.hidden = false;
+      document.getElementById("composer").hidden = false;
+      thread.scrollTop = thread.scrollHeight;
+    }
+    play();
 
     async function openFile(f) {
       pack = await readPack(f);
+      add("me", attachHTML(f.name || "atlas.docket.prim", "dropped · opening"));
+      add("them", "Opened. The editor cites it.");
       document.body.classList.add("open");
       render();
+      thread.scrollTop = thread.scrollHeight;
     }
 
     async function readPack(f) {
