@@ -71,6 +71,8 @@
       .band { border-block: 1px solid var(--line); background: color-mix(in srgb, var(--raised) 60%, transparent); padding: 5.5rem 0; }
       .section { padding: 5.5rem 0; }
       .label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--subtle); }
+      .era { font-size: clamp(4.5rem, 12vw, 8rem); font-weight: 500; letter-spacing: -0.045em; line-height: 0.9; margin: 0; }
+      .era-line { font-size: clamp(1.6rem, 3vw, 2.35rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.15; margin: 1.4rem 0 1rem; max-width: 44rem; }
       .grid-2 { display: grid; gap: 4rem; }
       @media (min-width: 900px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
       .shots { display: grid; gap: 0.75rem; margin-top: 2.75rem; }
@@ -163,8 +165,8 @@
 
       <section id="why" class="band">
         <div class="wrap">
-          <p class="label">Pre-AI</p>
-          <h2>We made each file to represent a single concept.</h2>
+          <h2 class="era">Pre-AI</h2>
+          <p class="era-line">We made each file to represent a single concept.</p>
           <p class="muted" style="max-width:40rem">Spreadsheets for structure. Documents for decisions. Decks for the story. Notes for memory. Each file was a projection we had to author by hand — on whatever machine held that format.</p>
           <div class="shots">
             <figure class="shot">
@@ -186,8 +188,8 @@
           </div>
           <div class="nowbox">
             <div>
-              <p class="label">Now</p>
-              <h2>Store the concept. Generate the files.</h2>
+              <h2 class="era">Now</h2>
+              <p class="era-line">Store the concept. Generate the files.</p>
               <p class="muted">Reverse the order. The Prim holds the idea once. Excel, Word, the deck, the notes — those come out of it. Same four files. The arrow flipped.</p>
             </div>
             <div class="card card-ink">
