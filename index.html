@@ -132,8 +132,9 @@
           Prim
         </a>
         <nav class="links">
-          <a href="#what">What</a>
           <a href="#why">Why</a>
+          <a href="#portable">Portable</a>
+          <a href="#what">What</a>
           <a href="#say">Language</a>
           <a href="#family">Family</a>
           <a href="https://github.com/eidos-agi/prim">Spec</a>
@@ -146,7 +147,7 @@
         <p class="kicker">The primitive unit of knowledge and memory for AI</p>
         <img src="./logo.png" alt="Prim" />
         <h1 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Prim</h1>
-        <p class="lede">Structured, evidence-backed, versionable packs of knowledge that both agents and humans can trust.</p>
+        <p class="lede">This makes AI work portable — agent to agent, agent to human, and human to agent.</p>
         <blockquote>“Send me the prim.”</blockquote>
         <div class="actions">
           <a class="btn btn-ink" href="https://github.com/eidos-agi/prim">Read the spec</a>
@@ -157,14 +158,14 @@
       <section id="why" class="band">
         <div class="wrap grid-2">
           <div>
-            <p class="label">The problem</p>
-            <h2>Knowledge is trapped in files that agents cannot trust.</h2>
-            <p class="muted">Spreadsheets hold structure. Documents hold narrative. Decks hold the pitch. Notes hold memory. None of them were designed for agents — so every session starts by reverse-engineering the last one.</p>
+            <p class="label">Pre-AI</p>
+            <h2>We made each file to represent a single concept.</h2>
+            <p class="muted">Spreadsheets for structure. Documents for decisions. Decks for the story. Notes for memory. Each file was a projection we had to author by hand.</p>
           </div>
           <div>
-            <p class="label">The inversion</p>
-            <h2>The Prim is the source of truth. Everything else is a view.</h2>
-            <p class="muted">Store knowledge structured, validated, and evidence-backed. Generate the spreadsheet, the deck, or the UI when you need it. Pure data stays specialized. Everything else can become a projection.</p>
+            <p class="label">Reverse the order</p>
+            <h2>Store the concept. Use that to make each of the files.</h2>
+            <p class="muted">The Prim is the single concept. The spreadsheet, the deck, the UI — those are generated views. Adobe cracked portable documents with PDF. This is that, for AI work.</p>
           </div>
         </div>
         <div class="wrap compare">
@@ -186,20 +187,39 @@
         </div>
         <figure class="dia wrap">
           <img src="./diagram-inversion.png" alt="Before: files fan into an agent that guesses. After: one Prim generates sheet, deck, UI, and a native agent read." />
-          <figcaption>Agents stop reverse-engineering files. They read the Prim and generate views.</figcaption>
+          <figcaption>Pre-AI we made each file to represent a concept. Now we store the concept and generate the files.</figcaption>
         </figure>
+      </section>
+
+      <section id="portable" class="section wrap">
+        <p class="label">Portable</p>
+        <h2>Agent to agent. Agent to human. Human to agent.</h2>
+        <div class="props">
+          <article>
+            <h3>Like PDF, for AI work</h3>
+            <p class="muted">Adobe cracked portable documents. A Prim is a portable package of knowledge — the same file moves between people and agents without translation.</p>
+          </article>
+          <article>
+            <h3>A session is a Prim</h3>
+            <p class="muted">An AI session itself is a type of Prim. What people call the model “dreaming” is the raw work. The Prim is what it packages.</p>
+          </article>
+          <article class="ink">
+            <h3>Schema first, then autonomy</h3>
+            <p style="color:color-mix(in srgb, white 70%, transparent);font-size:0.95rem;line-height:1.6">Define great schemas for Prims up front and agents can finish the work. The spreadsheet is no longer the job — it is an export.</p>
+          </article>
+        </div>
       </section>
 
       <section id="what" class="section wrap">
         <p class="label">What a Prim is</p>
         <h2>A self-contained pack of knowledge — not an app, not a document, not a database dump.</h2>
         <div class="props">
-          <article><h3>AI-native</h3><p class="muted">Agents can read, validate, and reason over a Prim without scraping a spreadsheet or a deck.</p></article>
-          <article><h3>Memory</h3><p class="muted">Durable, versioned knowledge that outlives any single session or agent run.</p></article>
-          <article><h3>Evidence-first</h3><p class="muted">Claims carry provenance, trust tiers, and hashes. Validation is fail-closed.</p></article>
-          <article><h3>No fixed UX</h3><p class="muted">Interfaces are generated on demand. The file is never a frozen view.</p></article>
-          <article><h3>Human-readable</h3><p class="muted">Still openable by people. Markdown plus structured data — not a black box.</p></article>
-          <article class="ink"><h3>Additive profiles</h3><p style="color:color-mix(in srgb, white 70%, transparent);font-size:0.95rem;line-height:1.6">New domains arrive as OKF profiles — research, product, capital, finance — without breaking existing Prims.</p></article>
+          <article><h3>AI-native</h3><p class="muted">Agents can read, validate, reason over, and act on them without translation layers.</p></article>
+          <article><h3>Memory</h3><p class="muted">Durable, versioned, supersedable knowledge that persists across sessions and agents.</p></article>
+          <article><h3>Evidence-first</h3><p class="muted">Claims carry provenance, trust tiers, and hashes.</p></article>
+          <article><h3>Generative interfaces</h3><p class="muted">No fixed UX. Views are rendered on demand — json-render style.</p></article>
+          <article><h3>Human-readable</h3><p class="muted">Still openable and understandable by people.</p></article>
+          <article class="ink"><h3>Raw data, then package</h3><p style="color:color-mix(in srgb, white 70%, transparent);font-size:0.95rem;line-height:1.6">A Prim is not the dream. It is what the dream becomes when it is packaged so the next agent — or person — can pick it up.</p></article>
         </div>
         <figure class="dia">
           <img src="./diagram-views.png" alt="Prim as the source of truth, with arrows out to sheet, deck, interface, and agent views." />
@@ -213,9 +233,9 @@
           <h2>If it needs a long explanation, it has not landed yet.</h2>
           <ol class="say">
             <li><span class="num">01</span><span>Send me the prim.</span></li>
-            <li><span class="num">02</span><span>Is that the latest prim?</span></li>
-            <li><span class="num">03</span><span>Don’t send the spreadsheet — just send the prim.</span></li>
-            <li><span class="num">04</span><span>The prim is the source of truth. The deck is just a view.</span></li>
+            <li><span class="num">02</span><span>Don’t send the spreadsheet — just send the prim.</span></li>
+            <li><span class="num">03</span><span>An AI session itself is a type of Prim.</span></li>
+            <li><span class="num">04</span><span>Store the concept. Generate the files.</span></li>
           </ol>
           <p class="muted" style="max-width:36rem;margin-top:2.5rem">Technical names — OKF, ORF, OCSF — belong in specs. Everyday speech stays on Prim.</p>
         </div>
