@@ -105,6 +105,20 @@
       @media (min-width: 640px) { .cta { padding: 5rem 3.5rem; } }
       .cta h2 { font-size: clamp(1.8rem, 4vw, 3rem); margin: 0; }
       footer { border-top: 1px solid var(--line); padding: 2.5rem 0; font-size: 0.9rem; color: var(--muted); }
+      .dia {
+        margin: 2.5rem auto 0;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: var(--raised);
+      }
+      .dia img { display: block; width: 100%; height: auto; }
+      .dia figcaption {
+        border-top: 1px solid var(--line);
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
       .foot { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; }
       .foot nav { display: flex; gap: 1.5rem; }
       @media (max-width: 700px) { .links { display: none; } }
@@ -170,6 +184,10 @@
             <p style="margin:0;color:color-mix(in srgb, white 70%, transparent);font-size:0.95rem;line-height:1.55">Agents and humans share the same file. Views are generated on demand. The deck is never the source of truth again.</p>
           </div>
         </div>
+        <figure class="dia wrap">
+          <img src="./diagram-inversion.png" alt="Before: files fan into an agent that guesses. After: one Prim generates sheet, deck, UI, and a native agent read." />
+          <figcaption>Agents stop reverse-engineering files. They read the Prim and generate views.</figcaption>
+        </figure>
       </section>
 
       <section id="what" class="section wrap">
@@ -183,6 +201,10 @@
           <article><h3>Human-readable</h3><p class="muted">Still openable by people. Markdown plus structured data — not a black box.</p></article>
           <article class="ink"><h3>Additive profiles</h3><p style="color:color-mix(in srgb, white 70%, transparent);font-size:0.95rem;line-height:1.6">New domains arrive as OKF profiles — research, product, capital, finance — without breaking existing Prims.</p></article>
         </div>
+        <figure class="dia">
+          <img src="./diagram-views.png" alt="Prim as the source of truth, with arrows out to sheet, deck, interface, and agent views." />
+          <figcaption>The Prim stays put. Sheets, decks, UIs, and agent reads are projections.</figcaption>
+        </figure>
       </section>
 
       <section id="say" class="band">
@@ -208,6 +230,10 @@
           <div><span class="mono">.prim.tar.gz</span><span class="muted">Allowed. Unix and agent workflows.</span></div>
           <div><span class="mono">.prim</span><span class="muted">Reserved branded container. Zip under the hood.</span></div>
         </div>
+        <figure class="dia">
+          <img src="./diagram-pack.png" alt="Contents of a .prim.zip: index.md, log.md, structure.json, evidence, and docs.json." />
+          <figcaption>A .prim.zip is a zip whose root is the pack. Attach that file.</figcaption>
+        </figure>
       </section>
 
       <section id="family" class="band">
@@ -215,6 +241,10 @@
           <p class="label">The family</p>
           <h2>Prim is the name. OKF is the grammar.</h2>
           <p class="muted" style="max-width:36rem">Under the hood, Prims are additive Open Knowledge Format profiles from Eidos.</p>
+          <figure class="dia">
+            <img src="./diagram-family.png" alt="Tree from Prim to OKF to additive profiles EMF, ORF, OPF, ODFW, OPFF, OMF, and OCSF." />
+            <figcaption>New domains arrive as profiles. Existing Prims keep validating.</figcaption>
+          </figure>
           <div class="family">
             <a href="https://github.com/eidos-agi/okflify"><span class="mono">OKF</span><span class="muted">Base knowledge + trust</span></a>
             <a href="https://github.com/eidos-agi/emf"><span class="mono">EMF</span><span class="muted">Human intent + durable memory</span></a>
