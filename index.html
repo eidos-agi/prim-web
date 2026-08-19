@@ -100,6 +100,7 @@
       .work-note { margin-top: auto; padding-top: 1rem; font-size: 0.9rem; color: var(--muted); }
       .work-scene.after .work-note { color: color-mix(in srgb, white 60%, transparent); }
       .work-stage { display: flex; align-items: center; gap: 0.75rem; min-height: 10.5rem; margin-top: 1.5rem; }
+      .work-stage.after-stage { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.85rem; }
       .work-human { display: grid; justify-items: center; gap: 0.35rem; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--subtle); }
       .work-scene.after .work-human { color: color-mix(in srgb, white 45%, transparent); }
       .actor { width: 2.4rem; height: auto; fill: none; stroke: currentColor; stroke-width: 2.2; }
@@ -309,7 +310,7 @@
           <article class="work-scene after">
             <p class="work-kicker">After</p>
             <p class="work-title">Humans and AIs contribute. Files come out.</p>
-            <div class="work-stage" aria-hidden="true">
+            <div class="work-stage after-stage" aria-hidden="true">
               <div class="work-contributors">
                 <div class="work-human">
                   <svg viewBox="0 0 48 64" class="actor"><circle cx="24" cy="12" r="8"/><path d="M8 62 V36 a16 16 0 0 1 32 0 V62"/></svg>
@@ -320,9 +321,7 @@
                   <span>agent</span>
                 </div>
               </div>
-              <div class="work-arrow"></div>
               <div class="work-prim"><img src="./mark.png" alt="" /><span>.prim</span></div>
-              <div class="work-arrow"></div>
               <ol class="work-files out">
                 <li class="o1">.xlsx</li>
                 <li class="o2">.docx</li>
