@@ -1,0 +1,46 @@
+{
+  "blocker_records": [],
+  "blockers": [],
+  "created_at": "2026-08-19T18:59:53.160849Z",
+  "gate_summary": [],
+  "goal": "prim.eidosagi.com custom domain live end-to-end",
+  "learning_prompts": [
+    "What broke or slowed this release?",
+    "What proof was missing until late?",
+    "Which gate should become automatic next time?",
+    "Which human approval should remain explicit?"
+  ],
+  "next_actions": [
+    "route lessons to learning-forge",
+    "watch rollback and support signals"
+  ],
+  "notes": "Full chain: CNAME + _railway-verify TXT (NOT in Railway dnsRecords API — see railguey DNS-CONTRACT.md) + customDomainIssueCertificate nudge. Lifecycle now: railguey domain-status . prim-web | clawdflare dns-apply - --apply, then domain-status --wait (auto-nudges).",
+  "product_id": "prim-web",
+  "proofs": [
+    "https://prim.eidosagi.com 200"
+  ],
+  "release_model_snapshot": {
+    "approval_gates": [
+      "credentials",
+      "payments",
+      "production mutations",
+      "public publish/tag",
+      "customer/outbound messaging"
+    ],
+    "artifact_types": [],
+    "distribution_channels": [],
+    "forge_stack": [
+      "testr"
+    ],
+    "license": null,
+    "open_source_status": "unknown",
+    "proof_commands": [
+      "define product-specific test command before claiming green"
+    ],
+    "proof_source": "testr",
+    "repository_visibility": "unknown"
+  },
+  "schema_version": 1,
+  "source": null,
+  "status": "shipped"
+}

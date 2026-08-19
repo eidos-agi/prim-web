@@ -1,0 +1,10 @@
+.git
+.github
+.docket
+.testr
+.shipr
+.env*
+Dockerfile
+.dockerignore
+README.md
+LICENSE

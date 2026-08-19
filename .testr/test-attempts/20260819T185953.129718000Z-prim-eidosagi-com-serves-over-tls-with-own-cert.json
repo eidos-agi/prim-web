@@ -1,0 +1,14 @@
+{
+  "created_at": "2026-08-19T18:59:53.129995Z",
+  "goal": "prim.eidosagi.com serves over TLS with own cert",
+  "notes": "",
+  "product_id": "prim-web",
+  "proofs": [
+    "curl https://prim.eidosagi.com -\u003e 200, CN=prim.eidosagi.com (Let's Encrypt), title=Prim"
+  ],
+  "schema_version": 1,
+  "status": "passed",
+  "test_commands_snapshot": [
+    "define product-specific test command before claiming green"
+  ]
+}
