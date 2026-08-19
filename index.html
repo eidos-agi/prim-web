@@ -84,6 +84,60 @@
       .timeline .note { font-size: 0.9rem; color: var(--muted); margin: 0.4rem 0 0; line-height: 1.45; }
       .era-line { font-size: clamp(1.6rem, 3vw, 2.35rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.15; margin: 1.4rem 0 1rem; max-width: 44rem; }
       .thesis { margin-top: 2.5rem; max-width: 48rem; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 500; letter-spacing: -0.035em; line-height: 1.1; color: var(--ink); }
+      .file-river { display: grid; gap: 0.55rem; margin-top: 2.5rem; padding: 1rem 0; border-block: 1px solid var(--line); }
+      .file-river-mask { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+      .file-river-track { display: flex; width: max-content; gap: 0.75rem; animation: file-flow 42s linear infinite; }
+      .file-river-mask.reverse .file-river-track { animation-direction: reverse; animation-duration: 48s; }
+      .file-chip { flex-shrink: 0; padding: 0.4rem 0.85rem; border: 1px solid var(--line); border-radius: 999px; background: var(--raised); font-family: "IBM Plex Mono", monospace; font-size: 0.8rem; }
+      @keyframes file-flow { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+      .work-pair { display: grid; gap: 0.75rem; margin-top: 2.5rem; }
+      @media (min-width: 900px) { .work-pair { grid-template-columns: 1fr 1fr; } }
+      .work-scene { border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); padding: 1.4rem 1.5rem 1.2rem; min-height: 20rem; display: flex; flex-direction: column; }
+      .work-scene.after { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+      .work-kicker { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--subtle); margin: 0; }
+      .work-scene.after .work-kicker { color: color-mix(in srgb, white 50%, transparent); }
+      .work-title { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.03em; margin: 0.45rem 0 0; }
+      .work-note { margin-top: auto; padding-top: 1rem; font-size: 0.9rem; color: var(--muted); }
+      .work-scene.after .work-note { color: color-mix(in srgb, white 60%, transparent); }
+      .work-stage { display: flex; align-items: center; gap: 0.75rem; min-height: 10.5rem; margin-top: 1.5rem; }
+      .work-human { display: grid; justify-items: center; gap: 0.35rem; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--subtle); }
+      .work-scene.after .work-human { color: color-mix(in srgb, white 45%, transparent); }
+      .actor { width: 2.4rem; height: auto; fill: none; stroke: currentColor; stroke-width: 2.2; }
+      .actor.agent { fill: currentColor; stroke: none; }
+      .work-scene.after .actor { color: var(--paper); }
+      .work-contributors { display: grid; gap: 0.85rem; }
+      .work-arrow { flex: 1; height: 1px; background: #cfcbc3; position: relative; }
+      .work-scene.after .work-arrow { background: color-mix(in srgb, white 25%, transparent); }
+      .pre-arrow::after { content: ""; position: absolute; right: 0; top: -3px; width: 7px; height: 7px; border-right: 1.5px solid var(--ink); border-top: 1.5px solid var(--ink); transform: rotate(45deg); animation: pre-write 9s cubic-bezier(0.23,1,0.32,1) infinite; }
+      .work-files { display: grid; gap: 0.45rem; list-style: none; margin: 0; padding: 0; }
+      .work-files li { padding: 0.35rem 0.7rem; border: 1px solid var(--line); border-radius: 999px; font-family: "IBM Plex Mono", monospace; font-size: 0.78rem; opacity: 0.28; }
+      .work-scene.after .work-files li { border-color: color-mix(in srgb, white 22%, transparent); }
+      .work-scene.pre .f1 { animation: file-lit 9s infinite; }
+      .work-scene.pre .f2 { animation: file-lit 9s infinite 3s; }
+      .work-scene.pre .f3 { animation: file-lit 9s infinite 6s; }
+      .work-prim { display: grid; justify-items: center; gap: 0.4rem; min-width: 4.5rem; font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; }
+      .work-prim img { height: 2.6rem; width: auto; filter: invert(1); }
+      .work-files.out .o1, .work-files.out .o2, .work-files.out .o3 { animation: file-out 9s cubic-bezier(0.23,1,0.32,1) infinite; }
+      .work-files.out .o2 { animation-delay: 0.15s; }
+      .work-files.out .o3 { animation-delay: 0.3s; }
+      @keyframes file-lit {
+        0%, 8% { opacity: 0.28; }
+        14%, 28% { opacity: 1; background: var(--ink); color: var(--paper); border-color: var(--ink); }
+        36%, 100% { opacity: 0.28; }
+      }
+      @keyframes pre-write {
+        0%, 100% { top: -3px; }
+        16% { top: -2.6rem; }
+        33% { top: -3px; }
+        50% { top: 0.2rem; }
+        66% { top: -3px; }
+        82% { top: 2.4rem; }
+      }
+      @keyframes file-out {
+        0%, 40% { opacity: 0.2; transform: translateX(-8px); }
+        55%, 90% { opacity: 1; transform: translateX(0); }
+        100% { opacity: 0.2; }
+      }
       .factory-stage {
         --dur: 9s;
         --ease: cubic-bezier(0.23, 1, 0.32, 1);
@@ -226,6 +280,58 @@
         <h1 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Prim</h1>
         <p class="lede thesis">Every file format you use was made for a pre-AI time.</p>
         <p class="lede">Excel, Word, PowerPoint, PDF — built for a person at a machine. That’s file hell. Prim is the file for after.</p>
+        <div class="file-river" aria-hidden="true">
+          <div class="file-river-mask"><div class="file-river-track">
+            <span class="file-chip">.xls</span><span class="file-chip">.xlsx</span><span class="file-chip">.doc</span><span class="file-chip">.docx</span><span class="file-chip">.ppt</span><span class="file-chip">.pptx</span><span class="file-chip">.pdf</span><span class="file-chip">.csv</span><span class="file-chip">.txt</span><span class="file-chip">.rtf</span><span class="file-chip">.mdb</span><span class="file-chip">.wpd</span><span class="file-chip">.xls</span><span class="file-chip">.xlsx</span><span class="file-chip">.doc</span><span class="file-chip">.docx</span><span class="file-chip">.ppt</span><span class="file-chip">.pptx</span><span class="file-chip">.pdf</span><span class="file-chip">.csv</span><span class="file-chip">.txt</span><span class="file-chip">.rtf</span><span class="file-chip">.mdb</span><span class="file-chip">.wpd</span>
+          </div></div>
+          <div class="file-river-mask reverse"><div class="file-river-track">
+            <span class="file-chip">.numbers</span><span class="file-chip">.pages</span><span class="file-chip">.key</span><span class="file-chip">.odt</span><span class="file-chip">.ods</span><span class="file-chip">.odp</span><span class="file-chip">.eml</span><span class="file-chip">.msg</span><span class="file-chip">.zip</span><span class="file-chip">.numbers</span><span class="file-chip">.pages</span><span class="file-chip">.key</span><span class="file-chip">.odt</span><span class="file-chip">.ods</span><span class="file-chip">.odp</span><span class="file-chip">.eml</span><span class="file-chip">.msg</span><span class="file-chip">.zip</span>
+          </div></div>
+        </div>
+        <div class="work-pair">
+          <article class="work-scene pre">
+            <p class="work-kicker">Pre-AI</p>
+            <p class="work-title">A human makes every file.</p>
+            <div class="work-stage" aria-hidden="true">
+              <div class="work-human">
+                <svg viewBox="0 0 48 64" class="actor"><circle cx="24" cy="12" r="8"/><path d="M8 62 V36 a16 16 0 0 1 32 0 V62"/></svg>
+                <span>human</span>
+              </div>
+              <div class="work-arrow pre-arrow"></div>
+              <ol class="work-files">
+                <li class="f1">.xlsx</li>
+                <li class="f2">.docx</li>
+                <li class="f3">.pptx</li>
+              </ol>
+            </div>
+            <p class="work-note">One person. Three formats. Three jobs.</p>
+          </article>
+          <article class="work-scene after">
+            <p class="work-kicker">After</p>
+            <p class="work-title">Humans and AIs contribute. Files come out.</p>
+            <div class="work-stage" aria-hidden="true">
+              <div class="work-contributors">
+                <div class="work-human">
+                  <svg viewBox="0 0 48 64" class="actor"><circle cx="24" cy="12" r="8"/><path d="M8 62 V36 a16 16 0 0 1 32 0 V62"/></svg>
+                  <span>human</span>
+                </div>
+                <div class="work-human">
+                  <svg viewBox="0 0 48 64" class="actor agent"><polygon points="8,32 8,60 32,46"/><polygon points="20,4 44,32 12,44"/></svg>
+                  <span>agent</span>
+                </div>
+              </div>
+              <div class="work-arrow"></div>
+              <div class="work-prim"><img src="./mark.png" alt="" /><span>.prim</span></div>
+              <div class="work-arrow"></div>
+              <ol class="work-files out">
+                <li class="o1">.xlsx</li>
+                <li class="o2">.docx</li>
+                <li class="o3">.pptx</li>
+              </ol>
+            </div>
+            <p class="work-note">Same files. The arrow flipped.</p>
+          </article>
+        </div>
       </section>
 
       <section id="factory" class="section wrap" style="padding-top:0">
@@ -233,6 +339,10 @@
           <figure class="shot">
             <img src="./then-excel.jpg" alt="1980s office worker at a CRT, trapped in a spreadsheet." />
             <figcaption><span>A format for a person at a machine.</span></figcaption>
+          </figure>
+          <figure class="shot">
+            <img src="./after-collab.jpg" alt="Two people working together with a Prim on their screens." />
+            <figcaption><span>Humans and AIs contribute to the same file.</span></figcaption>
           </figure>
           <div class="factory-stage" aria-hidden="true">
             <p class="legend legend-l">File hell</p>
