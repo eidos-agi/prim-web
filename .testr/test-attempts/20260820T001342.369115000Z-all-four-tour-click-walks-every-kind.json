@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-08-20T00:13:42.369212Z",
+  "goal": "All four tour click-walks every kind",
+  "notes": "Browser at 8766: 12 beat buttons, all disabled after use. Frames frame-tour-docket/deck/invoice/session present. Invoice USD 6,800, 4 slides, 4 turns, closer line shown. Switching to Docket hides the tour log.",
+  "product_id": "prim-web",
+  "proofs": [
+    "12 disabled beat buttons Start/Send/Drop/Next x4",
+    "frame-tour-* all four + INV-014 USD 6,800"
+  ],
+  "schema_version": 1,
+  "status": "passed",
+  "test_commands_snapshot": [
+    "define product-specific test command before claiming green"
+  ]
+}

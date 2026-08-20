@@ -1,0 +1,47 @@
+{
+  "blocker_records": [],
+  "blockers": [],
+  "created_at": "2026-08-20T00:13:42.405078Z",
+  "gate_summary": [],
+  "goal": "Live All four chat at prim.eidosagi.com/demo/docket",
+  "learning_prompts": [
+    "What broke or slowed this release?",
+    "What proof was missing until late?",
+    "Which gate should become automatic next time?",
+    "Which human approval should remain explicit?"
+  ],
+  "next_actions": [
+    "route lessons to learning-forge",
+    "watch rollback and support signals"
+  ],
+  "notes": "Pushed b0f925e. Live page has data-chat=tour, All four, createWalk, tour.js 200 2022B. Static nginx has no /health.revision; URL content is the ship proof.",
+  "product_id": "prim-web",
+  "proofs": [
+    "https://prim.eidosagi.com/demo/docket/ 200 All four",
+    "https://prim.eidosagi.com/demo/docket/tour.js 200 2022"
+  ],
+  "release_model_snapshot": {
+    "approval_gates": [
+      "credentials",
+      "payments",
+      "production mutations",
+      "public publish/tag",
+      "customer/outbound messaging"
+    ],
+    "artifact_types": [],
+    "distribution_channels": [],
+    "forge_stack": [
+      "testr"
+    ],
+    "license": null,
+    "open_source_status": "unknown",
+    "proof_commands": [
+      "define product-specific test command before claiming green"
+    ],
+    "proof_source": "testr",
+    "repository_visibility": "unknown"
+  },
+  "schema_version": 1,
+  "source": null,
+  "status": "shipped"
+}
