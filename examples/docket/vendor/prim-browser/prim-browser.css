@@ -1,0 +1,174 @@
+/* Prim Browser — EmulatorJS shape: the machine runs in the page. */
+:root {
+  --pb-bg: #1a1b1e;
+  --pb-chrome: #2a2c33;
+  --pb-ink: #e8e6e1;
+  --pb-muted: #9a968c;
+  --pb-accent: #c9b896;
+  --pb-frame: #0e0f12;
+}
+
+.prim-browser {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 28rem;
+  background: var(--pb-frame);
+  border: 1px solid var(--pb-chrome);
+  border-radius: 10px;
+  overflow: hidden;
+  color: var(--pb-ink);
+  font: 13px/1.35 ui-sans-serif, system-ui, sans-serif;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.prim-browser__titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.65rem;
+  background: linear-gradient(180deg, #32343c, #25272e);
+  border-bottom: 1px solid #1a1b1e;
+  user-select: none;
+}
+
+.prim-browser__dots {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.prim-browser__dots span {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  background: #5c5a54;
+}
+
+.prim-browser__dots span:nth-child(1) { background: #e07a5f; }
+.prim-browser__dots span:nth-child(2) { background: #c9b896; }
+.prim-browser__dots span:nth-child(3) { background: #8fd694; }
+
+.prim-browser__title {
+  flex: 1;
+  text-align: center;
+  color: var(--pb-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.prim-browser__chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.5rem;
+  background: var(--pb-bg);
+  border-bottom: 1px solid var(--pb-chrome);
+}
+
+.prim-browser__nav {
+  display: flex;
+  gap: 0.2rem;
+  flex-shrink: 0;
+}
+
+.prim-browser__nav button,
+.prim-browser__go {
+  width: 1.85rem;
+  height: 1.85rem;
+  border: 1px solid var(--pb-chrome);
+  border-radius: 6px;
+  background: #17181c;
+  color: var(--pb-ink);
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.prim-browser__nav button:hover:not(:disabled),
+.prim-browser__go:hover {
+  border-color: var(--pb-accent);
+  color: var(--pb-accent);
+}
+
+.prim-browser__nav button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.prim-browser__url {
+  flex: 1;
+  min-width: 0;
+  background: #0e0f12;
+  color: var(--pb-ink);
+  border: 1px solid var(--pb-chrome);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font: inherit;
+}
+
+.prim-browser__url:focus {
+  outline: none;
+  border-color: var(--pb-accent);
+}
+
+.prim-browser__go {
+  width: auto;
+  padding: 0 0.7rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.prim-browser__stage {
+  flex: 1;
+  min-height: 0;
+  background: #fff;
+  position: relative;
+}
+
+.prim-browser__frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #fff;
+}
+
+.prim-browser__blank {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f1ea;
+  color: #5c5a54;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 1.5rem;
+  pointer-events: none;
+}
+
+.prim-browser__blank[hidden] {
+  display: none;
+}
+
+.prim-browser__status {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.25rem 0.65rem;
+  background: var(--pb-bg);
+  border-top: 1px solid var(--pb-chrome);
+  color: var(--pb-muted);
+  font-size: 0.7rem;
+}
+
+.prim-browser--compact {
+  min-height: 18rem;
+  border-radius: 8px;
+}

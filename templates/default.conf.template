@@ -15,4 +15,9 @@ server {
     location /demo/docket {
         try_files $uri $uri/ /demo/docket/index.html;
     }
+    # Prim Browser embed needs cross-origin iframes — no COEP here.
+    location /examples/docket {
+        add_header Cross-Origin-Opener-Policy "same-origin" always;
+        try_files $uri $uri/ /examples/docket/index.html;
+    }
 }

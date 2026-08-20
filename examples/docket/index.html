@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prim Browser · example</title>
+  <meta name="description" content="Prim Browser runs in this page — on your machine. EmulatorJS shape." />
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./vendor/prim-browser/prim-browser.css" />
+  <style>
+    :root {
+      --paper: #f4f3ef;
+      --raised: #fffcf8;
+      --ink: #111111;
+      --muted: #6a6a66;
+      --subtle: #8a8a84;
+      --line: #e4e2dc;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Instrument Sans", "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .wrap { max-width: 56rem; margin: 0 auto; padding: 1.25rem 1.25rem 3rem; }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; margin-bottom: 1.75rem; font-size: 0.9rem; color: var(--muted);
+    }
+    .nav a:hover { color: var(--ink); }
+    .brand { display: flex; align-items: center; gap: 0.6rem; color: var(--ink); font-weight: 500; }
+    .brand img { height: 1.5rem; width: auto; }
+    .kicker {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--subtle); margin: 0 0 0.5rem;
+    }
+    h1 {
+      margin: 0 0 0.5rem; font-size: clamp(1.75rem, 4vw, 2.4rem);
+      font-weight: 500; letter-spacing: -0.03em; line-height: 1.05;
+    }
+    .lede { margin: 0 0 1.5rem; max-width: 36rem; color: var(--muted); line-height: 1.55; }
+    #slot {
+      height: min(62vh, 34rem);
+      margin-bottom: 1rem;
+    }
+    /* Paper chrome for this site — override embed dark default */
+    .prim-browser {
+      --pb-bg: #fffcf8;
+      --pb-chrome: #e4e2dc;
+      --pb-ink: #111111;
+      --pb-muted: #6a6a66;
+      --pb-accent: #111111;
+      --pb-frame: #f4f3ef;
+      box-shadow: 0 18px 50px rgba(17, 17, 17, 0.08);
+      border-color: var(--line);
+    }
+    .prim-browser__titlebar {
+      background: linear-gradient(180deg, #fffcf8, #f4f3ef);
+      border-bottom-color: var(--line);
+    }
+    .prim-browser__chrome { background: #fffcf8; border-bottom-color: var(--line); }
+    .prim-browser__nav button,
+    .prim-browser__go {
+      background: #fff;
+      border-color: var(--line);
+      color: var(--ink);
+    }
+    .prim-browser__url {
+      background: #fff;
+      border-color: var(--line);
+      color: var(--ink);
+    }
+    .prim-browser__status {
+      background: #fffcf8;
+      border-top-color: var(--line);
+      color: var(--muted);
+    }
+    .tools {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;
+    }
+    .tools button {
+      height: 2.25rem; padding: 0 0.9rem; border-radius: 10px;
+      border: 1px solid var(--line); background: var(--raised);
+      color: var(--ink); font: inherit; font-size: 0.9rem; font-weight: 500;
+      cursor: pointer;
+    }
+    .tools button:hover { border-color: var(--ink); }
+    .tools button.ink { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    pre {
+      margin: 0; padding: 0.9rem 1rem; border-radius: 12px;
+      border: 1px solid var(--line); background: #0f1011; color: #c9c4b8;
+      font: 12px/1.45 "IBM Plex Mono", ui-monospace, monospace;
+      overflow: auto; min-height: 5.5rem;
+    }
+    .note { margin-top: 1.25rem; font-size: 0.9rem; color: var(--muted); max-width: 40rem; }
+    code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.85em; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a class="brand" href="/"><img src="../../logo.png" alt="" /> Prim</a>
+      <a href="/demo/docket/">Demo docket</a>
+    </nav>
+    <p class="kicker">examples / docket</p>
+    <h1>Prim Browser</h1>
+    <p class="lede">
+      The machine runs in this page — on your machine. Same shape as Prim Arcade:
+      tools for the agent, surface for you. Aperture is the hosted Chromium plane; this is the prim.
+    </p>
+    <div id="slot"></div>
+    <div class="tools">
+      <button type="button" class="ink" id="btn-sample">tool: navigate sample</button>
+      <button type="button" id="btn-example">tool: navigate example.com</button>
+      <button type="button" id="btn-back">tool: back</button>
+      <button type="button" id="btn-obs">tool: observe</button>
+    </div>
+    <pre id="out">mounting…</pre>
+    <p class="note">
+      <code>PrimBrowser.mount</code> + <code>tools().call(…)</code>.
+      Sites that send <code>X-Frame-Options</code> stay blank in the stage — use the sample URL to prove the embed.
+    </p>
+  </div>
+  <script src="./vendor/prim-browser/prim-browser.js"></script>
+  <script>
+    const out = document.getElementById("out");
+    const sampleUrl = new URL("./sample.html", location.href).href;
+    const pb = PrimBrowser.mount("#slot", {
+      url: sampleUrl,
+      title: "Prim Browser",
+      onChange(type, detail) {
+        if (type === "observe" || type === "load" || type === "navigate") {
+          out.textContent = JSON.stringify(detail, null, 2);
+        }
+      }
+    });
+    out.textContent = JSON.stringify({ tools: pb.tools().list, where: "your machine / this page" }, null, 2);
+
+    document.getElementById("btn-sample").onclick = () => {
+      out.textContent = JSON.stringify(pb.tools().call("navigate", { url: sampleUrl }), null, 2);
+    };
+    document.getElementById("btn-example").onclick = () => {
+      out.textContent = JSON.stringify(pb.tools().call("navigate", { url: "https://example.com" }), null, 2);
+    };
+    document.getElementById("btn-back").onclick = () => {
+      out.textContent = JSON.stringify(pb.tools().call("back"), null, 2);
+    };
+    document.getElementById("btn-obs").onclick = () => {
+      out.textContent = JSON.stringify(pb.tools().call("observe"), null, 2);
+    };
+  </script>
+</body>
+</html>
