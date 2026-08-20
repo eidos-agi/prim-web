@@ -1,5 +1,7 @@
 /** Parse a prim zip and render kind editors. Docket board stays in the host. */
 
+import { answerOpff } from "./opff.js";
+
 export function jsonl(s) {
   return String(s || "")
     .split(/\n/)
@@ -36,6 +38,7 @@ export function detectKind(files) {
   if (has("arcade.json") || Object.keys(files).some((k) => CART.test(k.replace(/^.*\//, "")))) {
     return "arcade";
   }
+  if (has("accounts.jsonl") || has("transactions.jsonl") || has("finance.json")) return "opff";
   const face = files["index.md"] || files[Object.keys(files).find((k) => k.endsWith("index.md")) || ""] || "";
   const m = String(face).match(/profile:\s*(\w+)/);
   return m ? m[1] : "";
@@ -84,6 +87,23 @@ export function parseKind(files) {
     const system = meta.system || detectSystem(key, rom) || "nes";
     return { kind, project: { name: meta.name || "cart", ...meta }, system, core: meta.core, rom };
   }
+  if (kind === "opff") {
+    let meta = { name: "household" };
+    try { meta = { name: "household", ...JSON.parse(get("finance.json") || "{}") }; } catch {}
+    if (!meta.title) {
+      const face = faceMatter(get("index.md"));
+      meta.title = face.title || "household";
+    }
+    return {
+      kind: "opff",
+      project: { ...meta, name: meta.title || meta.name || "household" },
+      accounts: jsonl(get("accounts.jsonl")),
+      transactions: jsonl(get("transactions.jsonl")),
+      budgets: jsonl(get("budgets.jsonl")),
+      snapshots: jsonl(get("snapshots.jsonl")),
+      goals: jsonl(get("goals.jsonl")),
+    };
+  }
   const face = faceMatter(get("index.md"));
   const names = Object.keys(files).map((k) => k.replace(/^.*\//, "")).filter((n) => n && n !== ".");
   return {
@@ -108,6 +128,10 @@ export async function renderKind(el, pack, onChange) {
   if (pack.kind === "arcade") {
     const { renderArcade } = await import("./arcade.js");
     return renderArcade(el, pack);
+  }
+  if (pack.kind === "opff") {
+    const { renderOpff } = await import("./opff.js");
+    return renderOpff(el, pack);
   }
   return renderFace(el, pack);
 }
@@ -225,6 +249,7 @@ export function answerKind(pack, q) {
     if (/total|due|how much|amount/.test(q)) return `${pack.project.number} due ${pack.project.due || "—"}. Total ${pack.project.currency || "USD"} ${t.toLocaleString()}.`;
     return "The pack is the bill. Ask for the total.";
   }
+  if (pack.kind === "opff") return answerOpff(pack, q);
   if (pack.kind === "arcade") {
     if (pack.system === "doom") {
       return `${pack.project.name} is Freedoom — a free IWAD, not the id Software dump. Play loads EmulatorJS (prboom).`;

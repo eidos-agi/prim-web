@@ -1,0 +1,470 @@
+{"id":"TXN-0001","date":"2025-09-01","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0002","date":"2025-09-01","category":"Income","payee":"Harbor Studio match","amount":400.0,"account":"ACC-401K","memo":"401k match"}
+{"id":"TXN-0003","date":"2025-09-01","category":"Housing","payee":"North Home Loan","amount":-2410.0,"account":"ACC-CHK","memo":"mortgage"}
+{"id":"TXN-0004","date":"2025-09-03","category":"Housing","payee":"Harbor HOA","amount":-138.0,"account":"ACC-CHK","memo":"hoa"}
+{"id":"TXN-0005","date":"2025-09-04","category":"Insurance","payee":"Harbor Mutual","amount":-96.0,"account":"ACC-CHK","memo":"home"}
+{"id":"TXN-0006","date":"2025-09-05","category":"Transport","payee":"Civic loan","amount":-420.0,"account":"ACC-CHK","memo":"auto loan"}
+{"id":"TXN-0007","date":"2025-09-05","category":"Groceries","payee":"Corner Produce","amount":-81.2,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0008","date":"2025-09-06","category":"Insurance","payee":"North Auto","amount":-128.0,"account":"ACC-CHK","memo":"auto"}
+{"id":"TXN-0009","date":"2025-09-07","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0010","date":"2025-09-07","category":"Dining","payee":"West Pier Cafe","amount":-53.29,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0011","date":"2025-09-08","category":"Utilities","payee":"Harbor Power","amount":-99.81,"account":"ACC-CHK","memo":"electric"}
+{"id":"TXN-0012","date":"2025-09-09","category":"Utilities","payee":"North Water","amount":-54.86,"account":"ACC-CHK","memo":"water"}
+{"id":"TXN-0013","date":"2025-09-09","category":"Groceries","payee":"Corner Produce","amount":-125.22,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0014","date":"2025-09-10","category":"Utilities","payee":"Harbor Fiber","amount":-79.0,"account":"ACC-CHK","memo":"internet"}
+{"id":"TXN-0015","date":"2025-09-10","category":"Transport","payee":"Harbor Fuel","amount":-68.46,"account":"ACC-CC","memo":"gas"}
+{"id":"TXN-0016","date":"2025-09-11","category":"Phone","payee":"Harbor Mobile","amount":-86.0,"account":"ACC-CC","memo":"phone"}
+{"id":"TXN-0017","date":"2025-09-11","category":"Fitness","payee":"Pier Fitness","amount":-48.0,"account":"ACC-CC","memo":"gym"}
+{"id":"TXN-0018","date":"2025-09-11","category":"Groceries","payee":"Bulk Barn","amount":-68.25,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0019","date":"2025-09-12","category":"Subscriptions","payee":"Stream Three","amount":-16.99,"account":"ACC-CC","memo":"stream"}
+{"id":"TXN-0020","date":"2025-09-12","category":"Subscriptions","payee":"News Desk","amount":-12.0,"account":"ACC-CC","memo":"news"}
+{"id":"TXN-0021","date":"2025-09-12","category":"Subscriptions","payee":"Cloud Mail","amount":-9.0,"account":"ACC-CC","memo":"mail"}
+{"id":"TXN-0022","date":"2025-09-12","category":"Groceries","payee":"Corner Produce","amount":-131.48,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0023","date":"2025-09-13","category":"Dining","payee":"West Pier Cafe","amount":-23.33,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0024","date":"2025-09-14","category":"Health","payee":"Harbor Pharmacy","amount":-41.47,"account":"ACC-CC","memo":"pharmacy"}
+{"id":"TXN-0025","date":"2025-09-14","category":"Groceries","payee":"Corner Produce","amount":-128.87,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0026","date":"2025-09-14","category":"Dining","payee":"Saturday Pizza","amount":-58.43,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0027","date":"2025-09-15","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0028","date":"2025-09-15","category":"Transfer","payee":"Harbor 401(k)","amount":-800.0,"account":"ACC-CHK","memo":"401k deferral"}
+{"id":"TXN-0029","date":"2025-09-16","category":"Transfer","payee":"Harbor Roth IRA","amount":-500.0,"account":"ACC-CHK","memo":"roth"}
+{"id":"TXN-0030","date":"2025-09-16","category":"Transfer","payee":"North HSA","amount":-200.0,"account":"ACC-CHK","memo":"hsa"}
+{"id":"TXN-0031","date":"2025-09-16","category":"Groceries","payee":"Corner Produce","amount":-102.13,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0032","date":"2025-09-18","category":"Giving","payee":"Harbor Food Bank","amount":-150.0,"account":"ACC-CHK","memo":"gift"}
+{"id":"TXN-0033","date":"2025-09-21","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0034","date":"2025-09-22","category":"Transfer","payee":"Harbor Savings","amount":-400.0,"account":"ACC-CHK","memo":"to savings"}
+{"id":"TXN-0035","date":"2025-09-23","category":"Transfer","payee":"West Trip","amount":-80.0,"account":"ACC-CHK","memo":"sinking fund"}
+{"id":"TXN-0036","date":"2025-09-23","category":"Dining","payee":"West Pier Cafe","amount":-25.87,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0037","date":"2025-09-24","category":"Transfer","payee":"North Brokerage","amount":-250.0,"account":"ACC-CHK","memo":"invest"}
+{"id":"TXN-0038","date":"2025-09-24","category":"Dining","payee":"Noodle Room","amount":-28.56,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0039","date":"2025-09-24","category":"Shopping","payee":"North Outfitters","amount":-153.5,"account":"ACC-CC","memo":"shop"}
+{"id":"TXN-0040","date":"2025-10-01","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0041","date":"2025-10-01","category":"Income","payee":"Harbor Studio match","amount":400.0,"account":"ACC-401K","memo":"401k match"}
+{"id":"TXN-0042","date":"2025-10-01","category":"Housing","payee":"North Home Loan","amount":-2410.0,"account":"ACC-CHK","memo":"mortgage"}
+{"id":"TXN-0043","date":"2025-10-03","category":"Housing","payee":"Harbor HOA","amount":-138.0,"account":"ACC-CHK","memo":"hoa"}
+{"id":"TXN-0044","date":"2025-10-03","category":"Dining","payee":"West Pier Cafe","amount":-65.38,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0045","date":"2025-10-04","category":"Insurance","payee":"Harbor Mutual","amount":-96.0,"account":"ACC-CHK","memo":"home"}
+{"id":"TXN-0046","date":"2025-10-05","category":"Transport","payee":"Civic loan","amount":-420.0,"account":"ACC-CHK","memo":"auto loan"}
+{"id":"TXN-0047","date":"2025-10-05","category":"Dining","payee":"Noodle Room","amount":-35.96,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0048","date":"2025-10-05","category":"Dining","payee":"Noodle Room","amount":-48.75,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0049","date":"2025-10-06","category":"Insurance","payee":"North Auto","amount":-128.0,"account":"ACC-CHK","memo":"auto"}
+{"id":"TXN-0050","date":"2025-10-06","category":"Dining","payee":"Saturday Pizza","amount":-51.65,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0051","date":"2025-10-07","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0052","date":"2025-10-08","category":"Utilities","payee":"Harbor Power","amount":-99.25,"account":"ACC-CHK","memo":"electric"}
+{"id":"TXN-0053","date":"2025-10-08","category":"Groceries","payee":"Corner Produce","amount":-100.92,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0054","date":"2025-10-08","category":"Groceries","payee":"Corner Produce","amount":-130.65,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0055","date":"2025-10-09","category":"Utilities","payee":"North Water","amount":-53.38,"account":"ACC-CHK","memo":"water"}
+{"id":"TXN-0056","date":"2025-10-10","category":"Utilities","payee":"Harbor Fiber","amount":-79.0,"account":"ACC-CHK","memo":"internet"}
+{"id":"TXN-0057","date":"2025-10-11","category":"Phone","payee":"Harbor Mobile","amount":-86.0,"account":"ACC-CC","memo":"phone"}
+{"id":"TXN-0058","date":"2025-10-11","category":"Fitness","payee":"Pier Fitness","amount":-48.0,"account":"ACC-CC","memo":"gym"}
+{"id":"TXN-0059","date":"2025-10-12","category":"Subscriptions","payee":"Stream Three","amount":-16.99,"account":"ACC-CC","memo":"stream"}
+{"id":"TXN-0060","date":"2025-10-12","category":"Subscriptions","payee":"News Desk","amount":-12.0,"account":"ACC-CC","memo":"news"}
+{"id":"TXN-0061","date":"2025-10-12","category":"Subscriptions","payee":"Cloud Mail","amount":-9.0,"account":"ACC-CC","memo":"mail"}
+{"id":"TXN-0062","date":"2025-10-13","category":"Groceries","payee":"Hearth Market","amount":-136.38,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0063","date":"2025-10-14","category":"Health","payee":"Harbor Pharmacy","amount":-49.9,"account":"ACC-CC","memo":"pharmacy"}
+{"id":"TXN-0064","date":"2025-10-15","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0065","date":"2025-10-15","category":"Transfer","payee":"Harbor 401(k)","amount":-800.0,"account":"ACC-CHK","memo":"401k deferral"}
+{"id":"TXN-0066","date":"2025-10-16","category":"Transfer","payee":"Harbor Roth IRA","amount":-500.0,"account":"ACC-CHK","memo":"roth"}
+{"id":"TXN-0067","date":"2025-10-16","category":"Transfer","payee":"North HSA","amount":-200.0,"account":"ACC-CHK","memo":"hsa"}
+{"id":"TXN-0068","date":"2025-10-18","category":"Giving","payee":"Harbor Food Bank","amount":-150.0,"account":"ACC-CHK","memo":"gift"}
+{"id":"TXN-0069","date":"2025-10-18","category":"Groceries","payee":"Corner Produce","amount":-70.81,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0070","date":"2025-10-18","category":"Transport","payee":"Harbor Fuel","amount":-47.76,"account":"ACC-CC","memo":"gas"}
+{"id":"TXN-0071","date":"2025-10-19","category":"Shopping","payee":"Harbor Hardware","amount":-63.89,"account":"ACC-CC","memo":"shop"}
+{"id":"TXN-0072","date":"2025-10-20","category":"Groceries","payee":"Bulk Barn","amount":-116.82,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0073","date":"2025-10-21","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0074","date":"2025-10-22","category":"Transfer","payee":"Harbor Savings","amount":-400.0,"account":"ACC-CHK","memo":"to savings"}
+{"id":"TXN-0075","date":"2025-10-23","category":"Transfer","payee":"West Trip","amount":-80.0,"account":"ACC-CHK","memo":"sinking fund"}
+{"id":"TXN-0076","date":"2025-10-24","category":"Transfer","payee":"North Brokerage","amount":-250.0,"account":"ACC-CHK","memo":"invest"}
+{"id":"TXN-0077","date":"2025-10-24","category":"Dining","payee":"West Pier Cafe","amount":-52.23,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0078","date":"2025-10-25","category":"Groceries","payee":"Corner Produce","amount":-106.19,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0079","date":"2025-11-01","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0080","date":"2025-11-01","category":"Income","payee":"Harbor Studio match","amount":400.0,"account":"ACC-401K","memo":"401k match"}
+{"id":"TXN-0081","date":"2025-11-01","category":"Housing","payee":"North Home Loan","amount":-2410.0,"account":"ACC-CHK","memo":"mortgage"}
+{"id":"TXN-0082","date":"2025-11-03","category":"Housing","payee":"Harbor HOA","amount":-138.0,"account":"ACC-CHK","memo":"hoa"}
+{"id":"TXN-0083","date":"2025-11-03","category":"Dining","payee":"Saturday Pizza","amount":-50.43,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0084","date":"2025-11-04","category":"Insurance","payee":"Harbor Mutual","amount":-96.0,"account":"ACC-CHK","memo":"home"}
+{"id":"TXN-0085","date":"2025-11-05","category":"Transport","payee":"Civic loan","amount":-420.0,"account":"ACC-CHK","memo":"auto loan"}
+{"id":"TXN-0086","date":"2025-11-06","category":"Insurance","payee":"North Auto","amount":-128.0,"account":"ACC-CHK","memo":"auto"}
+{"id":"TXN-0087","date":"2025-11-06","category":"Dining","payee":"Noodle Room","amount":-24.26,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0088","date":"2025-11-07","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0089","date":"2025-11-08","category":"Utilities","payee":"Harbor Power","amount":-112.73,"account":"ACC-CHK","memo":"electric"}
+{"id":"TXN-0090","date":"2025-11-09","category":"Utilities","payee":"North Water","amount":-48.78,"account":"ACC-CHK","memo":"water"}
+{"id":"TXN-0091","date":"2025-11-09","category":"Dining","payee":"Noodle Room","amount":-19.61,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0092","date":"2025-11-10","category":"Utilities","payee":"Harbor Fiber","amount":-79.0,"account":"ACC-CHK","memo":"internet"}
+{"id":"TXN-0093","date":"2025-11-11","category":"Phone","payee":"Harbor Mobile","amount":-86.0,"account":"ACC-CC","memo":"phone"}
+{"id":"TXN-0094","date":"2025-11-11","category":"Fitness","payee":"Pier Fitness","amount":-48.0,"account":"ACC-CC","memo":"gym"}
+{"id":"TXN-0095","date":"2025-11-12","category":"Subscriptions","payee":"Stream Three","amount":-16.99,"account":"ACC-CC","memo":"stream"}
+{"id":"TXN-0096","date":"2025-11-12","category":"Subscriptions","payee":"News Desk","amount":-12.0,"account":"ACC-CC","memo":"news"}
+{"id":"TXN-0097","date":"2025-11-12","category":"Subscriptions","payee":"Cloud Mail","amount":-9.0,"account":"ACC-CC","memo":"mail"}
+{"id":"TXN-0098","date":"2025-11-14","category":"Health","payee":"Harbor Pharmacy","amount":-40.15,"account":"ACC-CC","memo":"pharmacy"}
+{"id":"TXN-0099","date":"2025-11-14","category":"Groceries","payee":"Corner Produce","amount":-63.79,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0100","date":"2025-11-14","category":"Shopping","payee":"Harbor Hardware","amount":-32.92,"account":"ACC-CC","memo":"shop"}
+{"id":"TXN-0101","date":"2025-11-15","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0102","date":"2025-11-15","category":"Transfer","payee":"Harbor 401(k)","amount":-800.0,"account":"ACC-CHK","memo":"401k deferral"}
+{"id":"TXN-0103","date":"2025-11-16","category":"Transfer","payee":"Harbor Roth IRA","amount":-500.0,"account":"ACC-CHK","memo":"roth"}
+{"id":"TXN-0104","date":"2025-11-16","category":"Transfer","payee":"North HSA","amount":-200.0,"account":"ACC-CHK","memo":"hsa"}
+{"id":"TXN-0105","date":"2025-11-16","category":"Groceries","payee":"Hearth Market","amount":-132.98,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0106","date":"2025-11-17","category":"Groceries","payee":"Hearth Market","amount":-110.94,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0107","date":"2025-11-17","category":"Groceries","payee":"Bulk Barn","amount":-84.94,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0108","date":"2025-11-17","category":"Groceries","payee":"Corner Produce","amount":-92.58,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0109","date":"2025-11-18","category":"Giving","payee":"Harbor Food Bank","amount":-150.0,"account":"ACC-CHK","memo":"gift"}
+{"id":"TXN-0110","date":"2025-11-19","category":"Dining","payee":"West Pier Cafe","amount":-20.74,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0111","date":"2025-11-20","category":"Dining","payee":"Noodle Room","amount":-69.05,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0112","date":"2025-11-20","category":"Transport","payee":"Harbor Fuel","amount":-71.57,"account":"ACC-CC","memo":"gas"}
+{"id":"TXN-0113","date":"2025-11-21","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0114","date":"2025-11-22","category":"Transfer","payee":"Harbor Savings","amount":-400.0,"account":"ACC-CHK","memo":"to savings"}
+{"id":"TXN-0115","date":"2025-11-23","category":"Transfer","payee":"West Trip","amount":-80.0,"account":"ACC-CHK","memo":"sinking fund"}
+{"id":"TXN-0116","date":"2025-11-24","category":"Transfer","payee":"North Brokerage","amount":-250.0,"account":"ACC-CHK","memo":"invest"}
+{"id":"TXN-0117","date":"2025-11-24","category":"Groceries","payee":"Bulk Barn","amount":-93.64,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0118","date":"2025-12-01","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0119","date":"2025-12-01","category":"Income","payee":"Harbor Studio match","amount":400.0,"account":"ACC-401K","memo":"401k match"}
+{"id":"TXN-0120","date":"2025-12-01","category":"Housing","payee":"North Home Loan","amount":-2410.0,"account":"ACC-CHK","memo":"mortgage"}
+{"id":"TXN-0121","date":"2025-12-03","category":"Housing","payee":"Harbor HOA","amount":-138.0,"account":"ACC-CHK","memo":"hoa"}
+{"id":"TXN-0122","date":"2025-12-04","category":"Insurance","payee":"Harbor Mutual","amount":-96.0,"account":"ACC-CHK","memo":"home"}
+{"id":"TXN-0123","date":"2025-12-05","category":"Transport","payee":"Civic loan","amount":-420.0,"account":"ACC-CHK","memo":"auto loan"}
+{"id":"TXN-0124","date":"2025-12-06","category":"Insurance","payee":"North Auto","amount":-128.0,"account":"ACC-CHK","memo":"auto"}
+{"id":"TXN-0125","date":"2025-12-06","category":"Transport","payee":"Harbor Fuel","amount":-45.98,"account":"ACC-CC","memo":"gas"}
+{"id":"TXN-0126","date":"2025-12-07","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0127","date":"2025-12-08","category":"Utilities","payee":"Harbor Power","amount":-101.58,"account":"ACC-CHK","memo":"electric"}
+{"id":"TXN-0128","date":"2025-12-08","category":"Groceries","payee":"Bulk Barn","amount":-120.49,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0129","date":"2025-12-09","category":"Utilities","payee":"North Water","amount":-42.78,"account":"ACC-CHK","memo":"water"}
+{"id":"TXN-0130","date":"2025-12-09","category":"Dining","payee":"Noodle Room","amount":-49.38,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0131","date":"2025-12-10","category":"Utilities","payee":"Harbor Fiber","amount":-79.0,"account":"ACC-CHK","memo":"internet"}
+{"id":"TXN-0132","date":"2025-12-10","category":"Dining","payee":"Noodle Room","amount":-52.94,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0133","date":"2025-12-11","category":"Phone","payee":"Harbor Mobile","amount":-86.0,"account":"ACC-CC","memo":"phone"}
+{"id":"TXN-0134","date":"2025-12-11","category":"Fitness","payee":"Pier Fitness","amount":-48.0,"account":"ACC-CC","memo":"gym"}
+{"id":"TXN-0135","date":"2025-12-12","category":"Subscriptions","payee":"Stream Three","amount":-16.99,"account":"ACC-CC","memo":"stream"}
+{"id":"TXN-0136","date":"2025-12-12","category":"Subscriptions","payee":"News Desk","amount":-12.0,"account":"ACC-CC","memo":"news"}
+{"id":"TXN-0137","date":"2025-12-12","category":"Subscriptions","payee":"Cloud Mail","amount":-9.0,"account":"ACC-CC","memo":"mail"}
+{"id":"TXN-0138","date":"2025-12-12","category":"Groceries","payee":"Corner Produce","amount":-124.04,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0139","date":"2025-12-13","category":"Groceries","payee":"Hearth Market","amount":-110.26,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0140","date":"2025-12-14","category":"Health","payee":"Harbor Pharmacy","amount":-26.28,"account":"ACC-CC","memo":"pharmacy"}
+{"id":"TXN-0141","date":"2025-12-15","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0142","date":"2025-12-15","category":"Transfer","payee":"Harbor 401(k)","amount":-800.0,"account":"ACC-CHK","memo":"401k deferral"}
+{"id":"TXN-0143","date":"2025-12-16","category":"Transfer","payee":"Harbor Roth IRA","amount":-500.0,"account":"ACC-CHK","memo":"roth"}
+{"id":"TXN-0144","date":"2025-12-16","category":"Transfer","payee":"North HSA","amount":-200.0,"account":"ACC-CHK","memo":"hsa"}
+{"id":"TXN-0145","date":"2025-12-16","category":"Dining","payee":"Noodle Room","amount":-67.51,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0146","date":"2025-12-18","category":"Giving","payee":"Harbor Food Bank","amount":-150.0,"account":"ACC-CHK","memo":"gift"}
+{"id":"TXN-0147","date":"2025-12-18","category":"Groceries","payee":"Corner Produce","amount":-77.69,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0148","date":"2025-12-20","category":"Shopping","payee":"North Outfitters","amount":-240.0,"account":"ACC-CC","memo":"gifts"}
+{"id":"TXN-0149","date":"2025-12-21","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0150","date":"2025-12-21","category":"Groceries","payee":"Bulk Barn","amount":-143.04,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0151","date":"2025-12-22","category":"Transfer","payee":"Harbor Savings","amount":-400.0,"account":"ACC-CHK","memo":"to savings"}
+{"id":"TXN-0152","date":"2025-12-22","category":"Dining","payee":"West Pier Cafe","amount":-33.83,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0153","date":"2025-12-23","category":"Transfer","payee":"West Trip","amount":-80.0,"account":"ACC-CHK","memo":"sinking fund"}
+{"id":"TXN-0154","date":"2025-12-24","category":"Transfer","payee":"North Brokerage","amount":-250.0,"account":"ACC-CHK","memo":"invest"}
+{"id":"TXN-0155","date":"2025-12-26","category":"Groceries","payee":"Hearth Market","amount":-105.7,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0156","date":"2025-12-27","category":"Dining","payee":"Noodle Room","amount":-49.23,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0157","date":"2026-01-01","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0158","date":"2026-01-01","category":"Income","payee":"Harbor Studio match","amount":400.0,"account":"ACC-401K","memo":"401k match"}
+{"id":"TXN-0159","date":"2026-01-01","category":"Housing","payee":"North Home Loan","amount":-2410.0,"account":"ACC-CHK","memo":"mortgage"}
+{"id":"TXN-0160","date":"2026-01-03","category":"Housing","payee":"Harbor HOA","amount":-138.0,"account":"ACC-CHK","memo":"hoa"}
+{"id":"TXN-0161","date":"2026-01-03","category":"Dining","payee":"Saturday Pizza","amount":-76.13,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0162","date":"2026-01-04","category":"Insurance","payee":"Harbor Mutual","amount":-96.0,"account":"ACC-CHK","memo":"home"}
+{"id":"TXN-0163","date":"2026-01-05","category":"Transport","payee":"Civic loan","amount":-420.0,"account":"ACC-CHK","memo":"auto loan"}
+{"id":"TXN-0164","date":"2026-01-05","category":"Groceries","payee":"Corner Produce","amount":-122.53,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0165","date":"2026-01-06","category":"Insurance","payee":"North Auto","amount":-128.0,"account":"ACC-CHK","memo":"auto"}
+{"id":"TXN-0166","date":"2026-01-07","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0167","date":"2026-01-07","category":"Shopping","payee":"Harbor Hardware","amount":-156.88,"account":"ACC-CC","memo":"shop"}
+{"id":"TXN-0168","date":"2026-01-08","category":"Utilities","payee":"Harbor Power","amount":-104.03,"account":"ACC-CHK","memo":"electric"}
+{"id":"TXN-0169","date":"2026-01-09","category":"Utilities","payee":"North Water","amount":-54.61,"account":"ACC-CHK","memo":"water"}
+{"id":"TXN-0170","date":"2026-01-10","category":"Utilities","payee":"Harbor Fiber","amount":-79.0,"account":"ACC-CHK","memo":"internet"}
+{"id":"TXN-0171","date":"2026-01-10","category":"Groceries","payee":"Corner Produce","amount":-100.47,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0172","date":"2026-01-11","category":"Phone","payee":"Harbor Mobile","amount":-86.0,"account":"ACC-CC","memo":"phone"}
+{"id":"TXN-0173","date":"2026-01-11","category":"Fitness","payee":"Pier Fitness","amount":-48.0,"account":"ACC-CC","memo":"gym"}
+{"id":"TXN-0174","date":"2026-01-12","category":"Subscriptions","payee":"Stream Three","amount":-16.99,"account":"ACC-CC","memo":"stream"}
+{"id":"TXN-0175","date":"2026-01-12","category":"Subscriptions","payee":"News Desk","amount":-12.0,"account":"ACC-CC","memo":"news"}
+{"id":"TXN-0176","date":"2026-01-12","category":"Subscriptions","payee":"Cloud Mail","amount":-9.0,"account":"ACC-CC","memo":"mail"}
+{"id":"TXN-0177","date":"2026-01-14","category":"Health","payee":"Harbor Pharmacy","amount":-23.06,"account":"ACC-CC","memo":"pharmacy"}
+{"id":"TXN-0178","date":"2026-01-14","category":"Transport","payee":"Harbor Fuel","amount":-71.47,"account":"ACC-CC","memo":"gas"}
+{"id":"TXN-0179","date":"2026-01-15","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0180","date":"2026-01-15","category":"Transfer","payee":"Harbor 401(k)","amount":-800.0,"account":"ACC-CHK","memo":"401k deferral"}
+{"id":"TXN-0181","date":"2026-01-16","category":"Transfer","payee":"Harbor Roth IRA","amount":-500.0,"account":"ACC-CHK","memo":"roth"}
+{"id":"TXN-0182","date":"2026-01-16","category":"Transfer","payee":"North HSA","amount":-200.0,"account":"ACC-CHK","memo":"hsa"}
+{"id":"TXN-0183","date":"2026-01-16","category":"Groceries","payee":"Hearth Market","amount":-69.75,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0184","date":"2026-01-17","category":"Dining","payee":"Noodle Room","amount":-79.39,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0185","date":"2026-01-18","category":"Giving","payee":"Harbor Food Bank","amount":-150.0,"account":"ACC-CHK","memo":"gift"}
+{"id":"TXN-0186","date":"2026-01-19","category":"Groceries","payee":"Corner Produce","amount":-66.37,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0187","date":"2026-01-19","category":"Groceries","payee":"Corner Produce","amount":-98.01,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0188","date":"2026-01-21","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0189","date":"2026-01-22","category":"Transfer","payee":"Harbor Savings","amount":-400.0,"account":"ACC-CHK","memo":"to savings"}
+{"id":"TXN-0190","date":"2026-01-22","category":"Dining","payee":"Saturday Pizza","amount":-70.69,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0191","date":"2026-01-23","category":"Transfer","payee":"West Trip","amount":-80.0,"account":"ACC-CHK","memo":"sinking fund"}
+{"id":"TXN-0192","date":"2026-01-23","category":"Dining","payee":"Saturday Pizza","amount":-70.48,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0193","date":"2026-01-24","category":"Transfer","payee":"North Brokerage","amount":-250.0,"account":"ACC-CHK","memo":"invest"}
+{"id":"TXN-0194","date":"2026-01-25","category":"Dining","payee":"West Pier Cafe","amount":-54.98,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0195","date":"2026-01-27","category":"Groceries","payee":"Bulk Barn","amount":-76.78,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0196","date":"2026-02-01","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0197","date":"2026-02-01","category":"Income","payee":"Harbor Studio match","amount":400.0,"account":"ACC-401K","memo":"401k match"}
+{"id":"TXN-0198","date":"2026-02-01","category":"Housing","payee":"North Home Loan","amount":-2410.0,"account":"ACC-CHK","memo":"mortgage"}
+{"id":"TXN-0199","date":"2026-02-03","category":"Housing","payee":"Harbor HOA","amount":-138.0,"account":"ACC-CHK","memo":"hoa"}
+{"id":"TXN-0200","date":"2026-02-03","category":"Groceries","payee":"Bulk Barn","amount":-142.09,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0201","date":"2026-02-03","category":"Dining","payee":"Noodle Room","amount":-75.66,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0202","date":"2026-02-04","category":"Insurance","payee":"Harbor Mutual","amount":-96.0,"account":"ACC-CHK","memo":"home"}
+{"id":"TXN-0203","date":"2026-02-04","category":"Groceries","payee":"Hearth Market","amount":-130.26,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0204","date":"2026-02-05","category":"Transport","payee":"Civic loan","amount":-420.0,"account":"ACC-CHK","memo":"auto loan"}
+{"id":"TXN-0205","date":"2026-02-06","category":"Insurance","payee":"North Auto","amount":-128.0,"account":"ACC-CHK","memo":"auto"}
+{"id":"TXN-0206","date":"2026-02-07","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0207","date":"2026-02-07","category":"Transport","payee":"Harbor Fuel","amount":-51.11,"account":"ACC-CC","memo":"gas"}
+{"id":"TXN-0208","date":"2026-02-08","category":"Utilities","payee":"Harbor Power","amount":-98.09,"account":"ACC-CHK","memo":"electric"}
+{"id":"TXN-0209","date":"2026-02-09","category":"Utilities","payee":"North Water","amount":-58.15,"account":"ACC-CHK","memo":"water"}
+{"id":"TXN-0210","date":"2026-02-10","category":"Utilities","payee":"Harbor Fiber","amount":-79.0,"account":"ACC-CHK","memo":"internet"}
+{"id":"TXN-0211","date":"2026-02-10","category":"Dining","payee":"Noodle Room","amount":-61.59,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0212","date":"2026-02-11","category":"Phone","payee":"Harbor Mobile","amount":-86.0,"account":"ACC-CC","memo":"phone"}
+{"id":"TXN-0213","date":"2026-02-11","category":"Fitness","payee":"Pier Fitness","amount":-48.0,"account":"ACC-CC","memo":"gym"}
+{"id":"TXN-0214","date":"2026-02-11","category":"Groceries","payee":"Hearth Market","amount":-73.63,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0215","date":"2026-02-12","category":"Subscriptions","payee":"Stream Three","amount":-16.99,"account":"ACC-CC","memo":"stream"}
+{"id":"TXN-0216","date":"2026-02-12","category":"Subscriptions","payee":"News Desk","amount":-12.0,"account":"ACC-CC","memo":"news"}
+{"id":"TXN-0217","date":"2026-02-12","category":"Subscriptions","payee":"Cloud Mail","amount":-9.0,"account":"ACC-CC","memo":"mail"}
+{"id":"TXN-0218","date":"2026-02-12","category":"Dining","payee":"West Pier Cafe","amount":-80.17,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0219","date":"2026-02-14","category":"Health","payee":"Harbor Pharmacy","amount":-22.15,"account":"ACC-CC","memo":"pharmacy"}
+{"id":"TXN-0220","date":"2026-02-14","category":"Groceries","payee":"Bulk Barn","amount":-74.89,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0221","date":"2026-02-15","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0222","date":"2026-02-15","category":"Transfer","payee":"Harbor 401(k)","amount":-800.0,"account":"ACC-CHK","memo":"401k deferral"}
+{"id":"TXN-0223","date":"2026-02-16","category":"Transfer","payee":"Harbor Roth IRA","amount":-500.0,"account":"ACC-CHK","memo":"roth"}
+{"id":"TXN-0224","date":"2026-02-16","category":"Transfer","payee":"North HSA","amount":-200.0,"account":"ACC-CHK","memo":"hsa"}
+{"id":"TXN-0225","date":"2026-02-16","category":"Groceries","payee":"Corner Produce","amount":-129.45,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0226","date":"2026-02-17","category":"Groceries","payee":"Bulk Barn","amount":-107.42,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0227","date":"2026-02-17","category":"Shopping","payee":"North Outfitters","amount":-32.1,"account":"ACC-CC","memo":"shop"}
+{"id":"TXN-0228","date":"2026-02-18","category":"Giving","payee":"Harbor Food Bank","amount":-150.0,"account":"ACC-CHK","memo":"gift"}
+{"id":"TXN-0229","date":"2026-02-21","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0230","date":"2026-02-22","category":"Transfer","payee":"Harbor Savings","amount":-400.0,"account":"ACC-CHK","memo":"to savings"}
+{"id":"TXN-0231","date":"2026-02-23","category":"Transfer","payee":"West Trip","amount":-80.0,"account":"ACC-CHK","memo":"sinking fund"}
+{"id":"TXN-0232","date":"2026-02-23","category":"Dining","payee":"Saturday Pizza","amount":-18.04,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0233","date":"2026-02-24","category":"Transfer","payee":"North Brokerage","amount":-250.0,"account":"ACC-CHK","memo":"invest"}
+{"id":"TXN-0234","date":"2026-02-28","category":"Dining","payee":"West Pier Cafe","amount":-64.39,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0235","date":"2026-03-01","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0236","date":"2026-03-01","category":"Income","payee":"Harbor Studio match","amount":400.0,"account":"ACC-401K","memo":"401k match"}
+{"id":"TXN-0237","date":"2026-03-01","category":"Housing","payee":"North Home Loan","amount":-2410.0,"account":"ACC-CHK","memo":"mortgage"}
+{"id":"TXN-0238","date":"2026-03-03","category":"Housing","payee":"Harbor HOA","amount":-138.0,"account":"ACC-CHK","memo":"hoa"}
+{"id":"TXN-0239","date":"2026-03-04","category":"Insurance","payee":"Harbor Mutual","amount":-96.0,"account":"ACC-CHK","memo":"home"}
+{"id":"TXN-0240","date":"2026-03-04","category":"Groceries","payee":"Corner Produce","amount":-91.23,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0241","date":"2026-03-05","category":"Transport","payee":"Civic loan","amount":-420.0,"account":"ACC-CHK","memo":"auto loan"}
+{"id":"TXN-0242","date":"2026-03-05","category":"Dining","payee":"West Pier Cafe","amount":-68.65,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0243","date":"2026-03-06","category":"Insurance","payee":"North Auto","amount":-128.0,"account":"ACC-CHK","memo":"auto"}
+{"id":"TXN-0244","date":"2026-03-06","category":"Shopping","payee":"Harbor Hardware","amount":-122.53,"account":"ACC-CC","memo":"shop"}
+{"id":"TXN-0245","date":"2026-03-07","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0246","date":"2026-03-08","category":"Utilities","payee":"Harbor Power","amount":-101.16,"account":"ACC-CHK","memo":"electric"}
+{"id":"TXN-0247","date":"2026-03-09","category":"Utilities","payee":"North Water","amount":-60.95,"account":"ACC-CHK","memo":"water"}
+{"id":"TXN-0248","date":"2026-03-10","category":"Utilities","payee":"Harbor Fiber","amount":-79.0,"account":"ACC-CHK","memo":"internet"}
+{"id":"TXN-0249","date":"2026-03-10","category":"Dining","payee":"West Pier Cafe","amount":-34.33,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0250","date":"2026-03-11","category":"Phone","payee":"Harbor Mobile","amount":-86.0,"account":"ACC-CC","memo":"phone"}
+{"id":"TXN-0251","date":"2026-03-11","category":"Fitness","payee":"Pier Fitness","amount":-48.0,"account":"ACC-CC","memo":"gym"}
+{"id":"TXN-0252","date":"2026-03-11","category":"Travel","payee":"West Line Rail","amount":-186.0,"account":"ACC-CC","memo":"weekend"}
+{"id":"TXN-0253","date":"2026-03-12","category":"Subscriptions","payee":"Stream Three","amount":-16.99,"account":"ACC-CC","memo":"stream"}
+{"id":"TXN-0254","date":"2026-03-12","category":"Subscriptions","payee":"News Desk","amount":-12.0,"account":"ACC-CC","memo":"news"}
+{"id":"TXN-0255","date":"2026-03-12","category":"Subscriptions","payee":"Cloud Mail","amount":-9.0,"account":"ACC-CC","memo":"mail"}
+{"id":"TXN-0256","date":"2026-03-14","category":"Health","payee":"Harbor Pharmacy","amount":-47.03,"account":"ACC-CC","memo":"pharmacy"}
+{"id":"TXN-0257","date":"2026-03-14","category":"Groceries","payee":"Bulk Barn","amount":-98.34,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0258","date":"2026-03-15","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0259","date":"2026-03-15","category":"Transfer","payee":"Harbor 401(k)","amount":-800.0,"account":"ACC-CHK","memo":"401k deferral"}
+{"id":"TXN-0260","date":"2026-03-16","category":"Transfer","payee":"Harbor Roth IRA","amount":-500.0,"account":"ACC-CHK","memo":"roth"}
+{"id":"TXN-0261","date":"2026-03-16","category":"Transfer","payee":"North HSA","amount":-200.0,"account":"ACC-CHK","memo":"hsa"}
+{"id":"TXN-0262","date":"2026-03-16","category":"Groceries","payee":"Hearth Market","amount":-139.46,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0263","date":"2026-03-18","category":"Giving","payee":"Harbor Food Bank","amount":-150.0,"account":"ACC-CHK","memo":"gift"}
+{"id":"TXN-0264","date":"2026-03-18","category":"Groceries","payee":"Bulk Barn","amount":-133.83,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0265","date":"2026-03-18","category":"Transport","payee":"Harbor Fuel","amount":-68.94,"account":"ACC-CC","memo":"gas"}
+{"id":"TXN-0266","date":"2026-03-19","category":"Dining","payee":"West Pier Cafe","amount":-66.65,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0267","date":"2026-03-21","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0268","date":"2026-03-22","category":"Transfer","payee":"Harbor Savings","amount":-400.0,"account":"ACC-CHK","memo":"to savings"}
+{"id":"TXN-0269","date":"2026-03-23","category":"Transfer","payee":"West Trip","amount":-80.0,"account":"ACC-CHK","memo":"sinking fund"}
+{"id":"TXN-0270","date":"2026-03-23","category":"Groceries","payee":"Corner Produce","amount":-145.55,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0271","date":"2026-03-24","category":"Transfer","payee":"North Brokerage","amount":-250.0,"account":"ACC-CHK","memo":"invest"}
+{"id":"TXN-0272","date":"2026-03-24","category":"Groceries","payee":"Corner Produce","amount":-145.24,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0273","date":"2026-03-25","category":"Dining","payee":"Noodle Room","amount":-33.65,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0274","date":"2026-03-28","category":"Dining","payee":"West Pier Cafe","amount":-42.1,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0275","date":"2026-04-01","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0276","date":"2026-04-01","category":"Income","payee":"Harbor Studio match","amount":400.0,"account":"ACC-401K","memo":"401k match"}
+{"id":"TXN-0277","date":"2026-04-01","category":"Housing","payee":"North Home Loan","amount":-2410.0,"account":"ACC-CHK","memo":"mortgage"}
+{"id":"TXN-0278","date":"2026-04-03","category":"Housing","payee":"Harbor HOA","amount":-138.0,"account":"ACC-CHK","memo":"hoa"}
+{"id":"TXN-0279","date":"2026-04-04","category":"Insurance","payee":"Harbor Mutual","amount":-96.0,"account":"ACC-CHK","memo":"home"}
+{"id":"TXN-0280","date":"2026-04-05","category":"Transport","payee":"Civic loan","amount":-420.0,"account":"ACC-CHK","memo":"auto loan"}
+{"id":"TXN-0281","date":"2026-04-06","category":"Insurance","payee":"North Auto","amount":-128.0,"account":"ACC-CHK","memo":"auto"}
+{"id":"TXN-0282","date":"2026-04-07","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0283","date":"2026-04-08","category":"Utilities","payee":"Harbor Power","amount":-125.88,"account":"ACC-CHK","memo":"electric"}
+{"id":"TXN-0284","date":"2026-04-09","category":"Utilities","payee":"North Water","amount":-53.59,"account":"ACC-CHK","memo":"water"}
+{"id":"TXN-0285","date":"2026-04-10","category":"Utilities","payee":"Harbor Fiber","amount":-79.0,"account":"ACC-CHK","memo":"internet"}
+{"id":"TXN-0286","date":"2026-04-11","category":"Phone","payee":"Harbor Mobile","amount":-86.0,"account":"ACC-CC","memo":"phone"}
+{"id":"TXN-0287","date":"2026-04-11","category":"Fitness","payee":"Pier Fitness","amount":-48.0,"account":"ACC-CC","memo":"gym"}
+{"id":"TXN-0288","date":"2026-04-11","category":"Dining","payee":"Noodle Room","amount":-75.87,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0289","date":"2026-04-12","category":"Subscriptions","payee":"Stream Three","amount":-16.99,"account":"ACC-CC","memo":"stream"}
+{"id":"TXN-0290","date":"2026-04-12","category":"Subscriptions","payee":"News Desk","amount":-12.0,"account":"ACC-CC","memo":"news"}
+{"id":"TXN-0291","date":"2026-04-12","category":"Subscriptions","payee":"Cloud Mail","amount":-9.0,"account":"ACC-CC","memo":"mail"}
+{"id":"TXN-0292","date":"2026-04-12","category":"Dining","payee":"West Pier Cafe","amount":-29.25,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0293","date":"2026-04-13","category":"Groceries","payee":"Corner Produce","amount":-121.44,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0294","date":"2026-04-14","category":"Health","payee":"Harbor Pharmacy","amount":-45.89,"account":"ACC-CC","memo":"pharmacy"}
+{"id":"TXN-0295","date":"2026-04-14","category":"Groceries","payee":"Hearth Market","amount":-113.81,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0296","date":"2026-04-14","category":"Dining","payee":"Noodle Room","amount":-49.87,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0297","date":"2026-04-14","category":"Income","payee":"Harbor Refund","amount":1800.0,"account":"ACC-CHK","memo":"tax refund"}
+{"id":"TXN-0298","date":"2026-04-15","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0299","date":"2026-04-15","category":"Transfer","payee":"Harbor 401(k)","amount":-800.0,"account":"ACC-CHK","memo":"401k deferral"}
+{"id":"TXN-0300","date":"2026-04-15","category":"Groceries","payee":"Corner Produce","amount":-81.34,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0301","date":"2026-04-16","category":"Transfer","payee":"Harbor Roth IRA","amount":-500.0,"account":"ACC-CHK","memo":"roth"}
+{"id":"TXN-0302","date":"2026-04-16","category":"Transfer","payee":"North HSA","amount":-200.0,"account":"ACC-CHK","memo":"hsa"}
+{"id":"TXN-0303","date":"2026-04-17","category":"Groceries","payee":"Hearth Market","amount":-126.89,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0304","date":"2026-04-17","category":"Shopping","payee":"North Outfitters","amount":-79.66,"account":"ACC-CC","memo":"shop"}
+{"id":"TXN-0305","date":"2026-04-18","category":"Giving","payee":"Harbor Food Bank","amount":-150.0,"account":"ACC-CHK","memo":"gift"}
+{"id":"TXN-0306","date":"2026-04-20","category":"Dining","payee":"West Pier Cafe","amount":-27.87,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0307","date":"2026-04-20","category":"Transport","payee":"Harbor Fuel","amount":-37.16,"account":"ACC-CC","memo":"gas"}
+{"id":"TXN-0308","date":"2026-04-21","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0309","date":"2026-04-22","category":"Transfer","payee":"Harbor Savings","amount":-400.0,"account":"ACC-CHK","memo":"to savings"}
+{"id":"TXN-0310","date":"2026-04-23","category":"Transfer","payee":"West Trip","amount":-80.0,"account":"ACC-CHK","memo":"sinking fund"}
+{"id":"TXN-0311","date":"2026-04-23","category":"Dining","payee":"Noodle Room","amount":-26.52,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0312","date":"2026-04-24","category":"Transfer","payee":"North Brokerage","amount":-250.0,"account":"ACC-CHK","memo":"invest"}
+{"id":"TXN-0313","date":"2026-04-24","category":"Groceries","payee":"Bulk Barn","amount":-77.79,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0314","date":"2026-04-25","category":"Groceries","payee":"Hearth Market","amount":-115.76,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0315","date":"2026-05-01","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0316","date":"2026-05-01","category":"Income","payee":"Harbor Studio match","amount":400.0,"account":"ACC-401K","memo":"401k match"}
+{"id":"TXN-0317","date":"2026-05-01","category":"Housing","payee":"North Home Loan","amount":-2410.0,"account":"ACC-CHK","memo":"mortgage"}
+{"id":"TXN-0318","date":"2026-05-02","category":"Groceries","payee":"Hearth Market","amount":-105.62,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0319","date":"2026-05-03","category":"Housing","payee":"Harbor HOA","amount":-138.0,"account":"ACC-CHK","memo":"hoa"}
+{"id":"TXN-0320","date":"2026-05-04","category":"Insurance","payee":"Harbor Mutual","amount":-96.0,"account":"ACC-CHK","memo":"home"}
+{"id":"TXN-0321","date":"2026-05-04","category":"Groceries","payee":"Hearth Market","amount":-137.33,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0322","date":"2026-05-05","category":"Transport","payee":"Civic loan","amount":-420.0,"account":"ACC-CHK","memo":"auto loan"}
+{"id":"TXN-0323","date":"2026-05-06","category":"Insurance","payee":"North Auto","amount":-128.0,"account":"ACC-CHK","memo":"auto"}
+{"id":"TXN-0324","date":"2026-05-07","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0325","date":"2026-05-08","category":"Utilities","payee":"Harbor Power","amount":-138.16,"account":"ACC-CHK","memo":"electric"}
+{"id":"TXN-0326","date":"2026-05-09","category":"Utilities","payee":"North Water","amount":-42.19,"account":"ACC-CHK","memo":"water"}
+{"id":"TXN-0327","date":"2026-05-09","category":"Groceries","payee":"Corner Produce","amount":-135.0,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0328","date":"2026-05-09","category":"Groceries","payee":"Bulk Barn","amount":-116.6,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0329","date":"2026-05-09","category":"Dining","payee":"West Pier Cafe","amount":-25.32,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0330","date":"2026-05-10","category":"Utilities","payee":"Harbor Fiber","amount":-79.0,"account":"ACC-CHK","memo":"internet"}
+{"id":"TXN-0331","date":"2026-05-11","category":"Phone","payee":"Harbor Mobile","amount":-86.0,"account":"ACC-CC","memo":"phone"}
+{"id":"TXN-0332","date":"2026-05-11","category":"Fitness","payee":"Pier Fitness","amount":-48.0,"account":"ACC-CC","memo":"gym"}
+{"id":"TXN-0333","date":"2026-05-12","category":"Subscriptions","payee":"Stream Three","amount":-16.99,"account":"ACC-CC","memo":"stream"}
+{"id":"TXN-0334","date":"2026-05-12","category":"Subscriptions","payee":"News Desk","amount":-12.0,"account":"ACC-CC","memo":"news"}
+{"id":"TXN-0335","date":"2026-05-12","category":"Subscriptions","payee":"Cloud Mail","amount":-9.0,"account":"ACC-CC","memo":"mail"}
+{"id":"TXN-0336","date":"2026-05-12","category":"Dining","payee":"Noodle Room","amount":-29.0,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0337","date":"2026-05-13","category":"Dining","payee":"Saturday Pizza","amount":-81.94,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0338","date":"2026-05-13","category":"Transport","payee":"Harbor Fuel","amount":-58.59,"account":"ACC-CC","memo":"gas"}
+{"id":"TXN-0339","date":"2026-05-14","category":"Health","payee":"Harbor Pharmacy","amount":-46.72,"account":"ACC-CC","memo":"pharmacy"}
+{"id":"TXN-0340","date":"2026-05-15","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0341","date":"2026-05-15","category":"Transfer","payee":"Harbor 401(k)","amount":-800.0,"account":"ACC-CHK","memo":"401k deferral"}
+{"id":"TXN-0342","date":"2026-05-16","category":"Transfer","payee":"Harbor Roth IRA","amount":-500.0,"account":"ACC-CHK","memo":"roth"}
+{"id":"TXN-0343","date":"2026-05-16","category":"Transfer","payee":"North HSA","amount":-200.0,"account":"ACC-CHK","memo":"hsa"}
+{"id":"TXN-0344","date":"2026-05-16","category":"Dining","payee":"West Pier Cafe","amount":-18.97,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0345","date":"2026-05-18","category":"Giving","payee":"Harbor Food Bank","amount":-150.0,"account":"ACC-CHK","memo":"gift"}
+{"id":"TXN-0346","date":"2026-05-20","category":"Groceries","payee":"Corner Produce","amount":-132.81,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0347","date":"2026-05-21","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0348","date":"2026-05-22","category":"Transfer","payee":"Harbor Savings","amount":-400.0,"account":"ACC-CHK","memo":"to savings"}
+{"id":"TXN-0349","date":"2026-05-23","category":"Transfer","payee":"West Trip","amount":-80.0,"account":"ACC-CHK","memo":"sinking fund"}
+{"id":"TXN-0350","date":"2026-05-24","category":"Transfer","payee":"North Brokerage","amount":-250.0,"account":"ACC-CHK","memo":"invest"}
+{"id":"TXN-0351","date":"2026-05-26","category":"Dining","payee":"West Pier Cafe","amount":-77.68,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0352","date":"2026-05-27","category":"Groceries","payee":"Corner Produce","amount":-77.26,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0353","date":"2026-06-01","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0354","date":"2026-06-01","category":"Income","payee":"Harbor Studio match","amount":400.0,"account":"ACC-401K","memo":"401k match"}
+{"id":"TXN-0355","date":"2026-06-01","category":"Housing","payee":"North Home Loan","amount":-2410.0,"account":"ACC-CHK","memo":"mortgage"}
+{"id":"TXN-0356","date":"2026-06-03","category":"Housing","payee":"Harbor HOA","amount":-138.0,"account":"ACC-CHK","memo":"hoa"}
+{"id":"TXN-0357","date":"2026-06-04","category":"Insurance","payee":"Harbor Mutual","amount":-96.0,"account":"ACC-CHK","memo":"home"}
+{"id":"TXN-0358","date":"2026-06-05","category":"Transport","payee":"Civic loan","amount":-420.0,"account":"ACC-CHK","memo":"auto loan"}
+{"id":"TXN-0359","date":"2026-06-05","category":"Dining","payee":"Saturday Pizza","amount":-78.91,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0360","date":"2026-06-05","category":"Dining","payee":"Saturday Pizza","amount":-60.63,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0361","date":"2026-06-06","category":"Insurance","payee":"North Auto","amount":-128.0,"account":"ACC-CHK","memo":"auto"}
+{"id":"TXN-0362","date":"2026-06-06","category":"Dining","payee":"West Pier Cafe","amount":-48.27,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0363","date":"2026-06-07","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0364","date":"2026-06-08","category":"Utilities","payee":"Harbor Power","amount":-129.87,"account":"ACC-CHK","memo":"electric"}
+{"id":"TXN-0365","date":"2026-06-09","category":"Utilities","payee":"North Water","amount":-48.52,"account":"ACC-CHK","memo":"water"}
+{"id":"TXN-0366","date":"2026-06-10","category":"Utilities","payee":"Harbor Fiber","amount":-79.0,"account":"ACC-CHK","memo":"internet"}
+{"id":"TXN-0367","date":"2026-06-11","category":"Phone","payee":"Harbor Mobile","amount":-86.0,"account":"ACC-CC","memo":"phone"}
+{"id":"TXN-0368","date":"2026-06-11","category":"Fitness","payee":"Pier Fitness","amount":-48.0,"account":"ACC-CC","memo":"gym"}
+{"id":"TXN-0369","date":"2026-06-12","category":"Subscriptions","payee":"Stream Three","amount":-16.99,"account":"ACC-CC","memo":"stream"}
+{"id":"TXN-0370","date":"2026-06-12","category":"Subscriptions","payee":"News Desk","amount":-12.0,"account":"ACC-CC","memo":"news"}
+{"id":"TXN-0371","date":"2026-06-12","category":"Subscriptions","payee":"Cloud Mail","amount":-9.0,"account":"ACC-CC","memo":"mail"}
+{"id":"TXN-0372","date":"2026-06-14","category":"Health","payee":"Harbor Pharmacy","amount":-45.73,"account":"ACC-CC","memo":"pharmacy"}
+{"id":"TXN-0373","date":"2026-06-14","category":"Shopping","payee":"Harbor Hardware","amount":-91.66,"account":"ACC-CC","memo":"shop"}
+{"id":"TXN-0374","date":"2026-06-15","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0375","date":"2026-06-15","category":"Transfer","payee":"Harbor 401(k)","amount":-800.0,"account":"ACC-CHK","memo":"401k deferral"}
+{"id":"TXN-0376","date":"2026-06-15","category":"Transport","payee":"Harbor Fuel","amount":-40.64,"account":"ACC-CC","memo":"gas"}
+{"id":"TXN-0377","date":"2026-06-16","category":"Transfer","payee":"Harbor Roth IRA","amount":-500.0,"account":"ACC-CHK","memo":"roth"}
+{"id":"TXN-0378","date":"2026-06-16","category":"Transfer","payee":"North HSA","amount":-200.0,"account":"ACC-CHK","memo":"hsa"}
+{"id":"TXN-0379","date":"2026-06-16","category":"Health","payee":"North Clinic","amount":-220.0,"account":"ACC-CHK","memo":"visit"}
+{"id":"TXN-0380","date":"2026-06-18","category":"Giving","payee":"Harbor Food Bank","amount":-150.0,"account":"ACC-CHK","memo":"gift"}
+{"id":"TXN-0381","date":"2026-06-18","category":"Dining","payee":"Noodle Room","amount":-42.7,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0382","date":"2026-06-19","category":"Groceries","payee":"Hearth Market","amount":-67.09,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0383","date":"2026-06-19","category":"Groceries","payee":"Hearth Market","amount":-108.65,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0384","date":"2026-06-19","category":"Groceries","payee":"Hearth Market","amount":-73.3,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0385","date":"2026-06-20","category":"Dining","payee":"Saturday Pizza","amount":-32.77,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0386","date":"2026-06-21","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0387","date":"2026-06-22","category":"Transfer","payee":"Harbor Savings","amount":-400.0,"account":"ACC-CHK","memo":"to savings"}
+{"id":"TXN-0388","date":"2026-06-22","category":"Groceries","payee":"Corner Produce","amount":-133.41,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0389","date":"2026-06-23","category":"Transfer","payee":"West Trip","amount":-80.0,"account":"ACC-CHK","memo":"sinking fund"}
+{"id":"TXN-0390","date":"2026-06-24","category":"Transfer","payee":"North Brokerage","amount":-250.0,"account":"ACC-CHK","memo":"invest"}
+{"id":"TXN-0391","date":"2026-06-26","category":"Groceries","payee":"Hearth Market","amount":-122.61,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0392","date":"2026-06-26","category":"Groceries","payee":"Bulk Barn","amount":-94.41,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0393","date":"2026-07-01","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0394","date":"2026-07-01","category":"Income","payee":"Harbor Studio match","amount":400.0,"account":"ACC-401K","memo":"401k match"}
+{"id":"TXN-0395","date":"2026-07-01","category":"Housing","payee":"North Home Loan","amount":-2410.0,"account":"ACC-CHK","memo":"mortgage"}
+{"id":"TXN-0396","date":"2026-07-02","category":"Groceries","payee":"Hearth Market","amount":-108.01,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0397","date":"2026-07-03","category":"Housing","payee":"Harbor HOA","amount":-138.0,"account":"ACC-CHK","memo":"hoa"}
+{"id":"TXN-0398","date":"2026-07-03","category":"Groceries","payee":"Bulk Barn","amount":-100.82,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0399","date":"2026-07-04","category":"Insurance","payee":"Harbor Mutual","amount":-96.0,"account":"ACC-CHK","memo":"home"}
+{"id":"TXN-0400","date":"2026-07-05","category":"Transport","payee":"Civic loan","amount":-420.0,"account":"ACC-CHK","memo":"auto loan"}
+{"id":"TXN-0401","date":"2026-07-06","category":"Insurance","payee":"North Auto","amount":-128.0,"account":"ACC-CHK","memo":"auto"}
+{"id":"TXN-0402","date":"2026-07-07","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0403","date":"2026-07-07","category":"Groceries","payee":"Corner Produce","amount":-98.64,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0404","date":"2026-07-07","category":"Groceries","payee":"Hearth Market","amount":-98.4,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0405","date":"2026-07-08","category":"Utilities","payee":"Harbor Power","amount":-138.78,"account":"ACC-CHK","memo":"electric"}
+{"id":"TXN-0406","date":"2026-07-08","category":"Groceries","payee":"Hearth Market","amount":-108.46,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0407","date":"2026-07-09","category":"Utilities","payee":"North Water","amount":-56.71,"account":"ACC-CHK","memo":"water"}
+{"id":"TXN-0408","date":"2026-07-10","category":"Utilities","payee":"Harbor Fiber","amount":-79.0,"account":"ACC-CHK","memo":"internet"}
+{"id":"TXN-0409","date":"2026-07-11","category":"Phone","payee":"Harbor Mobile","amount":-86.0,"account":"ACC-CC","memo":"phone"}
+{"id":"TXN-0410","date":"2026-07-11","category":"Fitness","payee":"Pier Fitness","amount":-48.0,"account":"ACC-CC","memo":"gym"}
+{"id":"TXN-0411","date":"2026-07-12","category":"Subscriptions","payee":"Stream Three","amount":-16.99,"account":"ACC-CC","memo":"stream"}
+{"id":"TXN-0412","date":"2026-07-12","category":"Subscriptions","payee":"News Desk","amount":-12.0,"account":"ACC-CC","memo":"news"}
+{"id":"TXN-0413","date":"2026-07-12","category":"Subscriptions","payee":"Cloud Mail","amount":-9.0,"account":"ACC-CC","memo":"mail"}
+{"id":"TXN-0414","date":"2026-07-13","category":"Groceries","payee":"Bulk Barn","amount":-122.43,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0415","date":"2026-07-13","category":"Dining","payee":"Noodle Room","amount":-70.75,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0416","date":"2026-07-13","category":"Transport","payee":"Harbor Fuel","amount":-44.23,"account":"ACC-CC","memo":"gas"}
+{"id":"TXN-0417","date":"2026-07-14","category":"Health","payee":"Harbor Pharmacy","amount":-40.77,"account":"ACC-CC","memo":"pharmacy"}
+{"id":"TXN-0418","date":"2026-07-15","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0419","date":"2026-07-15","category":"Transfer","payee":"Harbor 401(k)","amount":-800.0,"account":"ACC-CHK","memo":"401k deferral"}
+{"id":"TXN-0420","date":"2026-07-16","category":"Transfer","payee":"Harbor Roth IRA","amount":-500.0,"account":"ACC-CHK","memo":"roth"}
+{"id":"TXN-0421","date":"2026-07-16","category":"Transfer","payee":"North HSA","amount":-200.0,"account":"ACC-CHK","memo":"hsa"}
+{"id":"TXN-0422","date":"2026-07-16","category":"Dining","payee":"West Pier Cafe","amount":-66.97,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0423","date":"2026-07-16","category":"Dining","payee":"Noodle Room","amount":-63.75,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0424","date":"2026-07-18","category":"Giving","payee":"Harbor Food Bank","amount":-150.0,"account":"ACC-CHK","memo":"gift"}
+{"id":"TXN-0425","date":"2026-07-20","category":"Dining","payee":"Saturday Pizza","amount":-74.9,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0426","date":"2026-07-20","category":"Dining","payee":"Saturday Pizza","amount":-66.33,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0427","date":"2026-07-21","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0428","date":"2026-07-22","category":"Transfer","payee":"Harbor Savings","amount":-400.0,"account":"ACC-CHK","memo":"to savings"}
+{"id":"TXN-0429","date":"2026-07-23","category":"Transfer","payee":"West Trip","amount":-80.0,"account":"ACC-CHK","memo":"sinking fund"}
+{"id":"TXN-0430","date":"2026-07-24","category":"Transfer","payee":"North Brokerage","amount":-250.0,"account":"ACC-CHK","memo":"invest"}
+{"id":"TXN-0431","date":"2026-07-26","category":"Shopping","payee":"Harbor Hardware","amount":-63.63,"account":"ACC-CC","memo":"shop"}
+{"id":"TXN-0432","date":"2026-08-01","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0433","date":"2026-08-01","category":"Income","payee":"Harbor Studio match","amount":400.0,"account":"ACC-401K","memo":"401k match"}
+{"id":"TXN-0434","date":"2026-08-01","category":"Housing","payee":"North Home Loan","amount":-2410.0,"account":"ACC-CHK","memo":"mortgage"}
+{"id":"TXN-0435","date":"2026-08-03","category":"Housing","payee":"Harbor HOA","amount":-138.0,"account":"ACC-CHK","memo":"hoa"}
+{"id":"TXN-0436","date":"2026-08-03","category":"Groceries","payee":"Corner Produce","amount":-110.1,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0437","date":"2026-08-04","category":"Insurance","payee":"Harbor Mutual","amount":-96.0,"account":"ACC-CHK","memo":"home"}
+{"id":"TXN-0438","date":"2026-08-05","category":"Transport","payee":"Civic loan","amount":-420.0,"account":"ACC-CHK","memo":"auto loan"}
+{"id":"TXN-0439","date":"2026-08-06","category":"Insurance","payee":"North Auto","amount":-128.0,"account":"ACC-CHK","memo":"auto"}
+{"id":"TXN-0440","date":"2026-08-07","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0441","date":"2026-08-07","category":"Dining","payee":"Noodle Room","amount":-31.44,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0442","date":"2026-08-08","category":"Utilities","payee":"Harbor Power","amount":-118.03,"account":"ACC-CHK","memo":"electric"}
+{"id":"TXN-0443","date":"2026-08-08","category":"Dining","payee":"West Pier Cafe","amount":-53.16,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0444","date":"2026-08-09","category":"Utilities","payee":"North Water","amount":-39.43,"account":"ACC-CHK","memo":"water"}
+{"id":"TXN-0445","date":"2026-08-09","category":"Groceries","payee":"Hearth Market","amount":-78.92,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0446","date":"2026-08-09","category":"Groceries","payee":"Corner Produce","amount":-144.99,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0447","date":"2026-08-09","category":"Groceries","payee":"Hearth Market","amount":-131.62,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0448","date":"2026-08-10","category":"Utilities","payee":"Harbor Fiber","amount":-79.0,"account":"ACC-CHK","memo":"internet"}
+{"id":"TXN-0449","date":"2026-08-11","category":"Phone","payee":"Harbor Mobile","amount":-86.0,"account":"ACC-CC","memo":"phone"}
+{"id":"TXN-0450","date":"2026-08-11","category":"Fitness","payee":"Pier Fitness","amount":-48.0,"account":"ACC-CC","memo":"gym"}
+{"id":"TXN-0451","date":"2026-08-12","category":"Subscriptions","payee":"Stream Three","amount":-16.99,"account":"ACC-CC","memo":"stream"}
+{"id":"TXN-0452","date":"2026-08-12","category":"Subscriptions","payee":"News Desk","amount":-12.0,"account":"ACC-CC","memo":"news"}
+{"id":"TXN-0453","date":"2026-08-12","category":"Subscriptions","payee":"Cloud Mail","amount":-9.0,"account":"ACC-CC","memo":"mail"}
+{"id":"TXN-0454","date":"2026-08-12","category":"Shopping","payee":"North Outfitters","amount":-157.11,"account":"ACC-CC","memo":"shop"}
+{"id":"TXN-0455","date":"2026-08-14","category":"Health","payee":"Harbor Pharmacy","amount":-23.17,"account":"ACC-CC","memo":"pharmacy"}
+{"id":"TXN-0456","date":"2026-08-14","category":"Groceries","payee":"Corner Produce","amount":-71.7,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0457","date":"2026-08-15","category":"Income","payee":"Harbor Studio","amount":3850.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0458","date":"2026-08-15","category":"Transfer","payee":"Harbor 401(k)","amount":-800.0,"account":"ACC-CHK","memo":"401k deferral"}
+{"id":"TXN-0459","date":"2026-08-16","category":"Transfer","payee":"Harbor Roth IRA","amount":-500.0,"account":"ACC-CHK","memo":"roth"}
+{"id":"TXN-0460","date":"2026-08-16","category":"Transfer","payee":"North HSA","amount":-200.0,"account":"ACC-CHK","memo":"hsa"}
+{"id":"TXN-0461","date":"2026-08-16","category":"Dining","payee":"Saturday Pizza","amount":-50.14,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0462","date":"2026-08-18","category":"Giving","payee":"Harbor Food Bank","amount":-150.0,"account":"ACC-CHK","memo":"gift"}
+{"id":"TXN-0463","date":"2026-08-18","category":"Dining","payee":"Noodle Room","amount":-67.09,"account":"ACC-CC","memo":"dining"}
+{"id":"TXN-0464","date":"2026-08-21","category":"Income","payee":"North Clinic","amount":3100.0,"account":"ACC-CHK","memo":"paycheck"}
+{"id":"TXN-0465","date":"2026-08-22","category":"Transfer","payee":"Harbor Savings","amount":-400.0,"account":"ACC-CHK","memo":"to savings"}
+{"id":"TXN-0466","date":"2026-08-23","category":"Transfer","payee":"West Trip","amount":-80.0,"account":"ACC-CHK","memo":"sinking fund"}
+{"id":"TXN-0467","date":"2026-08-23","category":"Groceries","payee":"Bulk Barn","amount":-128.48,"account":"ACC-CHK","memo":"groceries"}
+{"id":"TXN-0468","date":"2026-08-24","category":"Transfer","payee":"North Brokerage","amount":-250.0,"account":"ACC-CHK","memo":"invest"}
+{"id":"TXN-0469","date":"2026-08-24","category":"Transport","payee":"Harbor Fuel","amount":-45.89,"account":"ACC-CC","memo":"gas"}
+{"id":"TXN-0470","date":"2026-08-26","category":"Dining","payee":"West Pier Cafe","amount":-49.66,"account":"ACC-CC","memo":"dining"}

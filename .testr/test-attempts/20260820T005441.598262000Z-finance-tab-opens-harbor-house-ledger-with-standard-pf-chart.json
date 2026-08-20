@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-08-20T00:54:41.598485Z",
+  "goal": "Finance tab opens Harbor House ledger with standard PF charts",
+  "notes": "Local 8766 Finance auto-play: title Harbor House, 8 KPIs including net worth $334,240 and savings rate 19.8%, 12 panels (net worth line, stacked assets, income vs spend, surplus, spend donut, allocation, budget, debt mix, goals, utilization, accounts, activity), 7 SVGs. Ask 'what's our savings rate?' returned Savings rate 19.8%.",
+  "product_id": "prim-web",
+  "proofs": [
+    "local Harbor House KPIs and 12 chart panels",
+    "chat answered savings rate 19.8%"
+  ],
+  "schema_version": 1,
+  "status": "passed",
+  "test_commands_snapshot": [
+    "define product-specific test command before claiming green"
+  ]
+}

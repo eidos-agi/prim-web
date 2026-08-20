@@ -344,11 +344,16 @@
       color: #8a8f98; font-size: 12px; font-family: Inter, "SF Pro Text", sans-serif;
     }
     .mcp-bar b { color: #f7f8f8; font-weight: 500; }
-    .row.tool:has(.kind.arcade) { width: 100%; max-width: none; }
+    .row.tool:has(.kind.arcade),
+    .row.tool:has(.kind.opff) { width: 100%; max-width: none; }
     .row.tool:has(.kind.arcade) .stack,
     .row.tool:has(.kind.arcade) .bubble,
-    .row.tool:has(.kind.arcade) .editor-card { width: 100%; max-width: none; }
-    .editor-card:has(.kind.arcade) { height: auto; }
+    .row.tool:has(.kind.arcade) .editor-card,
+    .row.tool:has(.kind.opff) .stack,
+    .row.tool:has(.kind.opff) .bubble,
+    .row.tool:has(.kind.opff) .editor-card { width: 100%; max-width: none; }
+    .editor-card:has(.kind.arcade),
+    .editor-card:has(.kind.opff) { height: auto; }
     .kind.arcade {
       height: auto; display: flex; flex-direction: column;
       background: #0c0d0e; color: #f7f8f8; padding: 12px 14px 10px;
@@ -380,6 +385,67 @@
     .kind.arcade .keys {
       margin: 8px 0 0; font-family: "IBM Plex Mono", monospace;
       font-size: 11px; color: #8a8f98;
+    }
+    .kind.opff {
+      height: auto; overflow: auto; padding: 16px 18px 20px;
+      background: #0c0d0e; color: #f7f8f8;
+      font-family: Inter, "SF Pro Text", sans-serif; font-size: 13px;
+    }
+    .kind.opff h2 { margin: 0 0 4px; letter-spacing: -0.03em; font-weight: 600; font-size: 1.35rem; }
+    .kind.opff .who { margin: 0 0 14px; color: #8a8f98; font-size: 12px; }
+    .kind.opff .kpis {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 0 0 12px;
+    }
+    .kind.opff .kpi {
+      background: #141516; border: 1px solid #232326; border-radius: 12px; padding: 12px 14px;
+    }
+    .kind.opff .kpi span { display: block; color: #8a8f98; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .kind.opff .kpi b { display: block; margin-top: 6px; font-size: 1.25rem; letter-spacing: -0.03em; }
+    .kind.opff .kpi em { display: block; margin-top: 4px; color: #8a8f98; font-style: normal; font-size: 11px; }
+    .kind.opff .kpi.up b { color: #3dd68c; }
+    .kind.opff .kpi.down b { color: #eb5757; }
+    .kind.opff .panel.span { grid-column: 1 / -1; }
+    .kind.opff .hbar .actual.met { background: #3dd68c; }
+    .kind.opff .gauge .track { position: relative; height: 12px; background: #0c0d0e; border-radius: 99px; overflow: hidden; }
+    .kind.opff .gauge .fill { position: absolute; inset: 0 auto 0 0; background: #5e6ad2; }
+    .kind.opff .gauge .fill.over { background: #eb5757; }
+    .kind.opff .gauge em { position: absolute; top: 0; bottom: 0; width: 1px; background: #f2c14e; }
+    .kind.opff .gauge p { margin: 8px 0 0; color: #8a8f98; font-size: 12px; }
+    .kind.opff .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .kind.opff .panel {
+      background: #141516; border: 1px solid #232326; border-radius: 12px; padding: 12px 14px;
+      min-width: 0;
+    }
+    .kind.opff .panel h3 { margin: 0 0 8px; font-size: 12px; font-weight: 500; color: #d0d6e0; }
+    .kind.opff .chart { width: 100%; height: 160px; display: block; }
+    .kind.opff .chart text { fill: #8a8f98; font-size: 9px; }
+    .kind.opff .legend { margin: 6px 0 0; color: #8a8f98; font-size: 11px; }
+    .kind.opff .legend i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin: 0 5px 0 10px; }
+    .kind.opff .legend i:first-child { margin-left: 0; }
+    .kind.opff .donut { display: grid; grid-template-columns: 140px 1fr; gap: 12px; align-items: center; }
+    .kind.opff .donut svg { width: 140px; height: 140px; }
+    .kind.opff .donut ol { list-style: none; margin: 0; padding: 0; }
+    .kind.opff .donut li { display: flex; gap: 8px; align-items: center; padding: 3px 0; color: #d0d6e0; }
+    .kind.opff .donut i { width: 8px; height: 8px; border-radius: 2px; flex: none; }
+    .kind.opff .donut b { margin-left: auto; font-weight: 500; }
+    .kind.opff .hbars { display: grid; gap: 7px; }
+    .kind.opff .hbar { display: grid; grid-template-columns: 7.5rem 1fr 7.5rem; gap: 8px; align-items: center; }
+    .kind.opff .hbar .track { position: relative; height: 10px; background: #0c0d0e; border-radius: 99px; overflow: hidden; }
+    .kind.opff .hbar .budget { position: absolute; inset: 0 auto 0 0; background: #232326; }
+    .kind.opff .hbar .actual { position: absolute; inset: 0 auto 0 0; background: #5e6ad2; }
+    .kind.opff .hbar .actual.over { background: #eb5757; }
+    .kind.opff .hbar em { font-style: normal; color: #8a8f98; font-size: 11px; text-align: right; }
+    .kind.opff table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .kind.opff th { text-align: left; color: #8a8f98; font-weight: 500; padding: 4px 0; border-bottom: 1px solid #232326; }
+    .kind.opff td { padding: 6px 0; border-bottom: 1px solid #1c1c1f; }
+    .kind.opff td small { display: block; color: #8a8f98; font-size: 10px; }
+    .kind.opff tr.liability td:last-child, .kind.opff tr.out td:last-child { color: #eb5757; }
+    .kind.opff tr.in td:last-child { color: #3dd68c; }
+    .kind.opff td:last-child, .kind.opff th:last-child { text-align: right; }
+    @media (max-width: 900px) {
+      .kind.opff .kpis, .kind.opff .charts { grid-template-columns: 1fr; }
+      .kind.opff .donut { grid-template-columns: 1fr; }
+      .kind.opff .hbar { grid-template-columns: 1fr; }
     }
     .kind.paper {
       height: 100%; overflow: auto; padding: 28px 32px;
@@ -745,6 +811,7 @@
     }
     function openedLine(parsed) {
       if (parsed.kind === "arcade") return "Opened. Prim Arcade cites the cart — it isn’t a copy.";
+      if (parsed.kind === "opff") return "Opened. The ledger cites the pack — it isn’t a copy.";
       if (parsed.face) return "Opened. The face cites the pack — it isn’t a copy.";
       return "Opened. The editor cites the pack — it isn’t a copy.";
     }

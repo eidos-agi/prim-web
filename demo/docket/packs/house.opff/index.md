@@ -1,8 +1,15 @@
 ---
+okf_version: "0.2"
 profile: opff
-title: House
+title: Harbor House
+status: operating
+plane: personal
+currency: USD
 ---
 
-# House
+# Harbor House
 
-A personal-finance prim. Accounts and flows stay in the pack.
+A fictional household ledger. Accounts, cash flow, budgets, goals, and
+net-worth snapshots stay in this pack. The charts cite the file.
+
+Not real bank credentials. Not anyone's live finances.

@@ -1,0 +1,14 @@
+{
+  "id": "house-harbor",
+  "profile": "opff",
+  "title": "Harbor House",
+  "status": "operating",
+  "currency": "USD",
+  "plane": "personal",
+  "as_of": "2026-08-18",
+  "people": [
+    "Jordan Hale",
+    "Sam Hale"
+  ],
+  "note": "Fictional household. Not anyone's real ledger."
+}

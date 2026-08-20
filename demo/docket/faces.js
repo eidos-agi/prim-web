@@ -43,13 +43,13 @@ export const FACES = {
   },
   opff: {
     title: "Finance",
-    file: "house.opff.prim", size: "206 B",
+    file: "house.opff.prim", size: "7.8 KB",
     preview: "Household numbers stay in the pack.",
     open: "Don’t send the bank CSV.",
-    offer: "Send the finance prim.",
-    after: "The ledger is the file. This opens it.",
+    offer: "Send the finance prim. The ledger is a view of that file.",
+    after: "Ask for net worth, savings rate, emergency fund, or what’s over budget.",
     heading: "House",
-    body: "A personal-finance prim. Accounts and flows stay in the pack.",
+    body: "A household ledger. Charts cite the pack — they aren’t a copy.",
   },
   omf: {
     title: "Meetings",

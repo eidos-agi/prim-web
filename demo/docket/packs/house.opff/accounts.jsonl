@@ -1,0 +1,12 @@
+{"id":"ACC-CHK","name":"Harbor Checking","type":"depository","class":"asset","institution":"Harbor Credit Union","balance":4280.14}
+{"id":"ACC-SAV","name":"Harbor Savings","type":"depository","class":"asset","institution":"Harbor Credit Union","balance":18240.0}
+{"id":"ACC-HYSA","name":"North HYSA","type":"depository","class":"asset","institution":"North Cash","balance":24150.66}
+{"id":"ACC-TRIP","name":"West Trip","type":"depository","class":"asset","institution":"Harbor Credit Union","balance":640.0}
+{"id":"ACC-CC","name":"Harbor Visa","type":"credit","class":"liability","institution":"Harbor Credit Union","balance":-2140.88,"limit":8500,"apr":0.1899}
+{"id":"ACC-BRK","name":"North Brokerage","type":"investment","class":"asset","institution":"North Brokerage","balance":38620.4}
+{"id":"ACC-401K","name":"Harbor 401(k)","type":"retirement","class":"asset","institution":"Harbor Retirement","balance":94210.0}
+{"id":"ACC-ROTH","name":"Harbor Roth IRA","type":"retirement","class":"asset","institution":"Harbor Retirement","balance":18400.0}
+{"id":"ACC-HSA","name":"North HSA","type":"retirement","class":"asset","institution":"North Health","balance":4120.0}
+{"id":"ACC-HOME","name":"12 Pier Street","type":"real_estate","class":"asset","institution":"Harbor County","balance":365000.0}
+{"id":"ACC-MTG","name":"House mortgage","type":"loan","class":"liability","institution":"North Home Loan","balance":-218400.0,"rate":0.0625,"min_pay":2410}
+{"id":"ACC-CAR","name":"Civic loan","type":"loan","class":"liability","institution":"Harbor Auto","balance":-12880.0,"rate":0.0549,"min_pay":420}
