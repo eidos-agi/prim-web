@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-08-20T00:43:37.1287Z",
+  "goal": "Each tab auto-finishes; Try it yourself requires a real drop",
+  "notes": "Tour auto-opened docket/deck/invoice/session then Try it yourself: drop shown, 0 editors, atlas.docket.prim. Intent auto-opened paper face; Try it yourself: paper gone, drop shown, intent.emf.prim download link.",
+  "product_id": "prim-web",
+  "proofs": [
+    "tour auto four editors then reset drop",
+    "intent auto face then reset drop"
+  ],
+  "schema_version": 1,
+  "status": "passed",
+  "test_commands_snapshot": [
+    "define product-specific test command before claiming green"
+  ]
+}
