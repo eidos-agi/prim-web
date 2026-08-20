@@ -36,7 +36,7 @@ export async function renderArcade(el, pack) {
   const keys = system === "doom"
     ? "Play loads prboom on Freedoom Phase 1 — not the id IWAD. WASD, mouse, gamepad."
     : system === "n64"
-      ? "Play loads the N64 core (EmulatorJS · mupen64plus_next). Lawful carts only."
+      ? "Play loads the N64 core (EmulatorJS · mupen64plus_next). Threads + 60 fps. Lawful carts only."
       : "Arrows move · X A · Z B · Enter start";
   el.innerHTML = `<div class="kind arcade ${system}">
     <p class="kicker">prim-arcade · ${esc(name)} · ${esc(system)}</p>
@@ -78,7 +78,7 @@ function bootEjs(screen, pack) {
   const iframe = document.createElement("iframe");
   iframe.className = "ejs";
   iframe.title = pack.system === "doom" ? "Prim Arcade Doom" : "Prim Arcade N64";
-  iframe.setAttribute("allow", "autoplay; gamepad; fullscreen");
+  iframe.setAttribute("allow", "autoplay; gamepad; fullscreen; cross-origin-isolated");
   iframe.src = "./ejs-frame.html";
   ejs = iframe;
   const rom = pack.rom;
@@ -96,6 +96,8 @@ function bootEjs(screen, pack) {
     if (e.source !== iframe.contentWindow) return;
     if (e.data && (e.data.type === "ejs-ready" || e.data.type === "n64-ready")) {
       window.removeEventListener("message", ready);
+      iframe.dataset.threads = e.data.threads ? "1" : "0";
+      iframe.dataset.isolated = e.data.isolated ? "1" : "0";
       send();
     }
   });

@@ -8,6 +8,10 @@ server {
     types {
         application/zip prim;
     }
+    # SharedArrayBuffer for EmulatorJS threads (N64 / Doom). Fonts and
+    # jsDelivr already send Cross-Origin-Resource-Policy: cross-origin.
+    add_header Cross-Origin-Opener-Policy "same-origin" always;
+    add_header Cross-Origin-Embedder-Policy "require-corp" always;
     location /demo/docket {
         try_files $uri $uri/ /demo/docket/index.html;
     }

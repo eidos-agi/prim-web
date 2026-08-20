@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-08-20T00:59:32.222059Z",
+  "goal": "N64 uses WASM threads and 60fps vsync-off",
+  "notes": "Headless Chrome on serve.py (COOP/COEP) rendered ejs-frame #mode as 'threads · 60 fps'. Frame sets EJS_threads from crossOriginIsolated and EJS_defaultOptions vsync=disabled. Paseo webview cannot isolate (expected).",
+  "product_id": "prim-web",
+  "proofs": [
+    "chrome dump-dom ejs-frame #mode threads · 60 fps",
+    "EJS_defaultOptions vsync disabled"
+  ],
+  "schema_version": 1,
+  "status": "passed",
+  "test_commands_snapshot": [
+    "define product-specific test command before claiming green"
+  ]
+}
