@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-08-20T00:39:25.033664Z",
+  "goal": "Prim Arcade N64 Play loads EmulatorJS mupen64plus_next",
+  "notes": "NES pack still renders a canvas. Dropped a 64-byte z64 header (not a game): Play, iframe 849x637, EJS_core=mupen64plus_next, loader.js + emulator.min.js from cdn.emulatorjs.org/stable. No commercial ROM.",
+  "product_id": "prim-web",
+  "proofs": [
+    "NES canvas after prim.arcade.prim",
+    "N64 iframe EJS_core mupen64plus_next + CDN loader"
+  ],
+  "schema_version": 1,
+  "status": "passed",
+  "test_commands_snapshot": [
+    "define product-specific test command before claiming green"
+  ]
+}
