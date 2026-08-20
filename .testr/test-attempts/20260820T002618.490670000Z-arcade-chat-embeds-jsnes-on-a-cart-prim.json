@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-08-20T00:26:18.490769Z",
+  "goal": "Arcade chat embeds JSNES on a cart prim",
+  "notes": "Browser: dropped prim.arcade.prim, canvas 256x240 with lit pixels, PRIM title visible. prim-arcade row highlighted. Sample cart is original NROM, not a commercial dump.",
+  "product_id": "prim-web",
+  "proofs": [
+    "canvas 256x240 lit=32 Prim Arcade cites the cart",
+    "JSNES Browser Apache-2.0 vendored"
+  ],
+  "schema_version": 1,
+  "status": "passed",
+  "test_commands_snapshot": [
+    "define product-specific test command before claiming green"
+  ]
+}
