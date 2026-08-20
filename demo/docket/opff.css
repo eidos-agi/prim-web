@@ -1,0 +1,237 @@
+.kind.opff {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 196px minmax(0, 1fr);
+  background: #0c0d0e;
+  color: #f7f8f8;
+  font-family: Inter, "SF Pro Text", sans-serif;
+  font-size: 13px;
+  overflow: hidden;
+}
+.kind.opff .rail {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 14px 10px 12px;
+  background: #0a0b0c;
+  border-right: 1px solid #232326;
+}
+.kind.opff .rail .kicker {
+  margin: 0 8px 2px;
+  color: #62666d;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.kind.opff .rail h2 {
+  margin: 0 8px 2px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+.kind.opff .rail .who {
+  margin: 0 8px 12px;
+  color: #8a8f98;
+  font-size: 11px;
+}
+.kind.opff .nav {
+  display: grid;
+  gap: 1px;
+  margin: 0 0 14px;
+}
+.kind.opff .nav button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #d0d6e0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.kind.opff .nav button:hover { background: #141516; }
+.kind.opff .nav button.on {
+  background: #141516;
+  color: #f7f8f8;
+  box-shadow: inset 2px 0 0 #5e6ad2;
+}
+.kind.opff .nav em {
+  font-style: normal;
+  color: #8a8f98;
+  font-size: 11px;
+}
+.kind.opff .nav button.on em { color: #d0d6e0; }
+.kind.opff .accts {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kind.opff .accts h3 {
+  margin: 0 8px 6px;
+  color: #62666d;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.kind.opff .accts button {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  width: 100%;
+  margin: 0 0 1px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.kind.opff .accts button:hover,
+.kind.opff .accts button.on { background: #141516; }
+.kind.opff .accts small { display: block; color: #8a8f98; font-size: 10px; }
+.kind.opff .accts b { font-weight: 500; font-size: 12px; }
+.kind.opff .accts .liability b { color: #eb5757; }
+.kind.opff .stage {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 16px 18px 20px;
+}
+.kind.opff .stage h2 { margin: 0 0 4px; letter-spacing: -0.03em; font-weight: 600; font-size: 1.25rem; }
+.kind.opff .stage .lead { margin: 0 0 14px; color: #8a8f98; font-size: 12px; }
+.kind.opff .kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0 0 12px;
+}
+.kind.opff .kpi {
+  background: #141516;
+  border: 1px solid #232326;
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+}
+.kind.opff .kpi:hover { border-color: #3a3a40; }
+.kind.opff .kpi span { display: block; color: #8a8f98; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+.kind.opff .kpi b { display: block; margin-top: 6px; font-size: 1.25rem; letter-spacing: -0.03em; }
+.kind.opff .kpi em { display: block; margin-top: 4px; color: #8a8f98; font-style: normal; font-size: 11px; }
+.kind.opff .kpi.up b { color: #3dd68c; }
+.kind.opff .kpi.down b { color: #eb5757; }
+.kind.opff .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.kind.opff .panel {
+  background: #141516;
+  border: 1px solid #232326;
+  border-radius: 12px;
+  padding: 12px 14px;
+  min-width: 0;
+}
+.kind.opff .panel.span { grid-column: 1 / -1; }
+.kind.opff button.kpi { width: 100%; font: inherit; color: inherit; text-align: left; }
+.kind.opff .panel .head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 8px;
+}
+.kind.opff .panel h3 { margin: 0; font-size: 12px; font-weight: 500; color: #d0d6e0; }
+.kind.opff .readout {
+  margin: 0;
+  color: #f7f8f8;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.kind.opff .readout.mute { color: #8a8f98; font-weight: 400; }
+.kind.opff .chart { width: 100%; height: 200px; display: block; }
+.kind.opff .chart text { fill: #8a8f98; font-size: 9px; }
+.kind.opff .chart .hit { cursor: crosshair; fill: transparent; }
+.kind.opff .chart .rule { stroke: #8a8f98; stroke-dasharray: 2 3; }
+.kind.opff .chart .dot { pointer-events: none; }
+.kind.opff .chart .bar { transition: opacity 80ms linear; }
+.kind.opff .chart.dim .bar { opacity: 0.28; }
+.kind.opff .chart .bar.on { opacity: 1; }
+.kind.opff .legend { margin: 6px 0 0; color: #8a8f98; font-size: 11px; }
+.kind.opff .legend i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin: 0 5px 0 10px; }
+.kind.opff .legend i:first-child { margin-left: 0; }
+.kind.opff .donut { display: grid; grid-template-columns: 168px 1fr; gap: 12px; align-items: center; }
+.kind.opff .donut-wrap { position: relative; width: 168px; height: 168px; }
+.kind.opff .donut svg { width: 168px; height: 168px; }
+.kind.opff .donut path { transform-origin: 84px 84px; transition: transform 80ms linear, opacity 80ms linear; }
+.kind.opff .donut.dim path { opacity: 0.28; }
+.kind.opff .donut path.on { opacity: 1; transform: scale(1.04); }
+.kind.opff .hole {
+  position: absolute;
+  inset: 46px;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  pointer-events: none;
+}
+.kind.opff .hole b { font-size: 13px; letter-spacing: -0.02em; }
+.kind.opff .hole span { color: #8a8f98; font-size: 10px; }
+.kind.opff .donut ol { list-style: none; margin: 0; padding: 0; }
+.kind.opff .donut li {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 4px;
+  border-radius: 6px;
+  color: #d0d6e0;
+  cursor: pointer;
+}
+.kind.opff .donut li:hover,
+.kind.opff .donut li.on { background: #1c1c1f; }
+.kind.opff .donut i { width: 8px; height: 8px; border-radius: 2px; flex: none; }
+.kind.opff .donut b { margin-left: auto; font-weight: 500; }
+.kind.opff .hbars { display: grid; gap: 7px; }
+.kind.opff .hbar {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr 7.5rem;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 2px;
+  border-radius: 8px;
+}
+.kind.opff .hbar:hover { background: #1c1c1f; }
+.kind.opff .hbar .track { position: relative; height: 10px; background: #0c0d0e; border-radius: 99px; overflow: hidden; }
+.kind.opff .hbar .budget { position: absolute; inset: 0 auto 0 0; background: #232326; }
+.kind.opff .hbar .actual { position: absolute; inset: 0 auto 0 0; background: #5e6ad2; }
+.kind.opff .hbar .actual.over { background: #eb5757; }
+.kind.opff .hbar .actual.met { background: #3dd68c; }
+.kind.opff .hbar em { font-style: normal; color: #8a8f98; font-size: 11px; text-align: right; }
+.kind.opff .gauge .track { position: relative; height: 12px; background: #0c0d0e; border-radius: 99px; overflow: hidden; }
+.kind.opff .gauge .fill { position: absolute; inset: 0 auto 0 0; background: #5e6ad2; }
+.kind.opff .gauge .fill.over { background: #eb5757; }
+.kind.opff .gauge em { position: absolute; top: 0; bottom: 0; width: 1px; background: #f2c14e; }
+.kind.opff .gauge p { margin: 8px 0 0; color: #8a8f98; font-size: 12px; }
+.kind.opff table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.kind.opff th { text-align: left; color: #8a8f98; font-weight: 500; padding: 4px 0; border-bottom: 1px solid #232326; }
+.kind.opff td { padding: 6px 0; border-bottom: 1px solid #1c1c1f; }
+.kind.opff td small { display: block; color: #8a8f98; font-size: 10px; }
+.kind.opff tr.liability td:last-child,
+.kind.opff tr.out td:last-child { color: #eb5757; }
+.kind.opff tr.in td:last-child { color: #3dd68c; }
+.kind.opff td:last-child,
+.kind.opff th:last-child { text-align: right; }
+.kind.opff tr.on { background: #1c1c1f; }
+@media (max-width: 900px) {
+  .kind.opff { grid-template-columns: 1fr; }
+  .kind.opff .rail { border-right: 0; border-bottom: 1px solid #232326; }
+  .kind.opff .kpis,
+  .kind.opff .charts { grid-template-columns: 1fr; }
+  .kind.opff .donut { grid-template-columns: 1fr; }
+  .kind.opff .hbar { grid-template-columns: 1fr; }
+}

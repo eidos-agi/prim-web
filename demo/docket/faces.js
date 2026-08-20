@@ -47,7 +47,7 @@ export const FACES = {
     preview: "Household numbers stay in the pack.",
     open: "Don’t send the bank CSV.",
     offer: "Send the finance prim. The ledger is a view of that file.",
-    after: "Ask for net worth, savings rate, emergency fund, or what’s over budget.",
+    after: "The sidebar is the app. Hover a chart — the number is that month.",
     heading: "House",
     body: "A household ledger. Charts cite the pack — they aren’t a copy.",
   },
