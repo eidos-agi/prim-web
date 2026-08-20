@@ -25,15 +25,17 @@ export function detectKind(files) {
   return m ? m[1] : "";
 }
 
+function faceMatter(md) {
+  const text = String(md || "");
+  const m = text.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+  const body = m ? m[2] : text;
+  const title = (text.match(/title:\s*(.+)/) || [])[1] || "";
+  return { title: title.trim(), body: body.trim() };
+}
+
 export function parseKind(files) {
   const get = (name) => files[name] || files[Object.keys(files).find((k) => k.endsWith("/" + name) || k === name)] || "";
-  const kind = detectKind({
-    "index.md": get("index.md"),
-    "tasks.jsonl": get("tasks.jsonl"),
-    "slides.jsonl": get("slides.jsonl"),
-    "lines.jsonl": get("lines.jsonl"),
-    "turns.jsonl": get("turns.jsonl"),
-  });
+  const kind = detectKind(files);
   if (kind === "docket") {
     let project = { name: "docket" };
     try { project = { name: "docket", ...JSON.parse(get("docket.json") || "{}") }; } catch {}
@@ -65,7 +67,15 @@ export function parseKind(files) {
     const rom = raw instanceof Uint8Array ? raw : new TextEncoder().encode(String(raw || ""));
     return { kind, project: { name: meta.name || "cart", ...meta }, system: meta.system || "nes", rom };
   }
-  throw new Error("unknown prim kind");
+  const face = faceMatter(get("index.md"));
+  const names = Object.keys(files).map((k) => k.replace(/^.*\//, "")).filter((n) => n && n !== ".");
+  return {
+    kind,
+    project: { name: face.title || kind },
+    okf: true,
+    face: face.body,
+    files: names,
+  };
 }
 
 function esc(s) {
@@ -82,6 +92,20 @@ export async function renderKind(el, pack, onChange) {
     const { renderArcade } = await import("./arcade.js");
     return renderArcade(el, pack);
   }
+  return renderFace(el, pack);
+}
+
+function renderFace(el, pack) {
+  const body = (pack.face || "").split(/\n/).map((line) => {
+    if (line.startsWith("# ")) return `<h2>${esc(line.slice(2))}</h2>`;
+    if (!line.trim()) return "";
+    return `<p>${esc(line)}</p>`;
+  }).join("");
+  el.innerHTML = `<div class="kind paper">
+    <p class="kicker">${esc(pack.kind)} · the file is the prim</p>
+    ${body}
+    <ol class="pack-files">${(pack.files || []).map((n) => `<li>${esc(n)}</li>`).join("")}</ol>
+  </div>`;
 }
 
 function renderDeck(el, pack, onChange) {
@@ -186,6 +210,9 @@ export function answerKind(pack, q) {
   }
   if (pack.kind === "arcade") {
     return `${pack.project.name} is a ${pack.system || "nes"} cart. Prim Arcade cites this file. Arrows move, X is A, Z is B.`;
+  }
+  if (pack.face) {
+    return `${pack.project.name} is a ${pack.kind} prim. The face cites this file.`;
   }
   if (pack.kind === "session") {
     if (/last|what|who|turn/.test(q)) {

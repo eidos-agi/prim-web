@@ -355,6 +355,26 @@
       margin: 8px 0 0; font-family: "IBM Plex Mono", monospace;
       font-size: 11px; color: #8a8f98;
     }
+    .kind.paper {
+      height: 100%; overflow: auto; padding: 28px 32px;
+      background: #fffcf8; color: #111;
+      font-family: "Instrument Sans", "Segoe UI", sans-serif;
+    }
+    .kind.paper h2 { margin: 0 0 12px; letter-spacing: -0.03em; font-weight: 600; }
+    .kind.paper p { margin: 0 0 10px; line-height: 1.45; }
+    .kind.paper .pack-files {
+      list-style: none; margin: 22px 0 0; padding: 0;
+      font-family: "IBM Plex Mono", monospace; font-size: 12px; color: #6a6a66;
+    }
+    .kind.paper .pack-files li { padding: 5px 0; border-top: 1px solid #e4e2dc; }
+    .kind.paper .kicker { color: #8a8a84; }
+    .chat-item.dim { opacity: 0.45; }
+    .chats h2 {
+      margin: 14px 8px 6px;
+      font-family: "IBM Plex Mono", monospace; font-size: 10px; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--subtle);
+    }
+    .chats h2:first-child { margin-top: 4px; }
     @media (max-width: 720px) {
       .kind.deck { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); }
       .kind.deck nav {
@@ -393,35 +413,20 @@
       <b>Chats</b>
     </div>
     <div class="rail">
-    <nav class="chats">
+    <nav class="chats" id="chats">
+      <h2>Walks</h2>
       <button class="chat-item on" type="button" data-chat="tour">
         <span class="face"><img src="../../mark.png" alt=""></span>
         <span><span class="name">All four</span><span class="preview">Click through every kind.</span></span>
-      </button>
-      <button class="chat-item" type="button" data-chat="docket">
-        <span class="face"><img src="../../mark.png" alt=""></span>
-        <span><span class="name">Docket</span><span class="preview">Send me the prim.</span></span>
-      </button>
-      <button class="chat-item" type="button" data-chat="deck">
-        <span class="face"><img src="../../mark.png" alt=""></span>
-        <span><span class="name">Deck</span><span class="preview">Don’t send the slides.</span></span>
-      </button>
-      <button class="chat-item" type="button" data-chat="invoice">
-        <span class="face"><img src="../../mark.png" alt=""></span>
-        <span><span class="name">Invoice</span><span class="preview">The pack is the bill.</span></span>
-      </button>
-      <button class="chat-item" type="button" data-chat="session">
-        <span class="face"><img src="../../mark.png" alt=""></span>
-        <span><span class="name">Session</span><span class="preview">Pick up the same file.</span></span>
-      </button>
-      <button class="chat-item" type="button" data-chat="arcade">
-        <span class="face"><img src="../../mark.png" alt=""></span>
-        <span><span class="name">Arcade</span><span class="preview">The cart is the file.</span></span>
       </button>
       <button class="chat-item" type="button" data-chat="seal">
         <span class="face"><img src="../../mark.png" alt=""></span>
         <span><span class="name">Seal</span><span class="preview">Validate. Don’t read.</span></span>
       </button>
+      <h2>OKF</h2>
+      <div id="okf-chats"></div>
+      <h2>Editors</h2>
+      <div id="kind-chats"></div>
     </nav>
     <section class="reg" aria-labelledby="type-reg-h">
       <h2 id="type-reg-h">Prim registry</h2>
@@ -467,6 +472,7 @@
   <script type="module">
     import { unzipSync, strFromU8 } from "https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js";
     import { parseKind, renderKind, answerKind } from "./kinds.js";
+    import { FACES } from "./faces.js";
     import { createWalk } from "./tour.js";
     import { createSeal } from "./seal.js";
     import { stopArcade } from "./arcade.js";
@@ -502,6 +508,7 @@
       docket: {
         title: "Docket", sub: "bot · the file is the message",
         file: "atlas.docket.prim", size: "2 KB",
+        preview: "Send me the prim.",
         open: "Don’t send the spreadsheet.",
         offer: "Send me the prim. I can open a docket editor on it.",
         after: "You can keep talking. Ask what’s blocked, or what’s to do.",
@@ -510,6 +517,7 @@
       deck: {
         title: "Deck", sub: "bot · slides come out of the file",
         file: "north.deck.prim", size: "686 B",
+        preview: "Don’t send the slides.",
         open: "Don’t send the slides.",
         offer: "Send me the prim. The deck is a view of that file.",
         after: "Click a slide to edit. Ask how many slides.",
@@ -518,6 +526,7 @@
       invoice: {
         title: "Invoice", sub: "bot · the pack is the bill",
         file: "harbor.invoice.prim", size: "618 B",
+        preview: "The pack is the bill.",
         open: "Don’t send the PDF.",
         offer: "Send me the prim. The pack is the bill.",
         after: "Ask for the total, or edit a line.",
@@ -526,6 +535,7 @@
       session: {
         title: "Session", sub: "bot · pick up the same file",
         file: "june.session.prim", size: "666 B",
+        preview: "Pick up the same file.",
         open: "Don’t paste the transcript.",
         offer: "Send the session prim. The next window opens the same file.",
         after: "Log a turn in the editor, or ask what was last said.",
@@ -534,6 +544,7 @@
       arcade: {
         title: "Arcade", sub: "bot · Prim Arcade",
         file: "prim.arcade.prim", size: "686 B",
+        preview: "The cart is the file.",
         open: "Don’t send the ROM as an attachment dump.",
         offer: "Send the arcade prim. Prim Arcade cites the cart.",
         after: "Click the cabinet so keys reach it. Arrows, X, Z, Enter.",
@@ -545,8 +556,55 @@
         started: false, pack: null, walk: true,
       },
     };
+    for (const [id, f] of Object.entries(FACES)) {
+      rooms[id] = {
+        title: f.title,
+        sub: "bot · " + id,
+        file: f.file,
+        size: f.size,
+        preview: f.preview,
+        open: f.open,
+        offer: f.offer,
+        after: f.after,
+        started: false,
+        pack: null,
+        face: true,
+        dim: id === "obf",
+      };
+    }
 
-    const live = new Set(["docket", "deck", "invoice", "session", "arcade"]);
+    const live = new Set(Object.keys(rooms).filter((id) => !rooms[id].walk));
+
+    function ensureLog(id) {
+      if (document.getElementById("log-" + id)) return;
+      const el = document.createElement("div");
+      el.className = "log";
+      el.id = "log-" + id;
+      el.hidden = true;
+      thread.insertBefore(el, drop);
+    }
+    function chatButton(id) {
+      const r = rooms[id];
+      const b = document.createElement("button");
+      b.className = "chat-item" + (r.dim ? " dim" : "");
+      b.type = "button";
+      b.dataset.chat = id;
+      b.innerHTML = `<span class="face"><img src="../../mark.png" alt=""></span><span><span class="name">${esc(r.title)}</span><span class="preview">${esc(r.preview || r.open)}</span></span>`;
+      b.addEventListener("click", () => openChat(id));
+      return b;
+    }
+    function mountPrimChats() {
+      const okf = document.getElementById("okf-chats");
+      const kinds = document.getElementById("kind-chats");
+      for (const id of Object.keys(FACES)) {
+        ensureLog(id);
+        okf.appendChild(chatButton(id));
+      }
+      for (const id of ["docket", "deck", "invoice", "session", "arcade"]) {
+        ensureLog(id);
+        kinds.appendChild(chatButton(id));
+      }
+    }
     function paintReg(id) {
       document.querySelectorAll("#types .reg-item").forEach((el) => {
         el.classList.toggle("on", el.dataset.type === id || (id === "seal" && el.dataset.type === "docket"));
@@ -612,7 +670,7 @@
       dl.download = r.file;
       dl.textContent = r.file;
       document.body.classList.remove("show-chats");
-      ["tour", "docket", "deck", "invoice", "session", "arcade", "seal"].forEach((k) => { logEl(k).hidden = k !== id; });
+      document.querySelectorAll(".log").forEach((el) => { el.hidden = el.id !== "log-" + id; });
       if (id !== "arcade") stopArcade();
       drop.hidden = id === "tour" || id === "seal" || !!r.pack;
       if (id === "docket") pack = r.pack || { project: { name: "docket" }, tasks: [], milestones: [] };
@@ -681,7 +739,7 @@
       const r = room();
       const q = text.toLowerCase();
       if (!r.pack) {
-        if (/download|sample|file|prim|deck|invoice|session|docket/.test(q)) {
+        if (/download|sample|file|prim|deck|invoice|session|docket|arcade|intent|research|proof/.test(q)) {
           await say(`Here: ${sampleLink(current)}. Drop it on the thread and I’ll open it.`);
           drop.hidden = false;
           return;
@@ -712,15 +770,31 @@
 
     async function openFile(f) {
       const parsed = await readPack(f);
+      if (!rooms[parsed.kind]) {
+        rooms[parsed.kind] = {
+          title: parsed.project?.name || parsed.kind,
+          sub: "bot · the file is the prim",
+          file: f.name,
+          size: "",
+          after: "The face cites this file.",
+          started: true,
+          pack: parsed,
+          face: true,
+        };
+        ensureLog(parsed.kind);
+      }
       rooms[parsed.kind].started = true;
       if (parsed.kind !== current) openChat(parsed.kind, { skipPlay: true });
       const r = rooms[parsed.kind];
       r.pack = parsed;
       if (parsed.kind === "docket") pack = parsed;
       add("me", attachHTML(f.name || r.file, "attached"), "", parsed.kind);
-      await say(parsed.kind === "arcade"
+      const line = parsed.kind === "arcade"
         ? "Opened. Prim Arcade cites the cart — it isn’t a copy."
-        : "Opened. The editor cites the pack — it isn’t a copy.", parsed.kind);
+        : parsed.face
+          ? "Opened. The face cites the pack — it isn’t a copy."
+          : "Opened. The editor cites the pack — it isn’t a copy.";
+      await say(line, parsed.kind);
       const tool = add("them", `<div class="editor-card" id="frame-${parsed.kind}"></div>`, "tool", parsed.kind);
       drop.hidden = true;
       if (parsed.kind === "docket") render();
@@ -959,6 +1033,7 @@
       },
     });
 
+    mountPrimChats();
     loadReg();
     play("tour");
   </script>
