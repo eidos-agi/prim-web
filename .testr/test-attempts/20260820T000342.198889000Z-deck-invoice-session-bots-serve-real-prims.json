@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-08-20T00:03:42.19908Z",
+  "goal": "Deck Invoice Session bots serve real prims",
+  "notes": "Local kinds.js parse: North 4 slides, INV-014 USD 6800, June 12 last agent turn. Browser at 8766: dropped each prim, invoice editor showed USD 6,800, bot replied Total USD 6,800, drop[hidden] display none after open.",
+  "product_id": "prim-web",
+  "proofs": [
+    "http://127.0.0.1:8766/demo/docket/ north.deck.prim 686 harbor.invoice.prim 618 june.session.prim 666",
+    "registry.test.ts ok"
+  ],
+  "schema_version": 1,
+  "status": "passed",
+  "test_commands_snapshot": [
+    "define product-specific test command before claiming green"
+  ]
+}
