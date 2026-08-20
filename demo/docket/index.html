@@ -696,7 +696,7 @@
       document.body.classList.remove("show-chats");
       document.querySelectorAll(".log").forEach((el) => { el.hidden = el.id !== "log-" + id; });
       if (id !== "arcade") stopArcade();
-      drop.hidden = id === "tour" || id === "seal" || !!r.pack;
+      drop.hidden = !(r.manual && !r.pack);
       if (id === "docket") pack = r.pack || { project: { name: "docket" }, tasks: [], milestones: [] };
       if (!r.started && !opts.skipPlay) play(id);
     }
@@ -737,38 +737,90 @@
       const r = rooms[id];
       return `<a href="./${r.file}" download="${r.file}">${r.file}</a> — ${r.size}`;
     }
+    async function fetchPrim(name) {
+      const res = await fetch("./" + name);
+      return readPack(new File([await res.blob()], name));
+    }
+    function openedLine(parsed) {
+      if (parsed.kind === "arcade") return "Opened. Prim Arcade cites the cart — it isn’t a copy.";
+      if (parsed.face) return "Opened. The face cites the pack — it isn’t a copy.";
+      return "Opened. The editor cites the pack — it isn’t a copy.";
+    }
+    async function showEditor(id, parsed) {
+      const frameId = "frame-" + id;
+      const tool = add("them", `<div class="editor-card" id="${frameId}"></div>`, "tool", id);
+      drop.hidden = true;
+      if (parsed.kind === "docket" && id === "docket") render(frameId, parsed, docketUI);
+      else if (parsed.kind === "docket" && id === "seal") render(frameId, parsed, sealDocketUI);
+      else await renderKind(document.getElementById(frameId), parsed, () => {});
+      thread.scrollTop = tool.offsetTop;
+      return tool;
+    }
+    function offerRetry(id) {
+      const row = add("them", `Want to do the file yourself?<div class="beat"><button type="button">Try it yourself</button></div>`, "", id);
+      const btn = row.querySelector("button");
+      btn.addEventListener("click", () => {
+        if (btn.disabled) return;
+        btn.disabled = true;
+        resetManual(id);
+      });
+    }
+    async function resetManual(id) {
+      const r = rooms[id];
+      r.gen = (r.gen || 0) + 1;
+      r.pack = null;
+      r.manual = true;
+      r.started = true;
+      if (id === "arcade") stopArcade();
+      if (id === "docket") pack = { project: { name: "docket" }, tasks: [], milestones: [] };
+      if (id === "tour") { r.file = "atlas.docket.prim"; r.size = "2 KB"; }
+      logEl(id).innerHTML = "";
+      if (current === id) drop.hidden = false;
+      openChat(id, { skipPlay: true });
+      await say("This time you do it. Download the file, then drop it on the thread.", id);
+      await say(`Here: ${sampleLink(id)} — then drop it or tap <span class="mono">.prim</span>.`, id);
+    }
     async function play(id) {
       const r = rooms[id];
       if (r.started) return;
       r.started = true;
-      if (id === "tour") {
-        drop.hidden = true;
-        return walk.start();
-      }
-      if (id === "seal") {
-        drop.hidden = true;
-        return seal.start();
-      }
+      r.manual = false;
+      r.gen = (r.gen || 0) + 1;
+      r.playGen = r.gen;
+      const gen = r.gen;
+      drop.hidden = true;
+      const alive = () => rooms[id].gen === gen;
+      if (id === "tour") return walk.start();
+      if (id === "seal") return seal.start();
       await say(r.open, id);
       await say(r.offer, id);
-      await say(`Need a file? ${sampleLink(id)} — then drop it here or tap <span class="mono">.prim</span>.`, id);
-      if (current === id && !r.pack) drop.hidden = false;
+      if (!alive()) return;
+      const parsed = await fetchPrim(r.file);
+      if (!alive()) return;
+      r.pack = parsed;
+      if (parsed.kind === "docket") pack = parsed;
+      add("me", attachHTML(r.file, "attached"), "", id);
+      await say(openedLine(parsed), id);
+      if (!alive()) return;
+      await showEditor(id, parsed);
+      await say(r.after, id);
+      if (alive()) offerRetry(id);
     }
 
     async function reply(text) {
-      if (current === "tour" || current === "seal") {
-        await say("This thread only moves if you click the next button.");
+      const r = room();
+      if ((current === "tour" || current === "seal") && !r.manual) {
+        await say("This tab already played. Click Try it yourself if you want to do the file.");
         return;
       }
-      const r = room();
       const q = text.toLowerCase();
       if (!r.pack) {
         if (/download|sample|file|prim|deck|invoice|session|docket|arcade|intent|research|proof/.test(q)) {
-          await say(`Here: ${sampleLink(current)}. Drop it on the thread and I’ll open it.`);
+          await say(`Here: ${sampleLink(current)}. Download it, then drop it on the thread.`);
           drop.hidden = false;
           return;
         }
-        await say("I need the file first. Download the sample or attach a .prim.");
+        await say("Download the file first, then drop it here. I will not fetch it for you this time.");
         return;
       }
       if (r.pack.kind === "docket") {
@@ -794,6 +846,26 @@
 
     async function openFile(f) {
       const parsed = await readPack(f);
+      if (current === "seal" && rooms.seal.manual) {
+        add("me", attachHTML(f.name, "attached"), "", "seal");
+        drop.hidden = true;
+        rooms.seal.pack = parsed;
+        await seal.fromDrop(parsed, f.name);
+        return;
+      }
+      if (current === "tour" && rooms.tour.manual) {
+        add("me", attachHTML(f.name, "attached"), "", "tour");
+        drop.hidden = true;
+        rooms.tour.pack = parsed;
+        await say(openedLine(parsed), "tour");
+        const id = "frame-tour-" + parsed.kind;
+        const tool = add("them", `<div class="editor-card" id="${id}"></div>`, "tool", "tour");
+        if (parsed.kind === "docket") render(id, parsed, tourDocketUI);
+        else await renderKind(document.getElementById(id), parsed, () => {});
+        thread.scrollTop = tool.offsetTop;
+        offerRetry("tour");
+        return;
+      }
       if (!rooms[parsed.kind]) {
         rooms[parsed.kind] = {
           title: parsed.project?.name || parsed.kind,
@@ -808,23 +880,16 @@
         ensureLog(parsed.kind);
       }
       rooms[parsed.kind].started = true;
+      rooms[parsed.kind].manual = false;
       if (parsed.kind !== current) openChat(parsed.kind, { skipPlay: true });
       const r = rooms[parsed.kind];
       r.pack = parsed;
       if (parsed.kind === "docket") pack = parsed;
       add("me", attachHTML(f.name || r.file, "attached"), "", parsed.kind);
-      const line = parsed.kind === "arcade"
-        ? "Opened. Prim Arcade cites the cart — it isn’t a copy."
-        : parsed.face
-          ? "Opened. The face cites the pack — it isn’t a copy."
-          : "Opened. The editor cites the pack — it isn’t a copy.";
-      await say(line, parsed.kind);
-      const tool = add("them", `<div class="editor-card" id="frame-${parsed.kind}"></div>`, "tool", parsed.kind);
-      drop.hidden = true;
-      if (parsed.kind === "docket") render();
-      else await renderKind(document.getElementById("frame-" + parsed.kind), parsed, () => {});
+      await say(openedLine(parsed), parsed.kind);
+      await showEditor(parsed.kind, parsed);
       await say(r.after, parsed.kind);
-      thread.scrollTop = tool.offsetTop;
+      offerRetry(parsed.kind);
     }
 
     async function readPack(f) {
@@ -998,10 +1063,9 @@
       esc,
       root: () => logEl("seal"),
       scroll() { thread.scrollTop = thread.scrollHeight; },
-      async fetchPrim(name) {
-        const res = await fetch("./" + name);
-        return readPack(new File([await res.blob()], name));
-      },
+      alive: () => rooms.seal.gen === rooms.seal.playGen,
+      tryYourself: () => offerRetry("seal"),
+      fetchPrim,
       showSeal({ file, records }) {
         const tool = add("them", `<div class="editor-card" id="frame-seal"></div>`, "tool", "seal");
         document.getElementById("frame-seal").innerHTML = `
@@ -1035,6 +1099,8 @@
       esc,
       root: () => logEl("tour"),
       scroll() { thread.scrollTop = thread.scrollHeight; },
+      alive: () => rooms.tour.gen === rooms.tour.playGen,
+      tryYourself: () => offerRetry("tour"),
       setKind(id) {
         const r = rooms[id];
         const dl = document.querySelector(".chat-bar .dl");
@@ -1045,10 +1111,7 @@
         const prev = document.querySelector('[data-chat="tour"] .preview');
         if (prev) prev.textContent = r.title + " · in this thread";
       },
-      async fetchPrim(name) {
-        const res = await fetch("./" + name);
-        return readPack(new File([await res.blob()], name));
-      },
+      fetchPrim,
       async openEditor(kind, parsed) {
         const id = "frame-tour-" + kind;
         const tool = add("them", `<div class="editor-card" id="${id}"></div>`, "tool", "tour");
