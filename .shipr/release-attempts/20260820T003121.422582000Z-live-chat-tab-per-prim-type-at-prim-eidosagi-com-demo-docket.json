@@ -1,0 +1,47 @@
+{
+  "blocker_records": [],
+  "blockers": [],
+  "created_at": "2026-08-20T00:31:21.422651Z",
+  "gate_summary": [],
+  "goal": "Live chat tab per Prim type at prim.eidosagi.com/demo/docket",
+  "learning_prompts": [
+    "What broke or slowed this release?",
+    "What proof was missing until late?",
+    "Which gate should become automatic next time?",
+    "Which human approval should remain explicit?"
+  ],
+  "next_actions": [
+    "route lessons to learning-forge",
+    "watch rollback and support signals"
+  ],
+  "notes": "Pushed 09ccffc. Live HTML has Walks/OKF/Editors. All 10 OKF sample prims 200.",
+  "product_id": "prim-web",
+  "proofs": [
+    "https://prim.eidosagi.com/demo/docket/ 200 okf-chats",
+    "https://prim.eidosagi.com/demo/docket/intent.emf.prim 200 199B"
+  ],
+  "release_model_snapshot": {
+    "approval_gates": [
+      "credentials",
+      "payments",
+      "production mutations",
+      "public publish/tag",
+      "customer/outbound messaging"
+    ],
+    "artifact_types": [],
+    "distribution_channels": [],
+    "forge_stack": [
+      "testr"
+    ],
+    "license": null,
+    "open_source_status": "unknown",
+    "proof_commands": [
+      "define product-specific test command before claiming green"
+    ],
+    "proof_source": "testr",
+    "repository_visibility": "unknown"
+  },
+  "schema_version": 1,
+  "source": null,
+  "status": "shipped"
+}

@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-08-20T00:30:41.032082Z",
+  "goal": "One chat tab per registered Prim type",
+  "notes": "Local 8766: 10 OKF tabs + 5 editor tabs. Dropped intent.emf.prim, paper face 497x560, kicker emf, title Intent, index.md listed. .kind.paper not .face so avatar CSS cannot shrink the card.",
+  "product_id": "prim-web",
+  "proofs": [
+    "okf-chats + 10 sample .prim 200s",
+    "Intent paper face 497x560 after drop"
+  ],
+  "schema_version": 1,
+  "status": "passed",
+  "test_commands_snapshot": [
+    "define product-specific test command before claiming green"
+  ]
+}
