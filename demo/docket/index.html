@@ -47,6 +47,58 @@
       font-family: "Instrument Sans", "Segoe UI", sans-serif;
       -webkit-font-smoothing: antialiased;
     }
+    body.docked {
+      grid-template-columns: 220px minmax(240px, 28vw) minmax(0, 1fr);
+    }
+    .app-rail {
+      display: none;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 0;
+      background: #08090a;
+      color: #f7f8f8;
+      border-left: 1px solid #232326;
+    }
+    body.docked .app-rail { display: flex; }
+    .app-rail-bar {
+      height: 4rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 1rem;
+      border-bottom: 1px solid #232326;
+      flex: none;
+    }
+    .app-rail-bar .who { display: grid; line-height: 1.2; }
+    .app-rail-bar b { font-weight: 500; letter-spacing: -0.02em; }
+    .app-rail-bar small { color: #8a8f98; font-size: 12px; }
+    .app-rail-bar button {
+      margin-left: auto;
+      height: 32px;
+      padding: 0 10px;
+      border: 1px solid #232326;
+      border-radius: 10px;
+      background: #141516;
+      color: #f7f8f8;
+      font: inherit;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .app-rail-body { flex: 1; min-height: 0; }
+    .app-rail-body .editor-card { height: 100%; width: 100%; }
+    .chat-bar .dock {
+      margin-left: auto;
+      height: 32px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--raised);
+      font: inherit;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .chat-bar .dock[hidden] { display: none; }
+    .chat-bar .dl { margin-left: 8px; }
     .inbox {
       display: flex; flex-direction: column; min-height: 0;
       border-right: 1px solid var(--line); background: var(--paper);
@@ -117,7 +169,7 @@
     .who b { font-weight: 500; letter-spacing: -0.02em; }
     .who small { color: var(--subtle); font-size: 12px; font-weight: 400; }
     .chat-bar .dl {
-      margin-left: auto; font-family: "IBM Plex Mono", monospace; font-size: 12px;
+      font-family: "IBM Plex Mono", monospace; font-size: 12px;
       color: var(--muted); text-decoration: none; border: 1px solid var(--line);
       border-radius: 999px; padding: 6px 10px; background: var(--raised);
     }
@@ -435,6 +487,8 @@
       .row { max-width: 100%; }
       .composer { margin: 0 0.85rem 0.85rem; }
       .thread { padding: 1rem; }
+      body.docked { grid-template-columns: 1fr; }
+      body.docked .app-rail { min-height: 58vh; }
     }
   </style>
 </head>
@@ -476,6 +530,7 @@
       <button class="menu" id="menu" type="button" aria-label="Chats">☰</button>
       <a class="home" href="/"><img src="../../mark.png" alt="Prim"></a>
       <div class="who"><b id="title">All four</b><small id="sub">bot · click through every kind</small></div>
+      <button class="dock" id="dock-btn" type="button" hidden>Pop out</button>
       <a class="dl" href="./atlas.docket.prim" download="atlas.docket.prim">four prims</a>
     </div>
     <div class="thread" id="thread">
@@ -502,9 +557,16 @@
       <button type="submit">Send</button>
     </form>
   </section>
+  <aside class="app-rail" id="app-rail" hidden>
+    <div class="app-rail-bar">
+      <div class="who"><b id="app-rail-title">App</b><small id="app-rail-sub">cites the pack</small></div>
+      <button type="button" id="app-rail-close">Back in chat</button>
+    </div>
+    <div class="app-rail-body" id="app-rail-body"></div>
+  </aside>
   <script type="module">
     import { unzipSync, strFromU8 } from "https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js";
-    import { parseKind, renderKind, answerKind, detectSystem } from "./kinds.js";
+    import { parseKind, renderKind, answerKind, steerKind, detectSystem } from "./kinds.js";
     import { FACES } from "./faces.js";
     import { createWalk } from "./tour.js";
     import { createSeal } from "./seal.js";
@@ -690,6 +752,68 @@
 
     function logEl(id = current) { return document.getElementById("log-" + id); }
     function room(id = current) { return rooms[id]; }
+    const appRail = document.getElementById("app-rail");
+    const appRailBody = document.getElementById("app-rail-body");
+    const dockBtn = document.getElementById("dock-btn");
+
+    function parkFrame(frame) {
+      if (!frame || !frame._home) return;
+      const bubble = frame._home.querySelector(".bubble");
+      if (bubble && frame.parentElement !== bubble) bubble.appendChild(frame);
+    }
+
+    function closeDock() {
+      const sitting = appRailBody.firstElementChild;
+      if (sitting) {
+        parkFrame(sitting);
+        if (sitting._home) sitting._home.hidden = false;
+      }
+      document.body.classList.remove("docked");
+      appRail.hidden = true;
+      dockBtn.textContent = "Pop out";
+    }
+
+    function dockFrame(frame, title, sub) {
+      if (!frame) return;
+      const sitting = appRailBody.firstElementChild;
+      if (sitting && sitting !== frame) parkFrame(sitting);
+      const home = frame.closest(".row.tool");
+      if (home) {
+        frame._home = home;
+        home.hidden = true;
+      }
+      if (frame.parentElement !== appRailBody) appRailBody.replaceChildren(frame);
+      document.getElementById("app-rail-title").textContent = title || "App";
+      document.getElementById("app-rail-sub").textContent = sub || "cites the pack";
+      appRail.hidden = false;
+      document.body.classList.add("docked");
+      dockBtn.hidden = false;
+      dockBtn.textContent = "Back in chat";
+    }
+
+    function syncDock() {
+      const r = room();
+      const frame = document.getElementById("frame-" + current);
+      dockBtn.hidden = !frame;
+      if (frame && r.pack && r.docked !== false) {
+        dockFrame(frame, r.pack.project?.name || r.title, (r.pack.kind || "prim") + " · chat still points this");
+      } else {
+        closeDock();
+        if (frame) dockBtn.textContent = "Pop out";
+      }
+    }
+
+    function toggleDock() {
+      const r = room();
+      r.docked = r.docked === false;
+      syncDock();
+    }
+
+    dockBtn.addEventListener("click", toggleDock);
+    document.getElementById("app-rail-close").addEventListener("click", () => {
+      room().docked = false;
+      syncDock();
+    });
 
     function openChat(id, opts = {}) {
       current = id;
@@ -708,6 +832,7 @@
       drop.hidden = !(r.manual && !r.pack);
       if (id === "docket") pack = r.pack || { project: { name: "docket" }, tasks: [], milestones: [] };
       if (!r.started && !opts.skipPlay) play(id);
+      else syncDock();
     }
 
     document.getElementById("composer").addEventListener("submit", (e) => {
@@ -768,8 +893,11 @@
       if (parsed.kind === "docket" && id === "docket") render(frameId, parsed, docketUI);
       else if (parsed.kind === "docket" && id === "seal") render(frameId, parsed, sealDocketUI);
       else await renderKind(frame, parsed, () => {});
+      rooms[id].surface = frame._surface || null;
+      rooms[id].docked = rooms[id].docked !== false;
+      if (id === current) syncDock();
       const tool = frame.closest(".row") || frame;
-      thread.scrollTop = tool.offsetTop;
+      if (!document.body.classList.contains("docked")) thread.scrollTop = tool.offsetTop;
       return tool;
     }
     function offerRetry(id) {
@@ -788,6 +916,7 @@
       r.manual = true;
       r.started = true;
       if (id === "arcade") stopArcade();
+      if (id === current) closeDock();
       if (id === "docket") pack = { project: { name: "docket" }, tasks: [], milestones: [] };
       if (id === "tour") { r.file = "atlas.docket.prim"; r.size = "2 KB"; }
       logEl(id).innerHTML = "";
@@ -882,6 +1011,8 @@
         await say("Still this thread. The editor is just a tool I opened on the file you sent.");
         return;
       }
+      const steer = steerKind(r.pack, text);
+      if (steer?.view && r.surface?.go) r.surface.go(steer.view, steer.acct);
       await say(answerKind(r.pack, text));
     }
 
@@ -900,10 +1031,13 @@
         rooms.tour.pack = parsed;
         await say(openedLine(parsed), "tour");
         const id = "frame-tour-" + parsed.kind;
-        const tool = add("them", `<div class="editor-card" id="${id}"></div>`, "tool", "tour");
+        add("them", `<div class="editor-card" id="${id}"></div>`, "tool", "tour");
         if (parsed.kind === "docket") render(id, parsed, tourDocketUI);
         else await renderKind(document.getElementById(id), parsed, () => {});
-        thread.scrollTop = tool.offsetTop;
+        const frame = document.getElementById(id);
+        rooms.tour.surface = frame?._surface || null;
+        rooms.tour.docked = true;
+        if (frame) dockFrame(frame, parsed.project?.name || parsed.kind, parsed.kind + " · chat still points this");
         offerRetry("tour");
         return;
       }
@@ -1155,10 +1289,15 @@
       fetchPrim,
       async openEditor(kind, parsed) {
         const id = "frame-tour-" + kind;
-        const tool = add("them", `<div class="editor-card" id="${id}"></div>`, "tool", "tour");
+        add("them", `<div class="editor-card" id="${id}"></div>`, "tool", "tour");
         if (kind === "docket") render(id, parsed, tourDocketUI);
-        else renderKind(document.getElementById(id), parsed, () => {});
-        thread.scrollTop = tool.offsetTop;
+        else await renderKind(document.getElementById(id), parsed, () => {});
+        const frame = document.getElementById(id);
+        rooms.tour.surface = frame?._surface || null;
+        rooms.tour.docked = true;
+        if (current === "tour" && frame) {
+          dockFrame(frame, parsed.project?.name || kind, kind + " · chat still points this");
+        }
       },
     });
 

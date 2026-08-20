@@ -67,14 +67,40 @@ export function renderOpff(el, pack) {
   const m = modelOf(pack);
   let view = "overview";
   let acct = "";
+  const ctl = {
+    go(id, account) {
+      view = id || view;
+      acct = account || (id !== "activity" ? "" : acct);
+      draw();
+    },
+    looking() { return view; },
+  };
   const draw = () => {
     el.innerHTML = shell(m, view, acct);
     bind(el, m, {
-      go: (id) => { view = id; if (id !== "activity") acct = ""; draw(); },
+      go: (id) => ctl.go(id),
       acct: (id) => { acct = id; view = "activity"; draw(); },
     });
+    el._surface = ctl;
   };
   draw();
+  return ctl;
+}
+
+export function steerOpff(pack, q) {
+  q = String(q || "").toLowerCase();
+  if (/budget/.test(q)) return { view: "budget" };
+  if (/spend|categor|grocer|dining/.test(q)) return { view: "spend" };
+  if (/cash flow|surplus|saving.?rate|income vs/.test(q)) return { view: "flow" };
+  if (/emergenc/.test(q)) return { view: "cash" };
+  if (/cash|checking|saving|hysa/.test(q)) return { view: "cash" };
+  if (/invest|401|roth|hsa|allocat/.test(q)) return { view: "invest" };
+  if (/debt|loan|mortgage|utiliz|visa/.test(q)) return { view: "debt" };
+  if (/goal/.test(q)) return { view: "goals" };
+  if (/activit|transaction|recent/.test(q)) return { view: "activity" };
+  if (/net.?worth|overview|home equity/.test(q)) return { view: "overview" };
+  if (/\bshow\b|\bopen\b|\blook\b/.test(q) && /flow/.test(q)) return { view: "flow" };
+  return null;
 }
 
 function shell(m, view, acct) {
@@ -99,7 +125,7 @@ function shell(m, view, acct) {
         </button>`).join("")}
       </div>
     </aside>
-    <main class="stage">${stage(m, view, acct)}</main>
+    <main class="stage" data-view="${esc(view)}">${stage(m, view, acct)}</main>
   </div>`;
 }
 

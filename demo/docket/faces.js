@@ -47,7 +47,7 @@ export const FACES = {
     preview: "Household numbers stay in the pack.",
     open: "Don’t send the bank CSV.",
     offer: "Send the finance prim. The ledger is a view of that file.",
-    after: "The sidebar is the app. Hover a chart — the number is that month.",
+    after: "The ledger is in the rail. Ask for budget, cash, or spending — chat still points it.",
     heading: "House",
     body: "A household ledger. Charts cite the pack — they aren’t a copy.",
   },

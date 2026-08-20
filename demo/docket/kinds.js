@@ -1,6 +1,6 @@
 /** Parse a prim zip and render kind editors. Docket board stays in the host. */
 
-import { answerOpff } from "./opff.js";
+import { answerOpff, steerOpff } from "./opff.js";
 
 export function jsonl(s) {
   return String(s || "")
@@ -236,6 +236,11 @@ function renderSession(el, pack, onChange) {
     });
   };
   draw();
+}
+
+export function steerKind(pack, q) {
+  if (pack?.kind === "opff") return steerOpff(pack, q);
+  return null;
 }
 
 export function answerKind(pack, q) {
