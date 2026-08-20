@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "types": [
+    {
+      "name": "emf",
+      "repo": "eidos-agi/prim.emf",
+      "description": "Human intent + durable memory",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "orf",
+      "repo": "eidos-agi/prim.orf",
+      "description": "Research / investigation",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "opf",
+      "repo": "eidos-agi/prim.opf",
+      "description": "Product graph",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "odwf",
+      "repo": "eidos-agi/prim.odwf",
+      "description": "Spreadsheet → bronze proof",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "opff",
+      "repo": "eidos-agi/prim.opff",
+      "description": "Personal / household finance",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "omf",
+      "repo": "eidos-agi/prim.omf",
+      "description": "Meeting occurrences",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "ocsf",
+      "repo": "eidos-agi/prim.ocsf",
+      "description": "Corporate structure, ownership, capital, governance",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "obif",
+      "repo": "eidos-agi/prim.obif",
+      "description": "Brand identity",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "osf",
+      "repo": "eidos-agi/prim.osf",
+      "description": "Open Session Format",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "obf",
+      "repo": "eidos-agi/prim.obf",
+      "description": "Private / emerging",
+      "okf": true,
+      "status": "private"
+    },
+    {
+      "name": "docket",
+      "repo": "eidos-agi/prim.docket",
+      "description": "Execution queue (docket-prim format, not markdown)",
+      "okf": false,
+      "status": "active"
+    },
+    {
+      "name": "deck",
+      "repo": "eidos-agi/prim.deck",
+      "description": "Slide records. The deck is a view of the file.",
+      "okf": false,
+      "status": "emerging"
+    },
+    {
+      "name": "invoice",
+      "repo": "eidos-agi/prim.invoice",
+      "description": "A bill as a pack. Lines are records.",
+      "okf": false,
+      "status": "emerging"
+    },
+    {
+      "name": "session",
+      "repo": "eidos-agi/prim.session",
+      "description": "Thin transcript file + editor. Not OSF.",
+      "okf": false,
+      "status": "emerging"
+    }
+  ],
+  "tools": [
+    {
+      "name": "docket-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "docket",
+      "as": "editor",
+      "bin": "docket-prim",
+      "repo": "eidos-agi/prim.docket"
+    },
+    {
+      "name": "deck-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "deck",
+      "as": "editor",
+      "repo": "eidos-agi/prim.deck"
+    },
+    {
+      "name": "invoice-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "invoice",
+      "as": "editor",
+      "repo": "eidos-agi/prim.invoice"
+    },
+    {
+      "name": "session-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "session",
+      "as": "editor",
+      "repo": "eidos-agi/prim.session"
+    }
+  ]
+}
