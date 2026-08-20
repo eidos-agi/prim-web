@@ -327,6 +327,23 @@
       .kind.sess .add-turn button {
       background: #f7f8f8; color: #111; border: 0; border-radius: 8px; padding: 0 12px; font: inherit; cursor: pointer;
     }
+    .kind.seal {
+      height: 100%; background: #0c0d0e; color: #f7f8f8; padding: 28px 32px;
+      font-family: Inter, "SF Pro Text", sans-serif;
+    }
+    .kind.seal h2 { margin: 8px 0 18px; letter-spacing: -0.03em; font-weight: 600; }
+    .kind.seal .pair {
+      display: grid; grid-template-columns: 7rem 1fr; gap: 8px;
+      padding: 9px 0; border-bottom: 1px solid #232326; font-size: 13px;
+    }
+    .kind.seal dt { color: #8a8f98; }
+    .kind.seal .mono { font-family: "IBM Plex Mono", monospace; font-size: 12px; }
+    .kind.seal .note { margin: 18px 0 0; color: #d0d6e0; line-height: 1.45; }
+    .mcp-bar {
+      padding: 10px 14px; border-bottom: 1px solid #232326; background: #141516;
+      color: #8a8f98; font-size: 12px; font-family: Inter, "SF Pro Text", sans-serif;
+    }
+    .mcp-bar b { color: #f7f8f8; font-weight: 500; }
     @media (max-width: 720px) {
       .kind.deck { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); }
       .kind.deck nav {
@@ -386,6 +403,10 @@
         <span class="face"><img src="../../mark.png" alt=""></span>
         <span><span class="name">Session</span><span class="preview">Pick up the same file.</span></span>
       </button>
+      <button class="chat-item" type="button" data-chat="seal">
+        <span class="face"><img src="../../mark.png" alt=""></span>
+        <span><span class="name">Seal</span><span class="preview">Validate. Don’t read.</span></span>
+      </button>
     </nav>
     <section class="reg" aria-labelledby="type-reg-h">
       <h2 id="type-reg-h">Prim registry</h2>
@@ -411,6 +432,7 @@
       <div class="log" id="log-deck" hidden></div>
       <div class="log" id="log-invoice" hidden></div>
       <div class="log" id="log-session" hidden></div>
+      <div class="log" id="log-seal" hidden></div>
       <div class="drop" id="drop" hidden>
         <div>
           <p class="label">Attach</p>
@@ -430,6 +452,7 @@
     import { unzipSync, strFromU8 } from "https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js";
     import { parseKind, renderKind, answerKind } from "./kinds.js";
     import { createWalk } from "./tour.js";
+    import { createSeal } from "./seal.js";
 
     const COLUMNS = ["To Do", "In Progress", "Done", "Draft"];
     let pack = { project: { name: "docket" }, tasks: [], milestones: [] };
@@ -491,15 +514,22 @@
         after: "Log a turn in the editor, or ask what was last said.",
         started: false, pack: null,
       },
+      seal: {
+        title: "Seal", sub: "bot · validate, don’t read",
+        file: "atlas.docket.prim", size: "2 KB",
+        started: false, pack: null, walk: true,
+      },
     };
 
     const live = new Set(["docket", "deck", "invoice", "session"]);
     function paintReg(id) {
       document.querySelectorAll("#types .reg-item").forEach((el) => {
-        el.classList.toggle("on", el.dataset.type === id);
+        el.classList.toggle("on", el.dataset.type === id || (id === "seal" && el.dataset.type === "docket"));
       });
       document.querySelectorAll("#tools .reg-item").forEach((el) => {
-        el.classList.toggle("on", el.dataset.cites === id);
+        const tool = el.dataset.tool;
+        if (id === "seal") el.classList.toggle("on", tool === "docket-webmcp");
+        else el.classList.toggle("on", el.dataset.cites === id && tool !== "docket-webmcp");
       });
     }
     async function loadReg() {
@@ -534,7 +564,10 @@
         if (el.tagName === "BUTTON") el.addEventListener("click", () => openChat(el.dataset.type));
       });
       tools.querySelectorAll("[data-cites]").forEach((el) => {
-        if (el.tagName === "BUTTON") el.addEventListener("click", () => openChat(el.dataset.cites));
+        if (el.tagName !== "BUTTON") return;
+        el.addEventListener("click", () => {
+          openChat(el.dataset.tool === "docket-webmcp" ? "seal" : el.dataset.cites);
+        });
       });
       paintReg(current);
     }
@@ -554,8 +587,8 @@
       dl.download = r.file;
       dl.textContent = r.file;
       document.body.classList.remove("show-chats");
-      ["tour", "docket", "deck", "invoice", "session"].forEach((k) => { logEl(k).hidden = k !== id; });
-      drop.hidden = id === "tour" || !!r.pack;
+      ["tour", "docket", "deck", "invoice", "session", "seal"].forEach((k) => { logEl(k).hidden = k !== id; });
+      drop.hidden = id === "tour" || id === "seal" || !!r.pack;
       if (id === "docket") pack = r.pack || { project: { name: "docket" }, tasks: [], milestones: [] };
       if (!r.started && !opts.skipPlay) play(id);
     }
@@ -604,6 +637,10 @@
         drop.hidden = true;
         return walk.start();
       }
+      if (id === "seal") {
+        drop.hidden = true;
+        return seal.start();
+      }
       await say(r.open, id);
       await say(r.offer, id);
       await say(`Need a file? ${sampleLink(id)} — then drop it here or tap <span class="mono">.prim</span>.`, id);
@@ -611,7 +648,7 @@
     }
 
     async function reply(text) {
-      if (current === "tour") {
+      if (current === "tour" || current === "seal") {
         await say("This thread only moves if you click the next button.");
         return;
       }
@@ -819,6 +856,43 @@
     function esc(s) {
       return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
     }
+
+    const sealDocketUI = { selected: "", view: "board", filter: "all" };
+    const seal = createSeal({
+      add: (who, html) => add(who, html, "", "seal"),
+      say: (html) => say(html, "seal"),
+      attachHTML,
+      esc,
+      root: () => logEl("seal"),
+      scroll() { thread.scrollTop = thread.scrollHeight; },
+      async fetchPrim(name) {
+        const res = await fetch("./" + name);
+        return readPack(new File([await res.blob()], name));
+      },
+      showSeal({ file, records }) {
+        const tool = add("them", `<div class="editor-card" id="frame-seal"></div>`, "tool", "seal");
+        document.getElementById("frame-seal").innerHTML = `
+          <div class="kind seal">
+            <p class="kicker">docket-editor · validate</p>
+            <h2>Readable</h2>
+            <div class="pair"><dt>File</dt><dd class="mono">${esc(file)}</dd></div>
+            <div class="pair"><dt>Records</dt><dd>${records}</dd></div>
+            <div class="pair"><dt>To the model</dt><dd>nothing</dd></div>
+            <p class="note">The tool checked the pack opens. It did not hand titles, notes, or blockers to the model.</p>
+          </div>`;
+        thread.scrollTop = tool.offsetTop;
+      },
+      showExposed(parsed) {
+        let frame = document.getElementById("frame-seal");
+        if (!frame) {
+          add("them", `<div class="editor-card" id="frame-seal"></div>`, "tool", "seal");
+          frame = document.getElementById("frame-seal");
+        }
+        frame.innerHTML = `<div class="mcp-bar"><b>docket-webmcp</b> · connector/talk · local model can operate this editor</div><div id="frame-seal-docket" style="height:calc(100% - 38px)"></div>`;
+        render("frame-seal-docket", parsed, sealDocketUI);
+        rooms.seal.pack = parsed;
+      },
+    });
 
     const walk = createWalk({
       room: (id) => rooms[id],
