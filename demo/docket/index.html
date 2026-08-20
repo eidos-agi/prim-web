@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Prim demo — docket, deck, invoice, session</title>
-  <meta name="description" content="Download a prim. Drop it on the chat. It becomes the editor.">
+  <title>Prim demo — all four</title>
+  <meta name="description" content="Click through docket, deck, invoice, and session. Each file becomes an editor.">
   <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -159,6 +159,13 @@
       height: 34px; padding: 0 12px; border: 0; border-radius: 10px;
       background: var(--ink); color: var(--paper); font: inherit; font-weight: 500; cursor: pointer;
     }
+    .beat { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
+    .beat button {
+      height: 34px; padding: 0 12px; border: 0; border-radius: 10px;
+      background: var(--ink); color: var(--paper); font: inherit; font-weight: 500; cursor: pointer;
+    }
+    .beat button:hover { opacity: 0.88; }
+    .beat button[disabled] { opacity: 0.28; cursor: default; }
     .row.tool .bubble { padding: 0; overflow: hidden; width: min(100%, 72rem); background: #08090a; border-color: var(--ink); }
     .editor-card { height: min(58vh, 620px); background: #08090a; }
     .app { width: 100%; min-width: 0; height: 100%; }
@@ -329,7 +336,11 @@
       <b>Chats</b>
     </div>
     <nav class="chats">
-      <button class="chat-item on" type="button" data-chat="docket">
+      <button class="chat-item on" type="button" data-chat="tour">
+        <span class="face"><img src="../../mark.png" alt=""></span>
+        <span><span class="name">All four</span><span class="preview">Click through every kind.</span></span>
+      </button>
+      <button class="chat-item" type="button" data-chat="docket">
         <span class="face"><img src="../../mark.png" alt=""></span>
         <span><span class="name">Docket</span><span class="preview">Send me the prim.</span></span>
       </button>
@@ -351,12 +362,13 @@
     <div class="chat-bar">
       <button class="menu" id="menu" type="button" aria-label="Chats">☰</button>
       <a class="home" href="/"><img src="../../mark.png" alt="Prim"></a>
-      <div class="who"><b id="title">Docket</b><small id="sub">bot · the file is the message</small></div>
-      <a class="dl" href="./atlas.docket.prim" download="atlas.docket.prim">atlas.docket.prim</a>
+      <div class="who"><b id="title">All four</b><small id="sub">bot · click through every kind</small></div>
+      <a class="dl" href="./atlas.docket.prim" download="atlas.docket.prim">four prims</a>
     </div>
     <div class="thread" id="thread">
       <div class="day">Today</div>
-      <div class="log" id="log-docket"></div>
+      <div class="log" id="log-tour"></div>
+      <div class="log" id="log-docket" hidden></div>
       <div class="log" id="log-deck" hidden></div>
       <div class="log" id="log-invoice" hidden></div>
       <div class="log" id="log-session" hidden></div>
@@ -378,13 +390,13 @@
   <script type="module">
     import { unzipSync, strFromU8 } from "https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js";
     import { parseKind, renderKind, answerKind } from "./kinds.js";
+    import { createWalk } from "./tour.js";
 
     const COLUMNS = ["To Do", "In Progress", "Done", "Draft"];
     let pack = { project: { name: "docket" }, tasks: [], milestones: [] };
-    let selected = "";
-    let view = "board";
-    let filter = "all";
-    let current = "docket";
+    const docketUI = { selected: "", view: "board", filter: "all" };
+    const tourDocketUI = { selected: "", view: "board", filter: "all" };
+    let current = "tour";
 
     const drop = document.getElementById("drop");
     const file = document.getElementById("file");
@@ -403,6 +415,11 @@
     });
 
     const rooms = {
+      tour: {
+        title: "All four", sub: "bot · click through every kind",
+        file: "atlas.docket.prim", size: "",
+        started: false, pack: null, walk: true,
+      },
       docket: {
         title: "Docket", sub: "bot · the file is the message",
         file: "atlas.docket.prim", size: "2 KB",
@@ -451,9 +468,9 @@
       dl.download = r.file;
       dl.textContent = r.file;
       document.body.classList.remove("show-chats");
-      ["docket", "deck", "invoice", "session"].forEach((k) => { logEl(k).hidden = k !== id; });
-      drop.hidden = !!r.pack;
-      pack = r.pack || { project: { name: id }, tasks: [], milestones: [] };
+      ["tour", "docket", "deck", "invoice", "session"].forEach((k) => { logEl(k).hidden = k !== id; });
+      drop.hidden = id === "tour" || !!r.pack;
+      if (id === "docket") pack = r.pack || { project: { name: "docket" }, tasks: [], milestones: [] };
       if (!r.started && !opts.skipPlay) play(id);
     }
 
@@ -497,6 +514,10 @@
       const r = rooms[id];
       if (r.started) return;
       r.started = true;
+      if (id === "tour") {
+        drop.hidden = true;
+        return walk.start();
+      }
       await say(r.open, id);
       await say(r.offer, id);
       await say(`Need a file? ${sampleLink(id)} — then drop it here or tap <span class="mono">.prim</span>.`, id);
@@ -504,6 +525,10 @@
     }
 
     async function reply(text) {
+      if (current === "tour") {
+        await say("This thread only moves if you click the next button.");
+        return;
+      }
       const r = room();
       const q = text.toLowerCase();
       if (!r.pack) {
@@ -588,66 +613,68 @@
       if (!n) return `<svg class="pri" viewBox="0 0 14 14"><circle cx="7" cy="7" r="4.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="1.6 1.5"/></svg>`;
       return `<svg class="pri ${p}" viewBox="0 0 14 14">${[[3,10],[6,8],[9,6]].slice(0,n).map(([x,h]) => `<rect x="${x}" y="${12-h}" width="2" height="${h}" rx="0.6" fill="currentColor"/>`).join("")}</svg>`;
     }
-    function msTitle(id) {
-      return (pack.milestones.find((m) => m.id === id) || {}).title || id;
+    function msTitle(id, src) {
+      return ((src || pack).milestones.find((m) => m.id === id) || {}).title || id;
     }
-    function visible() {
-      return pack.tasks.filter((t) => {
-        if (filter === "blocked") return !!t.blocked_reason;
-        if (filter !== "all" && t.status !== filter) return false;
+    function visible(src, ui) {
+      return src.tasks.filter((t) => {
+        if (ui.filter === "blocked") return !!t.blocked_reason;
+        if (ui.filter !== "all" && t.status !== ui.filter) return false;
         return true;
       });
     }
-    function counts() {
-      const c = { all: pack.tasks.length, "To Do": 0, "In Progress": 0, Done: 0, Draft: 0, blocked: 0 };
-      for (const t of pack.tasks) {
+    function counts(src) {
+      const c = { all: src.tasks.length, "To Do": 0, "In Progress": 0, Done: 0, Draft: 0, blocked: 0 };
+      for (const t of src.tasks) {
         c[t.status] = (c[t.status] || 0) + 1;
         if (t.blocked_reason) c.blocked += 1;
       }
       return c;
     }
 
-    function render() {
-      const c = counts();
-      const t = pack.tasks.find((x) => x.id === selected);
+    function render(rootId = "frame-docket", src = pack, ui = docketUI) {
+      const root = document.getElementById(rootId);
+      if (!root) return;
+      const c = counts(src);
+      const t = src.tasks.find((x) => x.id === ui.selected);
       const filters = [["all","All issues"],["To Do","Todo"],["In Progress","In Progress"],["Done","Done"],["Draft","Draft"],["blocked","Blocked"]];
-      document.getElementById("frame-docket").innerHTML = `
-        <div class="app ${t ? "sheet-on" : ""}" id="app">
+      root.innerHTML = `
+        <div class="app ${t ? "sheet-on" : ""}">
           <aside>
-            <div class="workspace"><div class="mark-team"></div><div><h1>${esc(pack.project.name || "docket")}</h1><small>docket editor · cites this file</small></div></div>
-            ${filters.map(([id, label]) => `<button class="nav-item ${filter===id?"on":""}" data-filter="${id}"><span>${statusMark({status:id==="In Progress"?"In Progress":id==="Done"?"Done":id==="Draft"?"Draft":"To Do", blocked_reason:id==="blocked"?"x":""})}${label}</span><span class="count">${c[id]||0}</span></button>`).join("")}
+            <div class="workspace"><div class="mark-team"></div><div><h1>${esc(src.project.name || "docket")}</h1><small>docket editor · cites this file</small></div></div>
+            ${filters.map(([id, label]) => `<button class="nav-item ${ui.filter===id?"on":""}" data-filter="${id}"><span>${statusMark({status:id==="In Progress"?"In Progress":id==="Done"?"Done":id==="Draft"?"Draft":"To Do", blocked_reason:id==="blocked"?"x":""})}${label}</span><span class="count">${c[id]||0}</span></button>`).join("")}
           </aside>
           <main class="ed">
             <div class="toolbar">
-              <h2>${filter==="all"?"All issues":filter}</h2>
+              <h2>${ui.filter==="all"?"All issues":ui.filter}</h2>
               <div class="views">
-                <button type="button" data-view="list" class="${view==="list"?"on":""}" title="List">≡</button>
-                <button type="button" data-view="board" class="${view==="board"?"on":""}" title="Board">▣</button>
+                <button type="button" data-view="list" class="${ui.view==="list"?"on":""}" title="List">≡</button>
+                <button type="button" data-view="board" class="${ui.view==="board"?"on":""}" title="Board">▣</button>
               </div>
             </div>
-            <div class="list">${view==="board"?boardHTML():listHTML()}</div>
+            <div class="list">${ui.view==="board"?boardHTML(src, ui):listHTML(src, ui)}</div>
           </main>
-          ${t ? sheetHTML(t) : ""}
+          ${t ? sheetHTML(t, src) : ""}
         </div>`;
-      bind();
+      bind(root, src, ui, rootId);
     }
 
-    function listHTML() {
-      const rows = visible();
+    function listHTML(src, ui) {
+      const rows = visible(src, ui);
       if (!rows.length) return '<div class="empty">No issues.</div>';
       return rows.map((t) => `
-        <div class="rowi ${t.id===selected?"on":""}" data-id="${t.id}">
+        <div class="rowi ${t.id===ui.selected?"on":""}" data-id="${t.id}">
           ${statusMark(t)}<span class="tid">${t.id.replace("TASK-","")}</span>
           <span class="title">${esc(t.title)}</span>
-          ${t.milestone?`<span class="chip">${esc(msTitle(t.milestone))}</span>`:"<span></span>"}
+          ${t.milestone?`<span class="chip">${esc(msTitle(t.milestone, src))}</span>`:"<span></span>"}
           ${priMark(t.priority)}
         </div>`).join("");
     }
 
-    function boardHTML() {
-      const cols = filter !== "all" && filter !== "blocked" ? [filter] : COLUMNS;
+    function boardHTML(src, ui) {
+      const cols = ui.filter !== "all" && ui.filter !== "blocked" ? [ui.filter] : COLUMNS;
       return `<div class="board">${cols.map((status) => {
-        const cards = visible().filter((t) => t.status === status);
+        const cards = visible(src, ui).filter((t) => t.status === status);
         return `<section class="col" data-status="${status}">
           <div class="col-head">${statusMark({status})}${status==="To Do"?"Todo":status}<span class="count">${cards.length}</span></div>
           <div class="col-body">${cards.map((t) => `
@@ -656,7 +683,7 @@
               <div class="card-meta">
                 <span class="tid">${t.id.replace("TASK-","")}</span>
                 ${t.blocked_reason?'<span class="chip" style="color:var(--blocked)">Blocked</span>':""}
-                ${t.milestone?`<span class="chip">${esc(msTitle(t.milestone))}</span>`:""}
+                ${t.milestone?`<span class="chip">${esc(msTitle(t.milestone, src))}</span>`:""}
                 <span style="margin-left:auto">${priMark(t.priority)}</span>
               </div>
             </article>`).join("")}</div>
@@ -664,8 +691,8 @@
       }).join("")}</div>`;
     }
 
-    function sheetHTML(t) {
-      const ms = pack.milestones.map((m) => `<option value="${esc(m.id)}" ${m.id===t.milestone?"selected":""}>${esc(m.title)}</option>`).join("");
+    function sheetHTML(t, src) {
+      const ms = src.milestones.map((m) => `<option value="${esc(m.id)}" ${m.id===t.milestone?"selected":""}>${esc(m.title)}</option>`).join("");
       return `<section class="sheet">
         <div class="issue-id">${esc(t.id)}</div>
         <textarea class="title-edit" data-field="title">${esc(t.title)}</textarea>
@@ -677,28 +704,28 @@
       </section>`;
     }
 
-    function bind() {
-      document.querySelectorAll("[data-filter]").forEach((el) => el.addEventListener("click", () => { filter = el.dataset.filter; render(); }));
-      document.querySelectorAll("[data-view]").forEach((el) => el.addEventListener("click", () => { view = el.dataset.view; render(); }));
-      document.querySelectorAll(".rowi, .card").forEach((el) => el.addEventListener("click", () => { selected = el.dataset.id; render(); }));
-      document.querySelectorAll("[data-field]").forEach((el) => {
+    function bind(root, src, ui, rootId) {
+      root.querySelectorAll("[data-filter]").forEach((el) => el.addEventListener("click", () => { ui.filter = el.dataset.filter; render(rootId, src, ui); }));
+      root.querySelectorAll("[data-view]").forEach((el) => el.addEventListener("click", () => { ui.view = el.dataset.view; render(rootId, src, ui); }));
+      root.querySelectorAll(".rowi, .card").forEach((el) => el.addEventListener("click", () => { ui.selected = el.dataset.id; render(rootId, src, ui); }));
+      root.querySelectorAll("[data-field]").forEach((el) => {
         const ev = el.tagName === "SELECT" ? "change" : "blur";
         el.addEventListener(ev, () => {
-          const t = pack.tasks.find((x) => x.id === selected);
-          if (t) { t[el.dataset.field] = el.value; render(); }
+          const t = src.tasks.find((x) => x.id === ui.selected);
+          if (t) { t[el.dataset.field] = el.value; render(rootId, src, ui); }
         });
       });
-      document.querySelectorAll(".card").forEach((el) => {
+      root.querySelectorAll(".card").forEach((el) => {
         el.addEventListener("dragstart", (e) => e.dataTransfer.setData("text/plain", el.dataset.id));
       });
-      document.querySelectorAll(".col").forEach((col) => {
+      root.querySelectorAll(".col").forEach((col) => {
         col.addEventListener("dragover", (e) => { e.preventDefault(); col.classList.add("over"); });
         col.addEventListener("dragleave", () => col.classList.remove("over"));
         col.addEventListener("drop", (e) => {
           e.preventDefault();
           col.classList.remove("over");
-          const t = pack.tasks.find((x) => x.id === e.dataTransfer.getData("text/plain"));
-          if (t) { t.status = col.dataset.status; render(); }
+          const t = src.tasks.find((x) => x.id === e.dataTransfer.getData("text/plain"));
+          if (t) { t.status = col.dataset.status; render(rootId, src, ui); }
         });
       });
     }
@@ -707,7 +734,38 @@
       return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
     }
 
-    play("docket");
+    const walk = createWalk({
+      room: (id) => rooms[id],
+      add: (who, html) => add(who, html, "", "tour"),
+      say: (html) => say(html, "tour"),
+      attachHTML,
+      esc,
+      root: () => logEl("tour"),
+      scroll() { thread.scrollTop = thread.scrollHeight; },
+      setKind(id) {
+        const r = rooms[id];
+        const dl = document.querySelector(".chat-bar .dl");
+        dl.href = "./" + r.file;
+        dl.download = r.file;
+        dl.textContent = r.file;
+        rooms.tour.file = r.file;
+        const prev = document.querySelector('[data-chat="tour"] .preview');
+        if (prev) prev.textContent = r.title + " · in this thread";
+      },
+      async fetchPrim(name) {
+        const res = await fetch("./" + name);
+        return readPack(new File([await res.blob()], name));
+      },
+      async openEditor(kind, parsed) {
+        const id = "frame-tour-" + kind;
+        const tool = add("them", `<div class="editor-card" id="${id}"></div>`, "tool", "tour");
+        if (kind === "docket") render(id, parsed, tourDocketUI);
+        else renderKind(document.getElementById(id), parsed, () => {});
+        thread.scrollTop = tool.offsetTop;
+      },
+    });
+
+    play("tour");
   </script>
 </body>
 </html>
