@@ -1,0 +1,16 @@
+{
+  "created_at": "2026-08-20T01:31:40.09819Z",
+  "goal": "Sidebar keeps open prims as a scrollable thumbnail deck",
+  "notes": "Committed 9b4c17b. index.html has #app-rail-deck, .rail-thumb, .chat-thumb, Pop to sidebar / Pop back to chat. Arcade screen uses 100cqh/100cqw contain. Chat row.in-rail shows a thumb instead of the live editor.",
+  "product_id": "prim-web",
+  "proofs": [
+    "demo/docket/index.html #app-rail-deck",
+    "demo/docket/index.html .rail-thumb .chat-thumb",
+    "demo/docket/index.html arcade 100cqh contain"
+  ],
+  "schema_version": 1,
+  "status": "passed",
+  "test_commands_snapshot": [
+    "define product-specific test command before claiming green"
+  ]
+}
