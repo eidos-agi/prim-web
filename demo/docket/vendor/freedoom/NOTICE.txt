@@ -1,0 +1,4 @@
+Freedoom 0.13.0 — BSD-like license — https://freedoom.github.io/
+Official zip: https://github.com/freedoom/freedoom/releases/tag/v0.13.0
+This is not the id Software Doom IWAD. Screenshots and reuse: https://freedoom.github.io/screenshots.html
+See COPYING.txt and CREDITS.txt.

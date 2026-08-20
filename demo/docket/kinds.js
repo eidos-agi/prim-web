@@ -8,16 +8,19 @@ export function jsonl(s) {
     .map((l) => JSON.parse(l));
 }
 
-const CART = /\.(nes|z64|n64|v64)$/i;
+const CART = /\.(nes|z64|n64|v64|wad)$/i;
 
 export function detectSystem(name, buf) {
   const n = String(name || "").toLowerCase();
   if (n.endsWith(".nes")) return "nes";
   if (/\.(z64|n64|v64)$/.test(n)) return "n64";
+  if (n.endsWith(".wad")) return "doom";
   if (buf && buf[0] === 0x4E && buf[1] === 0x45 && buf[2] === 0x53) return "nes";
   if (buf && buf[0] === 0x80 && buf[1] === 0x37 && buf[2] === 0x12 && buf[3] === 0x40) return "n64";
   if (buf && buf[0] === 0x37 && buf[1] === 0x80 && buf[2] === 0x40 && buf[3] === 0x12) return "n64";
   if (buf && buf[0] === 0x37 && buf[1] === 0x12 && buf[2] === 0x40 && buf[3] === 0x80) return "n64";
+  if (buf && buf[0] === 0x49 && buf[1] === 0x57 && buf[2] === 0x41 && buf[3] === 0x44) return "doom";
+  if (buf && buf[0] === 0x50 && buf[1] === 0x57 && buf[2] === 0x41 && buf[3] === 0x44) return "doom";
   return "";
 }
 
@@ -76,7 +79,7 @@ export function parseKind(files) {
       if (typeof raw === "string" && raw.trim()) meta = { name: "cart", ...JSON.parse(raw) };
     } catch {}
     const key = Object.keys(files).find((k) => CART.test(k.replace(/^.*\//, ""))) || meta.cart || "";
-    const raw = (key && files[key]) || get(key) || get("cart.nes") || get("cart.z64");
+    const raw = (key && files[key]) || get(key) || get("cart.nes") || get("cart.z64") || get("freedoom1.wad");
     const rom = raw instanceof Uint8Array ? raw : new Uint8Array(0);
     const system = meta.system || detectSystem(key, rom) || "nes";
     return { kind, project: { name: meta.name || "cart", ...meta }, system, core: meta.core, rom };
@@ -223,6 +226,9 @@ export function answerKind(pack, q) {
     return "The pack is the bill. Ask for the total.";
   }
   if (pack.kind === "arcade") {
+    if (pack.system === "doom") {
+      return `${pack.project.name} is Freedoom — a free IWAD, not the id Software dump. Play loads EmulatorJS (prboom).`;
+    }
     if (pack.system === "n64") {
       return `${pack.project.name} is an N64 cart. Play loads EmulatorJS (mupen64plus_next). Lawful carts only.`;
     }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prim Arcade</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #000; }
+    #game { width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+  <div id="game"></div>
+  <script>
+    let started = false;
+    function start(msg) {
+      if (started || !msg || !msg.rom) return;
+      started = true;
+      const rom = msg.rom instanceof ArrayBuffer ? msg.rom : new Uint8Array(msg.rom).buffer;
+      const blob = new Blob([rom], { type: "application/octet-stream" });
+      window.EJS_player = "#game";
+      window.EJS_core = msg.core || "prboom";
+      window.EJS_gameName = msg.name || "game";
+      window.EJS_gameUrl = URL.createObjectURL(blob);
+      window.EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
+      window.EJS_startOnLoaded = true;
+      window.EJS_color = "#111111";
+      const s = document.createElement("script");
+      s.src = "https://cdn.emulatorjs.org/stable/data/loader.js";
+      document.body.appendChild(s);
+    }
+    window.addEventListener("message", (e) => {
+      if (e.source !== parent) return;
+      if (e.data && e.data.type === "rom") start(e.data);
+    });
+    parent.postMessage({ type: "ejs-ready" }, "*");
+  </script>
+</body>
+</html>

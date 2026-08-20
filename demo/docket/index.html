@@ -357,11 +357,13 @@
       width: 100%; aspect-ratio: 256 / 240; background: #000;
       position: relative;
     }
-    .kind.arcade.n64 .screen { aspect-ratio: 4 / 3; }
+    .kind.arcade.n64 .screen,
+    .kind.arcade.doom .screen { aspect-ratio: 4 / 3; }
     .kind.arcade .screen canvas {
       width: 100%; height: 100%; display: block; object-fit: contain;
       image-rendering: pixelated; image-rendering: crisp-edges;
     }
+    .kind.arcade iframe.ejs,
     .kind.arcade iframe.n64 {
       width: 100%; height: 100%; border: 0; display: block; background: #000;
     }
@@ -484,7 +486,7 @@
           <strong>Drop a .prim here</strong>
           or click to choose the file
         </div>
-        <input id="file" type="file" accept=".prim,.zip,.nes,.z64,.n64,.v64,.json,.jsonl" hidden>
+        <input id="file" type="file" accept=".prim,.zip,.nes,.z64,.n64,.v64,.wad,.json,.jsonl" hidden>
       </div>
     </div>
     <form class="composer" id="composer">
@@ -499,7 +501,7 @@
     import { FACES } from "./faces.js";
     import { createWalk } from "./tour.js";
     import { createSeal } from "./seal.js";
-    import { stopArcade } from "./arcade.js";
+    import { stopArcade, loadFreedoom } from "./arcade.js";
 
     const COLUMNS = ["To Do", "In Progress", "Done", "Draft"];
     let pack = { project: { name: "docket" }, tasks: [], milestones: [] };
@@ -748,11 +750,17 @@
     }
     async function showEditor(id, parsed) {
       const frameId = "frame-" + id;
-      const tool = add("them", `<div class="editor-card" id="${frameId}"></div>`, "tool", id);
+      let frame = document.getElementById(frameId);
+      if (!frame) {
+        add("them", `<div class="editor-card" id="${frameId}"></div>`, "tool", id);
+        frame = document.getElementById(frameId);
+      }
       drop.hidden = true;
+      if (parsed.kind === "arcade") stopArcade();
       if (parsed.kind === "docket" && id === "docket") render(frameId, parsed, docketUI);
       else if (parsed.kind === "docket" && id === "seal") render(frameId, parsed, sealDocketUI);
-      else await renderKind(document.getElementById(frameId), parsed, () => {});
+      else await renderKind(frame, parsed, () => {});
+      const tool = frame.closest(".row") || frame;
       thread.scrollTop = tool.offsetTop;
       return tool;
     }
@@ -807,13 +815,38 @@
       if (alive()) offerRetry(id);
     }
 
+    function wantsDoom(q) {
+      if (/\bfreedoom\b/.test(q)) return true;
+      if (!/\bdoom\b/.test(q)) return false;
+      return current === "arcade" || /\b(play|run|open|start|load)\b/.test(q);
+    }
+    async function playDoom() {
+      rooms.arcade.started = true;
+      rooms.arcade.manual = false;
+      if (current !== "arcade") openChat("arcade", { skipPlay: true });
+      await say("Freedoom Phase 1 — free IWAD from <a href=\"https://freedoom.github.io/screenshots.html\" target=\"_blank\" rel=\"noreferrer\">freedoom.github.io</a>, not the id Software dump.", "arcade");
+      await say("Loading the official zip, then Prim Arcade will cite freedoom1.wad.", "arcade");
+      try {
+        const doom = await loadFreedoom(unzipSync);
+        rooms.arcade.pack = doom;
+        add("me", attachHTML("freedoom1.wad", "Freedoom 0.13.0 · Phase 1"), "", "arcade");
+        await say(openedLine(doom), "arcade");
+        await showEditor("arcade", doom);
+      } catch (err) {
+        await say("Could not load Freedoom. The zip has to be on this host.", "arcade");
+      }
+    }
     async function reply(text) {
+      const q = text.toLowerCase();
+      if (wantsDoom(q)) {
+        await playDoom();
+        return;
+      }
       const r = room();
       if ((current === "tour" || current === "seal") && !r.manual) {
         await say("This tab already played. Click Try it yourself if you want to do the file.");
         return;
       }
-      const q = text.toLowerCase();
       if (!r.pack) {
         if (/download|sample|file|prim|deck|invoice|session|docket|arcade|intent|research|proof/.test(q)) {
           await say(`Here: ${sampleLink(current)}. Download it, then drop it on the thread.`);
@@ -903,7 +936,7 @@
         const files = {};
         for (const [k, v] of Object.entries(zip)) {
           const name = k.replace(/^.*\//, "");
-          files[name] = /\.(nes|z64|n64|v64)$/i.test(name) ? v : strFromU8(v);
+          files[name] = /\.(nes|z64|n64|v64|wad)$/i.test(name) ? v : strFromU8(v);
         }
         return parseKind(files);
       }

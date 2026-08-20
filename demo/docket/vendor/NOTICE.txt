@@ -1,5 +1,7 @@
 JSNES 2.1.0 — Apache License 2.0 — https://github.com/bfirsh/jsnes
 
-EmulatorJS (N64 cores, loaded from https://cdn.emulatorjs.org/stable/data/)
+EmulatorJS (N64 and Doom cores, loaded from https://cdn.emulatorjs.org/stable/data/)
 — GNU GPL-3.0 — https://github.com/EmulatorJS/EmulatorJS
-Default N64 core: mupen64plus_next. Alternate: parallel-n64.
+Default N64 core: mupen64plus_next. Doom core: prboom.
+
+Freedoom 0.13.0 — see vendor/freedoom/ — https://freedoom.github.io/
