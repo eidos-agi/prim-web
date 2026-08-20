@@ -2,6 +2,8 @@
 
 let nes = null;
 let ejs = null;
+let fitWatch = null;
+let fitOnResize = null;
 
 const N64_CORE = "mupen64plus_next";
 const DOOM_CORE = "prboom";
@@ -19,6 +21,14 @@ function loadJsnes() {
 }
 
 export function stopArcade() {
+  if (fitOnResize) {
+    window.removeEventListener("resize", fitOnResize);
+    fitOnResize = null;
+  }
+  if (fitWatch) {
+    try { fitWatch.disconnect(); } catch {}
+    fitWatch = null;
+  }
   if (nes) {
     try { nes.destroy(); } catch {}
     nes = null;
@@ -40,7 +50,7 @@ export async function renderArcade(el, pack) {
       : "Arrows move · X A · Z B · Enter start";
   el.innerHTML = `<div class="kind arcade ${system}">
     <p class="kicker">prim-arcade · ${esc(name)} · ${esc(system)}</p>
-    <div class="screen"></div>
+    <div class="fit"><div class="screen"></div></div>
     <p class="keys">${keys}</p>
   </div>`;
   const screen = el.querySelector(".screen");
@@ -56,8 +66,7 @@ async function renderNes(screen, pack) {
   });
   nes.loadROM(pack.rom);
   const fit = () => { try { nes.fitInParent(); } catch {} };
-  queueMicrotask(fit);
-  requestAnimationFrame(fit);
+  watchFit(screen, fit);
 }
 
 function renderEjs(screen, pack) {
@@ -79,6 +88,8 @@ function bootEjs(screen, pack) {
   iframe.className = "ejs";
   iframe.title = pack.system === "doom" ? "Prim Arcade Doom" : "Prim Arcade N64";
   iframe.setAttribute("allow", "autoplay; gamepad; fullscreen; cross-origin-isolated");
+  iframe.style.background = "#000";
+  iframe.style.colorScheme = "dark";
   iframe.src = "./ejs-frame.html";
   ejs = iframe;
   const rom = pack.rom;
@@ -102,6 +113,26 @@ function bootEjs(screen, pack) {
     }
   });
   screen.appendChild(iframe);
+}
+
+function watchFit(screen, onFit) {
+  if (fitWatch) {
+    try { fitWatch.disconnect(); } catch {}
+    fitWatch = null;
+  }
+  const box = screen.closest(".fit") || screen;
+  const run = () => {
+    onFit();
+  };
+  if (typeof ResizeObserver === "function") {
+    fitWatch = new ResizeObserver(run);
+    fitWatch.observe(box);
+  }
+  if (fitOnResize) window.removeEventListener("resize", fitOnResize);
+  fitOnResize = run;
+  window.addEventListener("resize", fitOnResize, { passive: true });
+  queueMicrotask(run);
+  requestAnimationFrame(run);
 }
 
 export async function loadFreedoom(unzip) {

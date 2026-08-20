@@ -44,6 +44,7 @@
       grid-template-columns: 300px minmax(0, 1fr);
       background: var(--paper);
       color: var(--ink);
+      color-scheme: light;
       font-family: "Instrument Sans", "Segoe UI", sans-serif;
       -webkit-font-smoothing: antialiased;
     }
@@ -57,6 +58,7 @@
       min-height: 0;
       background: #08090a;
       color: #f7f8f8;
+      color-scheme: dark;
       border-left: 1px solid #232326;
     }
     body.docked .app-rail { display: flex; }
@@ -84,21 +86,92 @@
       font-size: 12px;
       cursor: pointer;
     }
-    .app-rail-body { flex: 1; min-height: 0; }
-    .app-rail-body .editor-card { height: 100%; width: 100%; }
+    .app-rail-deck {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 10px 12px 12px;
+      border-bottom: 1px solid #232326;
+      flex: none;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: thin;
+    }
+    .app-rail-deck[hidden] { display: none; }
+    .rail-thumb {
+      flex: 0 0 122px;
+      width: 122px;
+      padding: 0;
+      border: 1px solid #232326;
+      border-radius: 8px;
+      background: #141516;
+      color: #f7f8f8;
+      cursor: pointer;
+      scroll-snap-align: start;
+      overflow: hidden;
+      text-align: left;
+      font: inherit;
+    }
+    .rail-thumb.on { border-color: #5e6ad2; box-shadow: inset 0 0 0 1px #5e6ad2; }
+    .rail-thumb-preview {
+      display: block;
+      height: 68px;
+      background: #0c0d0e;
+      position: relative;
+    }
+    .rail-thumb-preview.kind-bill,
+    .rail-thumb-preview.kind-paper { background: #fffcf8; }
+    .rail-thumb-preview.kind-arcade { background: #000; }
+    .rail-thumb-preview.kind-opff { background: #0a0b0c; }
+    .rail-thumb-preview.kind-deck { background: #0c0d0e; }
+    .rail-thumb-preview.kind-arcade::after,
+    .rail-thumb-preview.kind-deck::after {
+      content: "";
+      position: absolute; inset: 14px 22px;
+      border: 1px solid #3a3a40;
+      background: #111;
+    }
+    .rail-thumb-preview.kind-bill::after,
+    .rail-thumb-preview.kind-paper::after {
+      content: "";
+      position: absolute; inset: 12px 16px 18px;
+      border-bottom: 1px solid #e4e2dc;
+      background: #fff;
+    }
+    .rail-thumb-preview.kind-docket::after,
+    .rail-thumb-preview.kind-opff::after {
+      content: "";
+      position: absolute; inset: 16px 10px 20px;
+      background: repeating-linear-gradient(90deg, #1c1c1f 0 18px, transparent 18px 24px);
+    }
+    .rail-thumb-cap {
+      display: block;
+      padding: 5px 7px 6px;
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .app-rail-body { flex: 1; min-height: 0; overflow: hidden; background: #08090a; }
+    .app-rail-body .editor-card { height: 100%; width: 100%; background: #08090a; }
+    #app-rail-hold { display: none; }
+    .chat-bar .who { flex: 1; min-width: 0; }
     .chat-bar .dock {
       margin-left: auto;
       height: 32px;
-      padding: 0 10px;
-      border: 1px solid var(--line);
+      padding: 0 12px;
+      border: 1px solid var(--ink);
       border-radius: 10px;
-      background: var(--raised);
+      background: var(--ink);
+      color: var(--paper);
       font: inherit;
       font-size: 12px;
+      font-weight: 500;
       cursor: pointer;
+      white-space: nowrap;
     }
-    .chat-bar .dock[hidden] { display: none; }
-    .chat-bar .dl { margin-left: 8px; }
+    .chat-bar .dock:disabled { opacity: 0.32; cursor: default; }
+    .chat-bar .dl { margin-left: 8px; flex: none; }
     .inbox {
       display: flex; flex-direction: column; min-height: 0;
       border-right: 1px solid var(--line); background: var(--paper);
@@ -249,7 +322,58 @@
     .beat button:hover { opacity: 0.88; }
     .beat button[disabled] { opacity: 0.28; cursor: default; }
     .row.tool .bubble { padding: 0; overflow: hidden; width: min(100%, 72rem); background: #08090a; border-color: var(--ink); }
-    .editor-card { height: min(58vh, 620px); background: #08090a; }
+    .embed-bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      height: 36px; padding: 0 10px;
+      background: #141516; color: #d0d6e0; color-scheme: dark;
+      font-size: 12px; border-bottom: 1px solid #232326;
+    }
+    .embed-bar button {
+      height: 26px; padding: 0 10px;
+      border: 1px solid #3a3a40; border-radius: 8px;
+      background: #08090a; color: #f7f8f8;
+      font: inherit; font-weight: 500; cursor: pointer; white-space: nowrap;
+    }
+    .app-rail-body .embed-bar { display: none; }
+    .chat-thumb {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      width: min(240px, 100%);
+      padding: 6px;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      text-align: left;
+    }
+    .chat-thumb-preview {
+      width: 76px;
+      height: 46px;
+      border-radius: 5px;
+      flex: none;
+      background: #0c0d0e;
+      border: 1px solid #232326;
+    }
+    .chat-thumb-preview.kind-bill,
+    .chat-thumb-preview.kind-paper { background: #fffcf8; }
+    .chat-thumb-preview.kind-arcade { background: #000; }
+    .chat-thumb-cap { display: grid; gap: 2px; min-width: 0; }
+    .chat-thumb-cap b { font-weight: 500; font-size: 13px; }
+    .chat-thumb-cap small { color: var(--subtle); font-size: 11px; }
+    .row.tool.in-rail .bubble {
+      width: auto;
+      max-width: 22rem;
+      padding: 4px;
+      background: var(--raised);
+      color: var(--ink);
+      color-scheme: light;
+      border-color: var(--line);
+    }
+    .row.tool.in-rail .embed-bar { display: none; }
+    .row.tool.in-rail .chat-thumb { display: flex; }
+    .editor-card { height: min(58vh, 620px); background: #08090a; color-scheme: dark; }
     .app { width: 100%; min-width: 0; height: 100%; }
     .app {
       display: grid;
@@ -257,6 +381,7 @@
       height: 100%;
       background: var(--bg);
       color: var(--text);
+      color-scheme: dark;
       font-family: Inter, "SF Pro Text", sans-serif;
       font-size: 13px;
     }
@@ -325,8 +450,14 @@
     .notes { min-height: 140px; color: #d0d6e0; font-size: 14px; line-height: 1.55; }
     .empty { color: var(--faint); padding: 28px 16px; }
     .row.tool .bubble { width: 100%; }
-    .editor-card { height: min(70vh, 820px); }
-    .kind { height: 100%; min-height: 0; }
+    .editor-card { height: min(70vh, 820px); background: #08090a; }
+    /* Embeds paint their own surface. Host --paper never shows through. */
+    .kind {
+      height: 100%;
+      min-height: 0;
+      background: #08090a;
+      color-scheme: dark;
+    }
     .kind.deck {
       display: grid; grid-template-columns: 200px minmax(0, 1fr); height: 100%;
       background: #0c0d0e; color: #f7f8f8; font-family: Inter, "SF Pro Text", sans-serif;
@@ -351,7 +482,8 @@
     .kind.deck .slide-title { font-size: 2rem; font-weight: 600; letter-spacing: -0.03em; min-height: 4rem; margin: 12px 0; }
     .kind.deck .slide-body { flex: 1; font-size: 1.2rem; line-height: 1.45; }
     .kind.bill {
-      background: #fffcf8; color: #111; height: 100%; overflow: auto;
+      background: #fffcf8; color: #111; color-scheme: light;
+      height: 100%; overflow: auto;
       padding: 28px 32px; font-family: "Instrument Sans", sans-serif;
     }
     .kind.bill h2 { margin: 0 0 16px; letter-spacing: -0.03em; font-weight: 600; }
@@ -405,25 +537,62 @@
     .row.tool:has(.kind.opff) .stack,
     .row.tool:has(.kind.opff) .bubble,
     .row.tool:has(.kind.opff) .editor-card { width: 100%; max-width: none; }
-    .editor-card:has(.kind.arcade) { height: auto; }
+    .editor-card:has(.kind.arcade) {
+      height: calc(100dvh - 12rem);
+      max-height: calc(100dvh - 12rem);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    }
+    .app-rail-body .editor-card:has(.kind.arcade) {
+      height: 100%;
+      max-height: 100%;
+    }
     .editor-card:has(.kind.opff) { height: min(78vh, 760px); }
     .kind.arcade {
-      height: auto; display: flex; flex-direction: column;
-      background: #0c0d0e; color: #f7f8f8; padding: 12px 14px 10px;
+      --aw: 256;
+      --ah: 240;
+      flex: 1;
+      min-height: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #0c0d0e;
+      color: #f7f8f8;
+      padding: 10px 12px 8px;
+    }
+    .kind.arcade.n64,
+    .kind.arcade.doom { --aw: 4; --ah: 3; }
+    .kind.arcade .kicker,
+    .kind.arcade .keys { flex: none; }
+    .kind.arcade .fit {
+      flex: 1 1 auto;
+      min-height: 0;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      container-type: size;
     }
     .kind.arcade .screen {
-      width: 100%; aspect-ratio: 256 / 240; background: #000;
       position: relative;
+      background: #000;
+      aspect-ratio: var(--aw) / var(--ah);
+      width: min(100cqw, calc(100cqh * var(--aw) / var(--ah)));
+      height: min(100cqh, calc(100cqw * var(--ah) / var(--aw)));
+      max-width: 100%;
+      max-height: 100%;
     }
-    .kind.arcade.n64 .screen,
-    .kind.arcade.doom .screen { aspect-ratio: 4 / 3; }
     .kind.arcade .screen canvas {
       width: 100%; height: 100%; display: block; object-fit: contain;
       image-rendering: pixelated; image-rendering: crisp-edges;
     }
     .kind.arcade iframe.ejs,
     .kind.arcade iframe.n64 {
-      width: 100%; height: 100%; border: 0; display: block; background: #000;
+      width: 100%; height: 100%; border: 0; display: block;
+      background: #000; color-scheme: dark;
       contain: strict; transform: translateZ(0);
     }
     .kind.arcade .go {
@@ -442,7 +611,7 @@
     }
     .kind.paper {
       height: 100%; overflow: auto; padding: 28px 32px;
-      background: #fffcf8; color: #111;
+      background: #fffcf8; color: #111; color-scheme: light;
       font-family: "Instrument Sans", "Segoe UI", sans-serif;
     }
     .kind.paper h2 { margin: 0 0 12px; letter-spacing: -0.03em; font-weight: 600; }
@@ -530,7 +699,7 @@
       <button class="menu" id="menu" type="button" aria-label="Chats">☰</button>
       <a class="home" href="/"><img src="../../mark.png" alt="Prim"></a>
       <div class="who"><b id="title">All four</b><small id="sub">bot · click through every kind</small></div>
-      <button class="dock" id="dock-btn" type="button" hidden>Pop out</button>
+      <button class="dock" id="dock-btn" type="button" disabled>Pop to sidebar</button>
       <a class="dl" href="./atlas.docket.prim" download="atlas.docket.prim">four prims</a>
     </div>
     <div class="thread" id="thread">
@@ -560,9 +729,11 @@
   <aside class="app-rail" id="app-rail" hidden>
     <div class="app-rail-bar">
       <div class="who"><b id="app-rail-title">App</b><small id="app-rail-sub">cites the pack</small></div>
-      <button type="button" id="app-rail-close">Back in chat</button>
+      <button type="button" id="app-rail-close">Pop back to chat</button>
     </div>
+    <div class="app-rail-deck" id="app-rail-deck" hidden></div>
     <div class="app-rail-body" id="app-rail-body"></div>
+    <div id="app-rail-hold" hidden></div>
   </aside>
   <script type="module">
     import { unzipSync, strFromU8 } from "https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js";
@@ -756,63 +927,176 @@
     const appRailBody = document.getElementById("app-rail-body");
     const dockBtn = document.getElementById("dock-btn");
 
+    function toolMount(frameId) {
+      return `<div class="embed-bar"><span>Prim tool</span><button type="button" class="pop-side">Pop to sidebar</button></div><button type="button" class="chat-thumb" hidden data-frame="${frameId}"><span class="chat-thumb-preview"></span><span class="chat-thumb-cap"><b></b><small>in sidebar</small></span></button><div class="editor-card" id="${frameId}"></div>`;
+    }
+    function activeFrame(id = current) {
+      const r = rooms[id] || {};
+      if (r.frameId) {
+        const named = document.getElementById(r.frameId);
+        if (named) return named;
+      }
+      return document.getElementById("frame-" + id);
+    }
+    const shelf = { items: [], active: null };
+    const appRailHold = document.getElementById("app-rail-hold");
+    const appRailDeck = document.getElementById("app-rail-deck");
+
+    function frameKind(frame) {
+      const kind = frame?.querySelector(".kind");
+      if (!kind) return "prim";
+      return [...kind.classList].find((c) => c !== "kind") || "prim";
+    }
+    function shelfHas(frameId) {
+      return shelf.items.some((item) => item.frameId === frameId);
+    }
+    function shelfHasArcade() {
+      return shelf.items.some((item) => document.getElementById(item.frameId)?.querySelector(".kind.arcade"));
+    }
+    function paintDock() {
+      const frame = activeFrame();
+      const onShelf = !!(frame && shelfHas(frame.id));
+      dockBtn.hidden = false;
+      dockBtn.disabled = !frame && !shelf.items.length;
+      dockBtn.textContent = onShelf ? "Pop back to chat" : "Pop to sidebar";
+      dockBtn.setAttribute("aria-pressed", onShelf ? "true" : "false");
+      document.querySelectorAll(".pop-side").forEach((btn) => {
+        const card = btn.closest(".row.tool")?.querySelector(".editor-card");
+        btn.textContent = card && shelfHas(card.id) ? "Pop back to chat" : "Pop to sidebar";
+      });
+    }
+    function paintDeck() {
+      appRailDeck.hidden = shelf.items.length < 2;
+      appRailDeck.innerHTML = shelf.items.map((item) => `
+        <button type="button" class="rail-thumb${item.frameId === shelf.active ? " on" : ""}" data-frame="${esc(item.frameId)}">
+          <span class="rail-thumb-preview kind-${esc(item.kind)}"></span>
+          <span class="rail-thumb-cap">${esc(item.title)}</span>
+        </button>`).join("");
+      const on = appRailDeck.querySelector(".rail-thumb.on");
+      if (on) on.scrollIntoView({ inline: "nearest", block: "nearest", behavior: "smooth" });
+    }
+    function markChatThumb(home, item, on) {
+      if (!home) return;
+      home.classList.toggle("in-rail", on);
+      home.hidden = false;
+      const thumb = home.querySelector(".chat-thumb");
+      if (!thumb) return;
+      thumb.hidden = !on;
+      const preview = thumb.querySelector(".chat-thumb-preview");
+      if (preview) preview.className = "chat-thumb-preview kind-" + item.kind;
+      const title = thumb.querySelector("b");
+      if (title) title.textContent = item.title;
+      const sub = thumb.querySelector("small");
+      if (sub) sub.textContent = "in sidebar · " + item.kind;
+    }
     function parkFrame(frame) {
       if (!frame || !frame._home) return;
       const bubble = frame._home.querySelector(".bubble");
       if (bubble && frame.parentElement !== bubble) bubble.appendChild(frame);
     }
-
-    function closeDock() {
-      const sitting = appRailBody.firstElementChild;
-      if (sitting) {
-        parkFrame(sitting);
-        if (sitting._home) sitting._home.hidden = false;
-      }
-      document.body.classList.remove("docked");
-      appRail.hidden = true;
-      dockBtn.textContent = "Pop out";
-    }
-
-    function dockFrame(frame, title, sub) {
-      if (!frame) return;
-      const sitting = appRailBody.firstElementChild;
-      if (sitting && sitting !== frame) parkFrame(sitting);
-      const home = frame.closest(".row.tool");
-      if (home) {
-        frame._home = home;
-        home.hidden = true;
-      }
-      if (frame.parentElement !== appRailBody) appRailBody.replaceChildren(frame);
-      document.getElementById("app-rail-title").textContent = title || "App";
-      document.getElementById("app-rail-sub").textContent = sub || "cites the pack";
+    function openRail() {
       appRail.hidden = false;
       document.body.classList.add("docked");
-      dockBtn.hidden = false;
-      dockBtn.textContent = "Back in chat";
     }
-
+    function closeRail() {
+      document.body.classList.remove("docked");
+      appRail.hidden = true;
+      shelf.active = null;
+      paintDeck();
+      paintDock();
+    }
+    function selectShelf(frameId) {
+      const next = document.getElementById(frameId);
+      if (!next) return;
+      const sitting = appRailBody.firstElementChild;
+      if (sitting && sitting !== next) appRailHold.appendChild(sitting);
+      if (next.parentElement !== appRailBody) appRailBody.appendChild(next);
+      shelf.active = frameId;
+      const item = shelf.items.find((row) => row.frameId === frameId);
+      document.getElementById("app-rail-title").textContent = item?.title || "App";
+      document.getElementById("app-rail-sub").textContent = (item?.kind || "prim") + " · chat still points this";
+      openRail();
+      paintDeck();
+      paintDock();
+    }
+    function dockFrame(frame, title, sub) {
+      if (!frame) return;
+      const home = frame.closest(".row.tool") || frame._home;
+      if (home) frame._home = home;
+      const kind = frameKind(frame) || String(sub || "").split(" ")[0] || "prim";
+      const name = title || kind;
+      let item = shelf.items.find((row) => row.frameId === frame.id);
+      if (!item) {
+        item = { frameId: frame.id, title: name, kind, roomId: current, home };
+        shelf.items.push(item);
+      } else {
+        item.title = name;
+        item.kind = kind;
+        item.home = home || item.home;
+      }
+      markChatThumb(item.home, item, true);
+      selectShelf(frame.id);
+    }
+    function popFrame(frameId) {
+      const item = shelf.items.find((row) => row.frameId === frameId);
+      const frame = document.getElementById(frameId);
+      shelf.items = shelf.items.filter((row) => row.frameId !== frameId);
+      if (item?.home) markChatThumb(item.home, item, false);
+      if (frame) parkFrame(frame);
+      if (item?.roomId && rooms[item.roomId]) rooms[item.roomId].docked = shelf.items.some((row) => row.roomId === item.roomId);
+      if (!shelf.items.length) {
+        closeRail();
+        return;
+      }
+      const next = shelf.active === frameId ? shelf.items[shelf.items.length - 1].frameId : shelf.active;
+      selectShelf(next);
+    }
+    function popRoom(id) {
+      shelf.items.filter((row) => row.roomId === id).forEach((row) => popFrame(row.frameId));
+    }
     function syncDock() {
       const r = room();
-      const frame = document.getElementById("frame-" + current);
-      dockBtn.hidden = !frame;
-      if (frame && r.pack && r.docked !== false) {
-        dockFrame(frame, r.pack.project?.name || r.title, (r.pack.kind || "prim") + " · chat still points this");
-      } else {
-        closeDock();
-        if (frame) dockBtn.textContent = "Pop out";
+      const frame = activeFrame();
+      if (frame && r.docked !== false) {
+        dockFrame(frame, r.pack?.project?.name || r.title, (r.pack?.kind || "prim") + " · chat still points this");
+        return;
+      }
+      if (frame) popFrame(frame.id);
+      else if (shelf.items.length) {
+        openRail();
+        paintDeck();
+        paintDock();
       }
     }
-
     function toggleDock() {
-      const r = room();
-      r.docked = r.docked === false;
-      syncDock();
+      const frame = activeFrame();
+      if (frame && shelfHas(frame.id)) {
+        room().docked = false;
+        popFrame(frame.id);
+        return;
+      }
+      if (!frame) return;
+      room().docked = true;
+      dockFrame(frame, room().pack?.project?.name || room().title, (room().pack?.kind || "prim") + " · chat still points this");
     }
 
     dockBtn.addEventListener("click", toggleDock);
     document.getElementById("app-rail-close").addEventListener("click", () => {
-      room().docked = false;
-      syncDock();
+      if (shelf.active) popFrame(shelf.active);
+      else {
+        room().docked = false;
+        syncDock();
+      }
+    });
+    document.addEventListener("click", (e) => {
+      const thumb = e.target.closest(".rail-thumb, .chat-thumb");
+      if (thumb?.dataset.frame) {
+        const item = shelf.items.find((row) => row.frameId === thumb.dataset.frame);
+        if (item?.roomId && item.roomId !== current) openChat(item.roomId, { skipPlay: true });
+        selectShelf(thumb.dataset.frame);
+        return;
+      }
+      if (e.target.closest(".pop-side")) toggleDock();
     });
 
     function openChat(id, opts = {}) {
@@ -828,7 +1112,7 @@
       dl.textContent = r.file;
       document.body.classList.remove("show-chats");
       document.querySelectorAll(".log").forEach((el) => { el.hidden = el.id !== "log-" + id; });
-      if (id !== "arcade") stopArcade();
+      if (id !== "arcade" && !shelfHasArcade()) stopArcade();
       drop.hidden = !(r.manual && !r.pack);
       if (id === "docket") pack = r.pack || { project: { name: "docket" }, tasks: [], milestones: [] };
       if (!r.started && !opts.skipPlay) play(id);
@@ -885,9 +1169,10 @@
       const frameId = "frame-" + id;
       let frame = document.getElementById(frameId);
       if (!frame) {
-        add("them", `<div class="editor-card" id="${frameId}"></div>`, "tool", id);
+        add("them", toolMount(frameId), "tool", id);
         frame = document.getElementById(frameId);
       }
+      rooms[id].frameId = frameId;
       drop.hidden = true;
       if (parsed.kind === "arcade") stopArcade();
       if (parsed.kind === "docket" && id === "docket") render(frameId, parsed, docketUI);
@@ -896,6 +1181,7 @@
       rooms[id].surface = frame._surface || null;
       rooms[id].docked = rooms[id].docked !== false;
       if (id === current) syncDock();
+      else paintDock();
       const tool = frame.closest(".row") || frame;
       if (!document.body.classList.contains("docked")) thread.scrollTop = tool.offsetTop;
       return tool;
@@ -916,7 +1202,7 @@
       r.manual = true;
       r.started = true;
       if (id === "arcade") stopArcade();
-      if (id === current) closeDock();
+      popRoom(id);
       if (id === "docket") pack = { project: { name: "docket" }, tasks: [], milestones: [] };
       if (id === "tour") { r.file = "atlas.docket.prim"; r.size = "2 KB"; }
       logEl(id).innerHTML = "";
@@ -1031,7 +1317,9 @@
         rooms.tour.pack = parsed;
         await say(openedLine(parsed), "tour");
         const id = "frame-tour-" + parsed.kind;
-        add("them", `<div class="editor-card" id="${id}"></div>`, "tool", "tour");
+        add("them", toolMount(id), "tool", "tour");
+        rooms.tour.frameId = id;
+        rooms.tour.pack = parsed;
         if (parsed.kind === "docket") render(id, parsed, tourDocketUI);
         else await renderKind(document.getElementById(id), parsed, () => {});
         const frame = document.getElementById(id);
@@ -1242,7 +1530,8 @@
       tryYourself: () => offerRetry("seal"),
       fetchPrim,
       showSeal({ file, records }) {
-        const tool = add("them", `<div class="editor-card" id="frame-seal"></div>`, "tool", "seal");
+        const tool = add("them", toolMount("frame-seal"), "tool", "seal");
+        rooms.seal.frameId = "frame-seal";
         document.getElementById("frame-seal").innerHTML = `
           <div class="kind seal">
             <p class="kicker">docket-editor · validate</p>
@@ -1257,7 +1546,8 @@
       showExposed(parsed) {
         let frame = document.getElementById("frame-seal");
         if (!frame) {
-          add("them", `<div class="editor-card" id="frame-seal"></div>`, "tool", "seal");
+          add("them", toolMount("frame-seal"), "tool", "seal");
+          rooms.seal.frameId = "frame-seal";
           frame = document.getElementById("frame-seal");
         }
         frame.innerHTML = `<div class="mcp-bar"><b>docket-webmcp</b> · connector/talk · local model can operate this editor</div><div id="frame-seal-docket" style="height:calc(100% - 38px)"></div>`;
@@ -1289,7 +1579,9 @@
       fetchPrim,
       async openEditor(kind, parsed) {
         const id = "frame-tour-" + kind;
-        add("them", `<div class="editor-card" id="${id}"></div>`, "tool", "tour");
+        add("them", toolMount(id), "tool", "tour");
+        rooms.tour.frameId = id;
+        rooms.tour.pack = parsed;
         if (kind === "docket") render(id, parsed, tourDocketUI);
         else await renderKind(document.getElementById(id), parsed, () => {});
         const frame = document.getElementById(id);
@@ -1297,12 +1589,15 @@
         rooms.tour.docked = true;
         if (current === "tour" && frame) {
           dockFrame(frame, parsed.project?.name || kind, kind + " · chat still points this");
+        } else {
+          paintDock();
         }
       },
     });
 
     mountPrimChats();
     loadReg();
+    paintDock();
     play("tour");
   </script>
 </body>

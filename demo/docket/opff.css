@@ -4,6 +4,7 @@
   grid-template-columns: 196px minmax(0, 1fr);
   background: #0c0d0e;
   color: #f7f8f8;
+  color-scheme: dark;
   font-family: Inter, "SF Pro Text", sans-serif;
   font-size: 13px;
   overflow: hidden;
