@@ -17,6 +17,6 @@ Demo: [`/demo/docket/`](https://prim.eidosagi.com/demo/docket/) — All four wal
 
 Prim Browser:
 - Framed preview (not the product path): [`/examples/docket/`](https://prim.eidosagi.com/examples/docket/)
-- Companion cockpit: [`/examples/prim/`](https://prim.eidosagi.com/examples/prim/) — bind to the local Chromium companion.
+- Companion cockpit: [`/examples/prim-browser/`](https://prim.eidosagi.com/examples/prim-browser/) — bind to the local Chromium companion.
 
 MIT — Eidos AGI
