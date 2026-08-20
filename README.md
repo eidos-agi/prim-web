@@ -15,6 +15,8 @@ Open `index.html` or serve the repo root.
 
 Demo: [`/demo/docket/`](https://prim.eidosagi.com/demo/docket/) — All four walks the kinds. Seal is the first connector. Arcade is Prim Arcade: a JSNES surface on a cart prim.
 
-Prim Browser: [`/examples/docket/`](https://prim.eidosagi.com/examples/docket/) — browser prim in the page (on your machine). Aperture is hosted Chromium.
+Prim Browser:
+- Framed preview (not the product path): [`/examples/docket/`](https://prim.eidosagi.com/examples/docket/)
+- Companion cockpit: [`/examples/prim/`](https://prim.eidosagi.com/examples/prim/) — bind to the local Chromium companion.
 
 MIT — Eidos AGI

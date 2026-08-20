@@ -158,6 +158,19 @@
   display: none;
 }
 
+.prim-browser__stage-body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--pb-muted);
+  font-size: 0.85rem;
+  background: var(--pb-frame);
+}
+
 .prim-browser__status {
   display: flex;
   gap: 0.75rem;
