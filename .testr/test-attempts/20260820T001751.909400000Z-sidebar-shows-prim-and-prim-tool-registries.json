@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-08-20T00:17:51.90949Z",
+  "goal": "Sidebar shows Prim and Prim Tool registries",
+  "notes": "Local 8766: 14 types including emf through session, 4 tools. Clicking docket-editor opened Docket and highlighted both rows.",
+  "product_id": "prim-web",
+  "proofs": [
+    "14 types 4 tools headings Prim registry / Prim tool registry",
+    "docket-editor click -\u003e title Docket, rows on"
+  ],
+  "schema_version": 1,
+  "status": "passed",
+  "test_commands_snapshot": [
+    "define product-specific test command before claiming green"
+  ]
+}
