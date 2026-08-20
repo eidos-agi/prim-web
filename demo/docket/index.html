@@ -344,12 +344,21 @@
       color: #8a8f98; font-size: 12px; font-family: Inter, "SF Pro Text", sans-serif;
     }
     .mcp-bar b { color: #f7f8f8; font-weight: 500; }
+    .row.tool:has(.kind.arcade) { width: 100%; max-width: none; }
+    .row.tool:has(.kind.arcade) .stack,
+    .row.tool:has(.kind.arcade) .bubble,
+    .row.tool:has(.kind.arcade) .editor-card { width: 100%; max-width: none; }
+    .editor-card:has(.kind.arcade) { height: auto; }
     .kind.arcade {
-      height: 100%; display: flex; flex-direction: column;
+      height: auto; display: flex; flex-direction: column;
       background: #0c0d0e; color: #f7f8f8; padding: 12px 14px 10px;
     }
     .kind.arcade .screen {
-      flex: 1; min-height: 240px; background: #000;
+      width: 100%; aspect-ratio: 256 / 240; background: #000;
+    }
+    .kind.arcade .screen canvas {
+      width: 100%; height: 100%; display: block; object-fit: contain;
+      image-rendering: pixelated; image-rendering: crisp-edges;
     }
     .kind.arcade .keys {
       margin: 8px 0 0; font-family: "IBM Plex Mono", monospace;

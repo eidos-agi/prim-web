@@ -35,7 +35,9 @@ export async function renderArcade(el, pack) {
     onError: (e) => { screen.dataset.err = String(e && e.message ? e.message : e); },
   });
   nes.loadROM(pack.rom);
-  queueMicrotask(() => { try { nes.fitInParent(); } catch {} });
+  const fit = () => { try { nes.fitInParent(); } catch {} };
+  queueMicrotask(fit);
+  requestAnimationFrame(fit);
 }
 
 function esc(s) {
