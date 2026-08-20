@@ -355,10 +355,25 @@
     }
     .kind.arcade .screen {
       width: 100%; aspect-ratio: 256 / 240; background: #000;
+      position: relative;
     }
+    .kind.arcade.n64 .screen { aspect-ratio: 4 / 3; }
     .kind.arcade .screen canvas {
       width: 100%; height: 100%; display: block; object-fit: contain;
       image-rendering: pixelated; image-rendering: crisp-edges;
+    }
+    .kind.arcade iframe.n64 {
+      width: 100%; height: 100%; border: 0; display: block; background: #000;
+    }
+    .kind.arcade .go {
+      width: 100%; height: 100%; border: 0; cursor: pointer;
+      background: #111; color: #f7f8f8; font: inherit; font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .kind.arcade .go:hover { background: #18191b; }
+    .kind.arcade .empty {
+      margin: 0; height: 100%; display: grid; place-items: center;
+      padding: 24px; color: #8a8f98; text-align: center;
     }
     .kind.arcade .keys {
       margin: 8px 0 0; font-family: "IBM Plex Mono", monospace;
@@ -469,7 +484,7 @@
           <strong>Drop a .prim here</strong>
           or click to choose the file
         </div>
-        <input id="file" type="file" accept=".prim,.zip,.nes,.json,.jsonl" hidden>
+        <input id="file" type="file" accept=".prim,.zip,.nes,.z64,.n64,.v64,.json,.jsonl" hidden>
       </div>
     </div>
     <form class="composer" id="composer">
@@ -480,7 +495,7 @@
   </section>
   <script type="module">
     import { unzipSync, strFromU8 } from "https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js";
-    import { parseKind, renderKind, answerKind } from "./kinds.js";
+    import { parseKind, renderKind, answerKind, detectSystem } from "./kinds.js";
     import { FACES } from "./faces.js";
     import { createWalk } from "./tour.js";
     import { createSeal } from "./seal.js";
@@ -553,10 +568,10 @@
       arcade: {
         title: "Arcade", sub: "bot · Prim Arcade",
         file: "prim.arcade.prim", size: "686 B",
-        preview: "The cart is the file.",
+        preview: "NES or N64. The cart is the file.",
         open: "Don’t send the ROM as an attachment dump.",
-        offer: "Send the arcade prim. Prim Arcade cites the cart.",
-        after: "Click the cabinet so keys reach it. Arrows, X, Z, Enter.",
+        offer: "Send the arcade prim. NES opens on JSNES. N64 waits for Play, then EmulatorJS.",
+        after: "NES: arrows, X, Z, Enter. N64: Play loads the core. Lawful carts only.",
         started: false, pack: null,
       },
       seal: {
@@ -814,15 +829,16 @@
 
     async function readPack(f) {
       const buf = new Uint8Array(await f.arrayBuffer());
-      if (buf[0] === 0x4E && buf[1] === 0x45 && buf[2] === 0x53) {
-        return { kind: "arcade", project: { name: f.name || "cart" }, system: "nes", rom: buf };
+      const system = detectSystem(f.name, buf);
+      if (system) {
+        return { kind: "arcade", project: { name: f.name || "cart" }, system, rom: buf };
       }
       if (buf[0] === 0x50 && buf[1] === 0x4b) {
         const zip = unzipSync(buf);
         const files = {};
         for (const [k, v] of Object.entries(zip)) {
           const name = k.replace(/^.*\//, "");
-          files[name] = name.endsWith(".nes") ? v : strFromU8(v);
+          files[name] = /\.(nes|z64|n64|v64)$/i.test(name) ? v : strFromU8(v);
         }
         return parseKind(files);
       }

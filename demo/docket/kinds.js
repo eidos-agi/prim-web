@@ -8,6 +8,19 @@ export function jsonl(s) {
     .map((l) => JSON.parse(l));
 }
 
+const CART = /\.(nes|z64|n64|v64)$/i;
+
+export function detectSystem(name, buf) {
+  const n = String(name || "").toLowerCase();
+  if (n.endsWith(".nes")) return "nes";
+  if (/\.(z64|n64|v64)$/.test(n)) return "n64";
+  if (buf && buf[0] === 0x4E && buf[1] === 0x45 && buf[2] === 0x53) return "nes";
+  if (buf && buf[0] === 0x80 && buf[1] === 0x37 && buf[2] === 0x12 && buf[3] === 0x40) return "n64";
+  if (buf && buf[0] === 0x37 && buf[1] === 0x80 && buf[2] === 0x40 && buf[3] === 0x12) return "n64";
+  if (buf && buf[0] === 0x37 && buf[1] === 0x12 && buf[2] === 0x40 && buf[3] === 0x80) return "n64";
+  return "";
+}
+
 export function detectKind(files) {
   const has = (name) => {
     const key = Object.keys(files).find((k) => k.replace(/^.*\//, "") === name);
@@ -17,7 +30,7 @@ export function detectKind(files) {
   if (has("slides.jsonl")) return "deck";
   if (has("lines.jsonl")) return "invoice";
   if (has("turns.jsonl")) return "session";
-  if (has("cart.nes") || has("arcade.json") || Object.keys(files).some((k) => k.replace(/^.*\//, "").endsWith(".nes"))) {
+  if (has("arcade.json") || Object.keys(files).some((k) => CART.test(k.replace(/^.*\//, "")))) {
     return "arcade";
   }
   const face = files["index.md"] || files[Object.keys(files).find((k) => k.endsWith("index.md")) || ""] || "";
@@ -57,15 +70,16 @@ export function parseKind(files) {
     return { kind, project: { name: meta.title || "session", ...meta }, turns: jsonl(get("turns.jsonl")) };
   }
   if (kind === "arcade") {
-    let meta = { name: "cart", system: "nes" };
+    let meta = { name: "cart", system: "" };
     try {
       const raw = get("arcade.json");
-      if (typeof raw === "string" && raw.trim()) meta = { name: "cart", system: "nes", ...JSON.parse(raw) };
+      if (typeof raw === "string" && raw.trim()) meta = { name: "cart", ...JSON.parse(raw) };
     } catch {}
-    const key = Object.keys(files).find((k) => k.replace(/^.*\//, "").endsWith(".nes")) || "cart.nes";
-    const raw = files[key] || get("cart.nes");
-    const rom = raw instanceof Uint8Array ? raw : new TextEncoder().encode(String(raw || ""));
-    return { kind, project: { name: meta.name || "cart", ...meta }, system: meta.system || "nes", rom };
+    const key = Object.keys(files).find((k) => CART.test(k.replace(/^.*\//, ""))) || meta.cart || "";
+    const raw = (key && files[key]) || get(key) || get("cart.nes") || get("cart.z64");
+    const rom = raw instanceof Uint8Array ? raw : new Uint8Array(0);
+    const system = meta.system || detectSystem(key, rom) || "nes";
+    return { kind, project: { name: meta.name || "cart", ...meta }, system, core: meta.core, rom };
   }
   const face = faceMatter(get("index.md"));
   const names = Object.keys(files).map((k) => k.replace(/^.*\//, "")).filter((n) => n && n !== ".");
@@ -209,6 +223,9 @@ export function answerKind(pack, q) {
     return "The pack is the bill. Ask for the total.";
   }
   if (pack.kind === "arcade") {
+    if (pack.system === "n64") {
+      return `${pack.project.name} is an N64 cart. Play loads EmulatorJS (mupen64plus_next). Lawful carts only.`;
+    }
     return `${pack.project.name} is a ${pack.system || "nes"} cart. Prim Arcade cites this file. Arrows move, X is A, Z is B.`;
   }
   if (pack.face) {
