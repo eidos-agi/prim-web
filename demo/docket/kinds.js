@@ -17,6 +17,9 @@ export function detectKind(files) {
   if (has("slides.jsonl")) return "deck";
   if (has("lines.jsonl")) return "invoice";
   if (has("turns.jsonl")) return "session";
+  if (has("cart.nes") || has("arcade.json") || Object.keys(files).some((k) => k.replace(/^.*\//, "").endsWith(".nes"))) {
+    return "arcade";
+  }
   const face = files["index.md"] || files[Object.keys(files).find((k) => k.endsWith("index.md")) || ""] || "";
   const m = String(face).match(/profile:\s*(\w+)/);
   return m ? m[1] : "";
@@ -51,6 +54,17 @@ export function parseKind(files) {
     try { meta = JSON.parse(get("session.json") || "{}"); } catch {}
     return { kind, project: { name: meta.title || "session", ...meta }, turns: jsonl(get("turns.jsonl")) };
   }
+  if (kind === "arcade") {
+    let meta = { name: "cart", system: "nes" };
+    try {
+      const raw = get("arcade.json");
+      if (typeof raw === "string" && raw.trim()) meta = { name: "cart", system: "nes", ...JSON.parse(raw) };
+    } catch {}
+    const key = Object.keys(files).find((k) => k.replace(/^.*\//, "").endsWith(".nes")) || "cart.nes";
+    const raw = files[key] || get("cart.nes");
+    const rom = raw instanceof Uint8Array ? raw : new TextEncoder().encode(String(raw || ""));
+    return { kind, project: { name: meta.name || "cart", ...meta }, system: meta.system || "nes", rom };
+  }
   throw new Error("unknown prim kind");
 }
 
@@ -60,10 +74,14 @@ function esc(s) {
   }[c]));
 }
 
-export function renderKind(el, pack, onChange) {
+export async function renderKind(el, pack, onChange) {
   if (pack.kind === "deck") return renderDeck(el, pack, onChange);
   if (pack.kind === "invoice") return renderInvoice(el, pack, onChange);
   if (pack.kind === "session") return renderSession(el, pack, onChange);
+  if (pack.kind === "arcade") {
+    const { renderArcade } = await import("./arcade.js");
+    return renderArcade(el, pack);
+  }
 }
 
 function renderDeck(el, pack, onChange) {
@@ -165,6 +183,9 @@ export function answerKind(pack, q) {
     const t = pack.lines.reduce((n, l) => n + Number(l.qty || 0) * Number(l.rate || 0), 0);
     if (/total|due|how much|amount/.test(q)) return `${pack.project.number} due ${pack.project.due || "—"}. Total ${pack.project.currency || "USD"} ${t.toLocaleString()}.`;
     return "The pack is the bill. Ask for the total.";
+  }
+  if (pack.kind === "arcade") {
+    return `${pack.project.name} is a ${pack.system || "nes"} cart. Prim Arcade cites this file. Arrows move, X is A, Z is B.`;
   }
   if (pack.kind === "session") {
     if (/last|what|who|turn/.test(q)) {

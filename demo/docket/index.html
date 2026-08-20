@@ -344,6 +344,17 @@
       color: #8a8f98; font-size: 12px; font-family: Inter, "SF Pro Text", sans-serif;
     }
     .mcp-bar b { color: #f7f8f8; font-weight: 500; }
+    .kind.arcade {
+      height: 100%; display: flex; flex-direction: column;
+      background: #0c0d0e; color: #f7f8f8; padding: 12px 14px 10px;
+    }
+    .kind.arcade .screen {
+      flex: 1; min-height: 240px; background: #000;
+    }
+    .kind.arcade .keys {
+      margin: 8px 0 0; font-family: "IBM Plex Mono", monospace;
+      font-size: 11px; color: #8a8f98;
+    }
     @media (max-width: 720px) {
       .kind.deck { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); }
       .kind.deck nav {
@@ -403,6 +414,10 @@
         <span class="face"><img src="../../mark.png" alt=""></span>
         <span><span class="name">Session</span><span class="preview">Pick up the same file.</span></span>
       </button>
+      <button class="chat-item" type="button" data-chat="arcade">
+        <span class="face"><img src="../../mark.png" alt=""></span>
+        <span><span class="name">Arcade</span><span class="preview">The cart is the file.</span></span>
+      </button>
       <button class="chat-item" type="button" data-chat="seal">
         <span class="face"><img src="../../mark.png" alt=""></span>
         <span><span class="name">Seal</span><span class="preview">Validate. Don’t read.</span></span>
@@ -432,6 +447,7 @@
       <div class="log" id="log-deck" hidden></div>
       <div class="log" id="log-invoice" hidden></div>
       <div class="log" id="log-session" hidden></div>
+      <div class="log" id="log-arcade" hidden></div>
       <div class="log" id="log-seal" hidden></div>
       <div class="drop" id="drop" hidden>
         <div>
@@ -439,7 +455,7 @@
           <strong>Drop a .prim here</strong>
           or click to choose the file
         </div>
-        <input id="file" type="file" accept=".prim,.zip,.json,.jsonl" hidden>
+        <input id="file" type="file" accept=".prim,.zip,.nes,.json,.jsonl" hidden>
       </div>
     </div>
     <form class="composer" id="composer">
@@ -453,6 +469,7 @@
     import { parseKind, renderKind, answerKind } from "./kinds.js";
     import { createWalk } from "./tour.js";
     import { createSeal } from "./seal.js";
+    import { stopArcade } from "./arcade.js";
 
     const COLUMNS = ["To Do", "In Progress", "Done", "Draft"];
     let pack = { project: { name: "docket" }, tasks: [], milestones: [] };
@@ -514,6 +531,14 @@
         after: "Log a turn in the editor, or ask what was last said.",
         started: false, pack: null,
       },
+      arcade: {
+        title: "Arcade", sub: "bot · Prim Arcade",
+        file: "prim.arcade.prim", size: "686 B",
+        open: "Don’t send the ROM as an attachment dump.",
+        offer: "Send the arcade prim. Prim Arcade cites the cart.",
+        after: "Click the cabinet so keys reach it. Arrows, X, Z, Enter.",
+        started: false, pack: null,
+      },
       seal: {
         title: "Seal", sub: "bot · validate, don’t read",
         file: "atlas.docket.prim", size: "2 KB",
@@ -521,7 +546,7 @@
       },
     };
 
-    const live = new Set(["docket", "deck", "invoice", "session"]);
+    const live = new Set(["docket", "deck", "invoice", "session", "arcade"]);
     function paintReg(id) {
       document.querySelectorAll("#types .reg-item").forEach((el) => {
         el.classList.toggle("on", el.dataset.type === id || (id === "seal" && el.dataset.type === "docket"));
@@ -587,7 +612,8 @@
       dl.download = r.file;
       dl.textContent = r.file;
       document.body.classList.remove("show-chats");
-      ["tour", "docket", "deck", "invoice", "session", "seal"].forEach((k) => { logEl(k).hidden = k !== id; });
+      ["tour", "docket", "deck", "invoice", "session", "arcade", "seal"].forEach((k) => { logEl(k).hidden = k !== id; });
+      if (id !== "arcade") stopArcade();
       drop.hidden = id === "tour" || id === "seal" || !!r.pack;
       if (id === "docket") pack = r.pack || { project: { name: "docket" }, tasks: [], milestones: [] };
       if (!r.started && !opts.skipPlay) play(id);
@@ -692,21 +718,29 @@
       r.pack = parsed;
       if (parsed.kind === "docket") pack = parsed;
       add("me", attachHTML(f.name || r.file, "attached"), "", parsed.kind);
-      await say("Opened. The editor cites the pack — it isn’t a copy.", parsed.kind);
+      await say(parsed.kind === "arcade"
+        ? "Opened. Prim Arcade cites the cart — it isn’t a copy."
+        : "Opened. The editor cites the pack — it isn’t a copy.", parsed.kind);
       const tool = add("them", `<div class="editor-card" id="frame-${parsed.kind}"></div>`, "tool", parsed.kind);
       drop.hidden = true;
       if (parsed.kind === "docket") render();
-      else renderKind(document.getElementById("frame-" + parsed.kind), parsed, () => {});
+      else await renderKind(document.getElementById("frame-" + parsed.kind), parsed, () => {});
       await say(r.after, parsed.kind);
       thread.scrollTop = tool.offsetTop;
     }
 
     async function readPack(f) {
       const buf = new Uint8Array(await f.arrayBuffer());
+      if (buf[0] === 0x4E && buf[1] === 0x45 && buf[2] === 0x53) {
+        return { kind: "arcade", project: { name: f.name || "cart" }, system: "nes", rom: buf };
+      }
       if (buf[0] === 0x50 && buf[1] === 0x4b) {
         const zip = unzipSync(buf);
         const files = {};
-        for (const [k, v] of Object.entries(zip)) files[k.replace(/^.*\//, "")] = strFromU8(v);
+        for (const [k, v] of Object.entries(zip)) {
+          const name = k.replace(/^.*\//, "");
+          files[name] = name.endsWith(".nes") ? v : strFromU8(v);
+        }
         return parseKind(files);
       }
       const text = new TextDecoder().decode(buf);

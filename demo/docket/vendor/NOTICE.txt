@@ -1,0 +1,1 @@
+JSNES 2.1.0 — Apache License 2.0 — https://github.com/bfirsh/jsnes
