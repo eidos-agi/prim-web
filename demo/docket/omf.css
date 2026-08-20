@@ -1,0 +1,295 @@
+.kind.omf {
+  --omf-paper: #f4efe4;
+  --omf-ink: #231c14;
+  --omf-mute: #6d6256;
+  --omf-rule: #d8ccb6;
+  --omf-gold: #8a6a32;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #12110e;
+  color: var(--omf-ink);
+  font-family: Inter, "SF Pro Text", sans-serif;
+  overflow: hidden;
+}
+
+.kind.omf .omf-mast {
+  flex: none;
+  padding: 16px 18px 14px;
+  background:
+    linear-gradient(#1c1914, #141310);
+  color: #ece4d4;
+}
+
+.kind.omf .kicker,
+.kind.omf .class-label {
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.kind.omf .kicker { color: #c4a35a; }
+
+.kind.omf h2 {
+  margin: 6px 0 0;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: clamp(1.4rem, 3.6cqi, 2rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.kind.omf .when {
+  margin: 8px 0 0;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px;
+  color: #c9c2b4;
+}
+
+.kind.omf .series {
+  margin: 4px 0 0;
+  color: #9a9386;
+  font-size: 12px;
+}
+
+.kind.omf .omf-sheet {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: var(--omf-paper);
+  color: var(--omf-ink);
+}
+
+.kind.omf .omf-sec {
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid var(--omf-rule);
+}
+
+.kind.omf .omf-sec.on {
+  box-shadow: inset 3px 0 0 #8a6a32;
+}
+
+.kind.omf .sec-h,
+.kind.omf summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.kind.omf .class-label { color: var(--omf-gold); }
+.kind.omf .tally { margin: 0; color: var(--omf-mute); font-size: 11px; }
+.kind.omf .hint { margin: 8px 0 12px; color: var(--omf-mute); font-size: 12px; line-height: 1.4; }
+
+.kind.omf .roll {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.kind.omf .roll th,
+.kind.omf .roll td {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--omf-rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+.kind.omf .roll thead th {
+  color: var(--omf-mute);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding-top: 0;
+}
+
+.kind.omf .roll tbody th b,
+.kind.omf .roll tbody th {
+  font-weight: 600;
+}
+
+.kind.omf .roll tbody th {
+  display: grid;
+  gap: 2px;
+}
+
+.kind.omf .roll small,
+.kind.omf .stamp + small {
+  display: block;
+  color: var(--omf-mute);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.kind.omf .roll tr.mismatch td:last-child .stamp {
+  outline: 1px solid #8a6a32;
+}
+
+.kind.omf .stamp {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 7px 1px;
+  border: 1px solid var(--omf-rule);
+}
+
+.kind.omf .stamp.accepted { color: #3f5c3d; border-color: #b7c9b0; }
+.kind.omf .stamp.tentative { color: #6b5340; border-color: #d2c0a4; }
+.kind.omf .stamp.observed,
+.kind.omf .stamp.there { color: #3f5c3d; border-color: #b7c9b0; background: #e6efe3; }
+.kind.omf .stamp.unknown { color: #8a6a32; border-color: #c4a35a; }
+
+.kind.omf .slots {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.kind.omf .slots li {
+  display: grid;
+  grid-template-columns: 7rem 7.5rem 1fr;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 13px;
+}
+
+.kind.omf .slots b { text-transform: lowercase; }
+.kind.omf .slots em { font-style: normal; color: var(--omf-gold); }
+.kind.omf .slots span { color: var(--omf-mute); font-size: 12px; }
+.kind.omf .slots li.not_attempted em { color: var(--omf-mute); }
+.kind.omf .slots li.present em { color: #3f5c3d; }
+
+.kind.omf .said {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.kind.omf .said li { display: grid; gap: 4px; }
+.kind.omf .said b { font-size: 11px; letter-spacing: 0.04em; }
+.kind.omf q {
+  display: block;
+  quotes: none;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.kind.omf .verdict { margin: 10px 0 16px; }
+.kind.omf .verdict h3 {
+  margin: 8px 0 0;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+}
+.kind.omf .verdict p { margin: 4px 0 0; color: var(--omf-mute); font-size: 12px; }
+
+.kind.omf .owed,
+.kind.omf .openq,
+.kind.omf .split ul,
+.kind.omf .omf-log ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.kind.omf .owed li,
+.kind.omf .openq li,
+.kind.omf .split li {
+  display: grid;
+  gap: 2px;
+}
+
+.kind.omf .owed b,
+.kind.omf .openq b {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--omf-gold);
+}
+
+.kind.omf .owed small { color: var(--omf-mute); font-size: 11px; }
+
+.kind.omf .add-q {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.kind.omf .add-q input {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  border: 1px solid #d4c7b0;
+  background: #fffdf8;
+  color: var(--omf-ink);
+  padding: 0 10px;
+  font: inherit;
+}
+
+.kind.omf .add-q input:focus { outline: none; border-color: var(--omf-gold); }
+
+.kind.omf .add-q button {
+  height: 36px;
+  border: 0;
+  background: #231c14;
+  color: var(--omf-paper);
+  padding: 0 12px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.kind.omf .split ul { margin-top: 8px; }
+.kind.omf .split small { color: var(--omf-mute); font-size: 11px; }
+
+.kind.omf details.invite summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.kind.omf details.invite summary::-webkit-details-marker { display: none; }
+
+.kind.omf dl {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 0;
+}
+
+.kind.omf dt {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--omf-mute);
+}
+
+.kind.omf dd { margin: 2px 0 0; font-size: 13px; }
+.kind.omf .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; word-break: break-all; }
+
+.kind.omf .omf-log {
+  padding: 14px 18px 20px;
+  color: var(--omf-mute);
+}
+
+.kind.omf .omf-log ol { margin-top: 8px; gap: 6px; }
+.kind.omf .omf-log li { font-size: 12px; line-height: 1.4; }
+
+.kind.omf .empty { color: var(--omf-mute); font-size: 13px; }
+
+@container prim (max-width: 520px) {
+  .kind.omf .slots li { grid-template-columns: 1fr; gap: 2px; }
+  .kind.omf .roll thead th:nth-child(2),
+  .kind.omf .roll td:nth-child(2) { width: 28%; }
+  .kind.omf .add-q { flex-wrap: wrap; }
+  .kind.omf .add-q button { width: 100%; }
+}

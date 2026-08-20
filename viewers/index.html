@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prim viewers</title>
+  <meta name="description" content="Resize a real Prim tool. The pack stays the file.">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f4f3ef;
+      --ink: #111;
+      --mute: #6a6a66;
+      --line: #e4e2dc;
+      --well: #0b0b0c;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr);
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Instrument Sans", "Segoe UI", sans-serif;
+    }
+    header, .bar { position: relative; z-index: 2; }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 10px 22px;
+      padding: 14px 18px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+    .brand img { height: 22px; width: auto; }
+    .brand b { font-weight: 500; letter-spacing: -0.03em; }
+    .kicker {
+      margin: 0;
+      color: var(--mute);
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 11px;
+    }
+    .bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .bar label {
+      color: var(--mute);
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    button, select {
+      height: 32px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fffcf8;
+      color: inherit;
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    button.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    select { border-radius: 10px; }
+    .readout {
+      margin-left: auto;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 12px;
+      color: var(--mute);
+    }
+    .stage {
+      min-height: 0;
+      overflow: auto;
+      padding: 22px 18px 28px;
+      background:
+        linear-gradient(#eceae4 1px, transparent 1px) 0 0 / 24px 24px,
+        linear-gradient(90deg, #eceae4 1px, transparent 1px) 0 0 / 24px 24px,
+        var(--paper);
+    }
+    .well {
+      position: relative;
+      margin: 0 auto;
+      background: var(--well);
+      box-shadow: 0 18px 50px rgba(17, 17, 17, 0.16);
+      overflow: hidden;
+    }
+    .well.over { outline: 2px solid var(--ink); outline-offset: 3px; }
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #000;
+    }
+    .drop {
+      position: absolute;
+      inset: 0;
+      display: none;
+      place-content: center;
+      background: color-mix(in srgb, var(--paper) 88%, transparent);
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 13px;
+    }
+    .well.over .drop { display: grid; }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="/"><img src="../logo.png" alt=""><b>Viewers</b></a>
+    <p class="kicker">A host frame. The pack stays the file.</p>
+  </header>
+  <div class="bar">
+    <label>Tool</label>
+    <select id="tool"></select>
+    <label>Host</label>
+    <div class="chips" id="hosts"></div>
+    <span class="readout" id="size">—</span>
+  </div>
+  <div class="stage">
+    <div class="well" id="well">
+      <iframe id="frame" title="Prim viewer"></iframe>
+      <div class="drop">Drop a .prim</div>
+    </div>
+  </div>
+  <script>
+    const HOSTS = [
+      { id: "se", label: "SE", w: 320, h: 568 },
+      { id: "phone", label: "Phone", w: 390, h: 844 },
+      { id: "narrow", label: "Rail 256", w: 256, h: 671 },
+      { id: "rail", label: "Rail", w: 561, h: 671 },
+      { id: "chat", label: "Chat card", w: 882, h: 499 },
+      { id: "wide", label: "Rail 760", w: 760, h: 671 },
+      { id: "desk", label: "Desk", w: 1100, h: 800 },
+    ];
+    const OPEN = [
+      ["opff-editor", "opff"],
+      ["omf-editor", "omf"],
+      ["docket-editor", "docket"],
+      ["deck-editor", "deck"],
+      ["invoice-editor", "invoice"],
+      ["session-editor", "session"],
+      ["prim-arcade", "arcade"],
+    ];
+    const tool = document.getElementById("tool");
+    const hosts = document.getElementById("hosts");
+    const well = document.getElementById("well");
+    const frame = document.getElementById("frame");
+    const size = document.getElementById("size");
+    let host = "rail";
+    let kind = (location.hash.replace("#", "") || new URLSearchParams(location.search).get("kind") || "opff");
+
+    function src() {
+      return `../demo/docket/?bare=1&fast=1&kind=${encodeURIComponent(kind)}`;
+    }
+    function apply() {
+      const h = HOSTS.find((x) => x.id === host) || HOSTS[3];
+      well.style.width = h.w + "px";
+      well.style.height = h.h + "px";
+      hosts.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.host === host));
+      size.textContent = `${h.w} × ${h.h} · ${kind}`;
+      const next = src();
+      if (frame.dataset.src !== next) {
+        frame.dataset.src = next;
+        frame.src = next;
+      }
+      history.replaceState(null, "", `#${kind}`);
+    }
+    OPEN.forEach(([name, id]) => {
+      const o = document.createElement("option");
+      o.value = id;
+      o.textContent = name;
+      if (id === kind) o.selected = true;
+      tool.appendChild(o);
+    });
+    HOSTS.forEach((h) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.dataset.host = h.id;
+      b.textContent = h.label;
+      b.addEventListener("click", () => { host = h.id; apply(); });
+      hosts.appendChild(b);
+    });
+    tool.addEventListener("change", () => { kind = tool.value; apply(); });
+    window.addEventListener("hashchange", () => {
+      const next = location.hash.replace("#", "");
+      if (next && OPEN.some(([, id]) => id === next)) {
+        kind = next;
+        tool.value = next;
+        apply();
+      }
+    });
+    ["dragenter", "dragover"].forEach((ev) => well.addEventListener(ev, (e) => {
+      e.preventDefault();
+      well.classList.add("over");
+    }));
+    well.addEventListener("dragleave", () => well.classList.remove("over"));
+    well.addEventListener("drop", async (e) => {
+      e.preventDefault();
+      well.classList.remove("over");
+      const file = e.dataTransfer?.files?.[0];
+      if (!file) return;
+      const bytes = await file.arrayBuffer();
+      frame.contentWindow?.postMessage({ type: "prim-drop", name: file.name, bytes }, "*", [bytes]);
+    });
+    apply();
+  </script>
+</body>
+</html>

@@ -15,6 +15,9 @@ server {
     location /demo/docket {
         try_files $uri $uri/ /demo/docket/index.html;
     }
+    location /viewers {
+        try_files $uri $uri/ /viewers/index.html;
+    }
     # Prim Browser embed needs cross-origin iframes — no COEP here.
     # /examples/docket = framed preview only. /examples/prim-browser = companion cockpit.
     location /examples/docket {

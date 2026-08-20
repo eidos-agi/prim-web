@@ -1,0 +1,18 @@
+{
+  "created_at": "2026-08-20T04:56:32.186258Z",
+  "goal": "Prim viewers lab at /viewers resizes a real tool",
+  "notes": "Local 8766 /viewers/ 200. Rail 561x671 Harbor House OPFF, Phone 390x844, Rail 256 1-col KPIs, OMF June 12 invite vs record, docket Atlas Launch. Toolbar stays clickable after 3-row grid.",
+  "product_id": "prim-web",
+  "proofs": [
+    "/tmp/prim-viewers/rail.png",
+    "/tmp/prim-viewers/phone.png",
+    "/tmp/prim-viewers/narrow.png",
+    "/tmp/prim-viewers/omf.png",
+    "/tmp/prim-viewers/docket-debug.png"
+  ],
+  "schema_version": 1,
+  "status": "passed",
+  "test_commands_snapshot": [
+    "define product-specific test command before claiming green"
+  ]
+}

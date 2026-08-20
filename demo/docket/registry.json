@@ -150,6 +150,14 @@
       "repo": "eidos-agi/prim.opff"
     },
     {
+      "name": "omf-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "omf",
+      "as": "editor",
+      "repo": "eidos-agi/prim.omf"
+    },
+    {
       "name": "prim-arcade",
       "kind": "surface",
       "direction": "talk",

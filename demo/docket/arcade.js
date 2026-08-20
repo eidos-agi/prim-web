@@ -122,6 +122,7 @@ function watchFit(screen, onFit) {
   }
   const box = screen.closest(".fit") || screen;
   const run = () => {
+    if (screen.closest("#app-rail-hold")) return;
     onFit();
   };
   if (typeof ResizeObserver === "function") {

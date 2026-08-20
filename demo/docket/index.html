@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Prim demo — all four</title>
-  <meta name="description" content="Click through docket, deck, invoice, and session. Each file becomes an editor.">
+  <title>Prim demo — all five</title>
+  <meta name="description" content="Click through docket, deck, invoice, session, and finance. Each file becomes an editor.">
   <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./opff.css">
+  <link rel="stylesheet" href="./omf.css">
   <style>
     :root {
       --paper: #f4f3ef;
@@ -19,8 +20,8 @@
       --subtle: #8a8a84;
       --line: #e4e2dc;
       --radius: 20px;
-      --bg: #08090a;
-      --side: #0f1011;
+      --bg: #000;
+      --side: #000;
       --elev: #141516;
       --hover: #18191b;
       --active: #1c1c1f;
@@ -40,28 +41,54 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; width: 100%; overflow: hidden; }
     body {
-      display: grid;
-      grid-template-columns: 300px minmax(0, 1fr);
+      display: flex;
+      flex-direction: row;
       background: var(--paper);
       color: var(--ink);
       color-scheme: light;
       font-family: "Instrument Sans", "Segoe UI", sans-serif;
       -webkit-font-smoothing: antialiased;
     }
-    body.docked {
-      grid-template-columns: 220px minmax(240px, 28vw) minmax(0, 1fr);
-    }
+    body.resizing, body.dragging-pane { user-select: none; }
+    body.resizing-col { cursor: col-resize; }
+    body.resizing-row { cursor: row-resize; }
+    body.dragging-pane { cursor: grabbing; }
     .app-rail {
       display: none;
       flex-direction: column;
       min-width: 0;
       min-height: 0;
-      background: #08090a;
+      background: #000;
       color: #f7f8f8;
       color-scheme: dark;
       border-left: 1px solid #232326;
+      isolation: isolate;
+      contain: paint;
+      overflow: hidden;
+      z-index: 3;
     }
-    body.docked .app-rail { display: flex; }
+    body.docked .app-rail { display: flex; flex: 1 1 var(--pane-rail, 32rem); min-width: 16rem; }
+    body.bare {
+      display: block;
+      background: #000;
+    }
+    body.bare .inbox,
+    body.bare .split,
+    body.bare .scrim,
+    body.bare section.stage,
+    body.bare .app-rail-bar,
+    body.bare .app-rail-deck { display: none !important; }
+    body.bare .app-rail {
+      display: flex !important;
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      min-height: 0;
+      border: 0;
+      flex: none;
+    }
     .app-rail-bar {
       height: 4rem;
       display: flex;
@@ -70,8 +97,13 @@
       padding: 0 1rem;
       border-bottom: 1px solid #232326;
       flex: none;
+      overflow: hidden;
+      background: #000;
     }
-    .app-rail-bar .who { display: grid; line-height: 1.2; }
+    .app-rail-bar .who { display: grid; line-height: 1.2; min-width: 0; flex: 1; overflow: hidden; }
+    .app-rail-bar b, .app-rail-bar small {
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
     .app-rail-bar b { font-weight: 500; letter-spacing: -0.02em; }
     .app-rail-bar small { color: #8a8f98; font-size: 12px; }
     .app-rail-bar button {
@@ -85,6 +117,8 @@
       font: inherit;
       font-size: 12px;
       cursor: pointer;
+      flex: none;
+      white-space: nowrap;
     }
     .app-rail-deck {
       display: flex;
@@ -96,6 +130,8 @@
       flex: none;
       scroll-snap-type: x mandatory;
       scrollbar-width: thin;
+      isolation: isolate;
+      background: #000;
     }
     .app-rail-deck[hidden] { display: none; }
     .rail-thumb {
@@ -116,14 +152,15 @@
     .rail-thumb-preview {
       display: block;
       height: 68px;
-      background: #0c0d0e;
+      background: #000;
       position: relative;
     }
-    .rail-thumb-preview.kind-bill,
+    .rail-thumb-preview.kind-bill { background: #f6efe4; }
     .rail-thumb-preview.kind-paper { background: #fffcf8; }
     .rail-thumb-preview.kind-arcade { background: #000; }
-    .rail-thumb-preview.kind-opff { background: #0a0b0c; }
-    .rail-thumb-preview.kind-deck { background: #0c0d0e; }
+    .rail-thumb-preview.kind-opff { background: #000; }
+    .rail-thumb-preview.kind-omf { background: #10120f; }
+    .rail-thumb-preview.kind-deck { background: #000; }
     .rail-thumb-preview.kind-arcade::after,
     .rail-thumb-preview.kind-deck::after {
       content: "";
@@ -144,6 +181,11 @@
       position: absolute; inset: 16px 10px 20px;
       background: repeating-linear-gradient(90deg, #1c1c1f 0 18px, transparent 18px 24px);
     }
+    .rail-thumb-preview.kind-omf::after {
+      content: "";
+      position: absolute; inset: 16px 10px 20px;
+      background: linear-gradient(90deg, #f3ece0 0 32%, #161310 32% 66%, #f7f1e6 66%);
+    }
     .rail-thumb-cap {
       display: block;
       padding: 5px 7px 6px;
@@ -152,9 +194,63 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .app-rail-body { flex: 1; min-height: 0; overflow: hidden; background: #08090a; }
-    .app-rail-body .editor-card { height: 100%; width: 100%; background: #08090a; }
-    #app-rail-hold { display: none; }
+    .app-rail-deck .editor-card.is-thumb,
+    .app-rail-deck .editor-card.is-thumb:has(.kind.arcade) {
+      flex: 0 0 136px;
+      width: 136px !important;
+      height: 88px !important;
+      max-height: 88px !important;
+      overflow: hidden;
+      cursor: pointer;
+      scroll-snap-align: start;
+      border: 1px solid #232326;
+      border-radius: 8px;
+      position: relative;
+      background: #000;
+      isolation: isolate;
+      contain: paint;
+      clip-path: inset(0);
+    }
+    .app-rail-deck .editor-card.is-thumb > * {
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: scale(0.2);
+      transform-origin: top left;
+      width: 500%;
+      height: 500%;
+      overflow: hidden;
+    }
+    .app-rail-deck .editor-card.is-thumb::after {
+      content: attr(data-title);
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 4px 7px;
+      background: linear-gradient(transparent, #000 55%);
+      color: #f7f8f8;
+      font-size: 11px;
+      pointer-events: none;
+    }
+    .app-rail-body { flex: 1; min-height: 0; overflow: hidden; background: #000; isolation: isolate; contain: paint; }
+    .app-rail-body .editor-card {
+      height: 100%;
+      width: 100%;
+      background: #000;
+      overflow: hidden;
+      isolation: isolate;
+      container-name: prim rail;
+    }
+    #app-rail-hold {
+      position: fixed;
+      left: -120vw;
+      top: 0;
+      width: min(72vw, 960px);
+      height: min(70vh, 720px);
+      overflow: hidden;
+      visibility: hidden;
+      pointer-events: none;
+    }
     .chat-bar .who { flex: 1; min-width: 0; }
     .chat-bar .dock {
       margin-left: auto;
@@ -171,18 +267,30 @@
       white-space: nowrap;
     }
     .chat-bar .dock:disabled { opacity: 0.32; cursor: default; }
-    .chat-bar .dl { margin-left: 8px; flex: none; }
+    .chat-bar .dl { margin-left: 0; flex: none; }
+    body.docked .chat-bar .dl { display: none; }
+    body.docked .chat-bar .who small { display: none; }
     .inbox {
       display: flex; flex-direction: column; min-height: 0;
+      flex: 0 0 var(--pane-inbox, 300px);
+      width: var(--pane-inbox, 300px);
+      min-width: 10rem;
+      max-width: 46vw;
       border-right: 1px solid var(--line); background: var(--paper);
+      overflow: hidden; isolation: isolate;
+    }
+    body.docked .inbox {
+      flex-basis: var(--pane-inbox, 200px);
+      width: var(--pane-inbox, 200px);
     }
     .inbox-head {
       height: 4rem; display: flex; align-items: center; gap: 10px;
       padding: 0 1rem; border-bottom: 1px solid var(--line);
+      cursor: grab;
     }
     .inbox-head img { height: 1.75rem; }
     .inbox-head b { font-weight: 500; letter-spacing: -0.02em; }
-    .rail { flex: 1; min-height: 0; overflow: auto; padding: 8px 8px 20px; }
+    .rail { flex: 1; min-height: 0; overflow: auto; padding: 8px 8px 20px; scrollbar-gutter: stable; }
     .chats { padding: 0; }
     .reg { margin: 18px 4px 0; }
     .reg h2 {
@@ -220,7 +328,8 @@
     .chat-item:hover { background: var(--raised); }
     .chat-item.on { background: var(--raised); border-color: var(--line); }
     .chat-item .face { width: 36px; height: 36px; }
-    .chat-item .name { font-weight: 500; letter-spacing: -0.02em; }
+    .chat-item > span:last-child { min-width: 0; display: grid; gap: 2px; }
+    .chat-item .name { font-weight: 500; letter-spacing: -0.02em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .chat-item .preview { color: var(--muted); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .scrim { display: none; }
     .menu {
@@ -228,26 +337,54 @@
       border: 1px solid var(--line); border-radius: 10px; background: var(--raised);
       font: inherit; cursor: pointer;
     }
-    .stage { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--paper); }
-    .chat-bar {
-      height: 4rem; display: flex; align-items: center; gap: 12px;
-      padding: 0 1.25rem;
-      border-bottom: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
-      background: color-mix(in srgb, var(--paper) 90%, transparent);
-      backdrop-filter: blur(8px);
+    section.stage {
+      display: flex; flex-direction: column;
+      flex: 1 1 var(--pane-stage, 28rem);
+      min-width: 16rem; min-height: 0;
+      background: var(--paper); overflow: hidden; isolation: isolate; z-index: 1;
     }
-    .chat-bar a.home { display: flex; align-items: center; }
+    .split {
+      flex: none;
+      width: 7px;
+      margin: 0 -3px;
+      background: transparent;
+      cursor: col-resize;
+      position: relative;
+      z-index: 6;
+      touch-action: none;
+    }
+    .split::after {
+      content: "";
+      position: absolute;
+      top: 0; bottom: 0; left: 2px; right: 2px;
+      background: var(--line);
+    }
+    body.docked .split-rail::after { background: #232326; }
+    .split:hover::after, .split.on::after { background: #5e6ad2; }
+    body:not(.docked) .split-b { display: none; }
+    .chat-bar .who, .app-rail-bar .who { cursor: grab; }
+    .chat-bar {
+      height: 4rem; display: flex; align-items: center; gap: 10px;
+      padding: 0 1.25rem;
+      border-bottom: 1px solid var(--line);
+      background: var(--paper);
+      overflow: hidden;
+      flex: none;
+    }
+    .chat-bar a.home { display: flex; align-items: center; flex: none; }
     .chat-bar img { height: 1.75rem; width: auto; }
-    .who { display: grid; line-height: 1.2; }
+    .who { display: grid; line-height: 1.2; min-width: 0; }
+    .who b, .who small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .who b { font-weight: 500; letter-spacing: -0.02em; }
     .who small { color: var(--subtle); font-size: 12px; font-weight: 400; }
     .chat-bar .dl {
       font-family: "IBM Plex Mono", monospace; font-size: 12px;
       color: var(--muted); text-decoration: none; border: 1px solid var(--line);
       border-radius: 999px; padding: 6px 10px; background: var(--raised);
+      max-width: 9.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
     .chat-bar .dl:hover { color: var(--ink); }
-    .thread { flex: 1; min-height: 0; overflow: auto; padding: 1.5rem 1.5rem 1rem; }
+    .thread { flex: 1; min-height: 0; overflow: auto; padding: 1.5rem 1.5rem 1rem; isolation: isolate; scroll-padding-top: 8px; }
     .day {
       display: flex; align-items: center; gap: 1rem;
       margin: 0 0 1.25rem; color: var(--subtle);
@@ -302,18 +439,41 @@
       display: flex; align-items: center; gap: 10px;
       margin: 0 1.5rem 1.25rem; padding: 10px 12px;
       border: 1px solid var(--line); border-radius: 16px; background: var(--raised);
+      min-width: 0; overflow: hidden;
     }
     .composer .tag {
       font-family: "IBM Plex Mono", monospace; font-size: 11px;
       padding: 4px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--subtle);
+      flex: none;
     }
+    .composer .pending {
+      display: none;
+      max-width: 10rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      padding: 4px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--paper);
+      flex: none;
+    }
+    .composer .pending.on { display: inline-block; }
+    section.stage.file-over,
+    .composer.file-over { outline: 2px solid var(--ink); outline-offset: -2px; }
     .composer input {
       flex: 1; border: 0; background: transparent; font: inherit; color: var(--ink); outline: none;
     }
     .composer button {
       height: 34px; padding: 0 12px; border: 0; border-radius: 10px;
       background: var(--ink); color: var(--paper); font: inherit; font-weight: 500; cursor: pointer;
+      flex: none;
     }
+    body.docked .composer { margin: 0 0.75rem 0.85rem; }
+    body.docked .thread { padding: 1rem 0.85rem 0.75rem; }
     .beat { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
     .beat button {
       height: 34px; padding: 0 12px; border: 0; border-radius: 10px;
@@ -321,7 +481,7 @@
     }
     .beat button:hover { opacity: 0.88; }
     .beat button[disabled] { opacity: 0.28; cursor: default; }
-    .row.tool .bubble { padding: 0; overflow: hidden; width: min(100%, 72rem); background: #08090a; border-color: var(--ink); }
+    .row.tool .bubble { padding: 0; overflow: hidden; max-width: 100%; width: min(100%, 72rem); background: #000; border-color: var(--ink); isolation: isolate; contain: paint; }
     .embed-bar {
       display: flex; align-items: center; justify-content: space-between; gap: 10px;
       height: 36px; padding: 0 10px;
@@ -331,7 +491,7 @@
     .embed-bar button {
       height: 26px; padding: 0 10px;
       border: 1px solid #3a3a40; border-radius: 8px;
-      background: #08090a; color: #f7f8f8;
+      background: #000; color: #f7f8f8;
       font: inherit; font-weight: 500; cursor: pointer; white-space: nowrap;
     }
     .app-rail-body .embed-bar { display: none; }
@@ -353,12 +513,15 @@
       height: 46px;
       border-radius: 5px;
       flex: none;
-      background: #0c0d0e;
+      background: #000;
       border: 1px solid #232326;
     }
-    .chat-thumb-preview.kind-bill,
+    .chat-thumb-preview.kind-bill { background: #f6efe4; }
     .chat-thumb-preview.kind-paper { background: #fffcf8; }
     .chat-thumb-preview.kind-arcade { background: #000; }
+    .chat-thumb-preview.kind-omf {
+      background: linear-gradient(90deg, #f3ece0 0 32%, #161310 32% 66%, #f7f1e6 66%);
+    }
     .chat-thumb-cap { display: grid; gap: 2px; min-width: 0; }
     .chat-thumb-cap b { font-weight: 500; font-size: 13px; }
     .chat-thumb-cap small { color: var(--subtle); font-size: 11px; }
@@ -373,27 +536,48 @@
     }
     .row.tool.in-rail .embed-bar { display: none; }
     .row.tool.in-rail .chat-thumb { display: flex; }
-    .editor-card { height: min(58vh, 620px); background: #08090a; color-scheme: dark; }
-    .app { width: 100%; min-width: 0; height: 100%; }
+    .row.tool.in-rail .editor-card { display: none; }
+    .editor-card {
+      height: min(58vh, 620px);
+      background: #000;
+      color-scheme: dark;
+      container-type: size;
+      container-name: prim;
+    }
+    .app { width: 100%; min-width: 0; min-height: 0; height: 100%; overflow: hidden; }
     .app {
       display: grid;
-      grid-template-columns: 220px minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
       height: 100%;
+      overflow: hidden;
       background: var(--bg);
       color: var(--text);
       color-scheme: dark;
       font-family: Inter, "SF Pro Text", sans-serif;
       font-size: 13px;
     }
-    .app.sheet-on { grid-template-columns: 220px minmax(0, 1fr) minmax(300px, 400px); }
-    .app aside { background: var(--side); border-right: 1px solid var(--eline); padding: 14px 10px; overflow: auto; }
-    .workspace { display: flex; align-items: center; gap: 10px; padding: 4px 8px 14px; }
+    .app.sheet-on {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr) minmax(10rem, 38%);
+    }
+    .app aside {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      background: var(--side);
+      border-bottom: 1px solid var(--eline);
+      padding: 10px;
+      overflow: auto;
+    }
+    .workspace { display: flex; align-items: center; gap: 10px; flex: 1 1 100%; padding: 0 4px 4px; }
     .mark-team { width: 18px; height: 18px; border-radius: 5px; background: linear-gradient(135deg, #5e6ad2, #8b93e8); }
     .workspace h1 { margin: 0; font-size: 13px; font-weight: 500; }
     .workspace small { display: block; color: var(--faint); font-size: 11px; }
     .nav-item, .new {
       display: flex; align-items: center; justify-content: space-between;
-      width: 100%; height: 30px; padding: 0 8px; border: 0; border-radius: 6px;
+      width: auto; flex: 0 0 auto; height: 28px; padding: 0 8px; border: 0; border-radius: 6px;
       background: transparent; color: var(--mute); font: inherit; cursor: pointer;
     }
     .new { height: 32px; margin-bottom: 12px; border: 1px solid var(--eline); background: var(--elev); color: var(--text); }
@@ -401,13 +585,13 @@
     .nav-item span { display: flex; align-items: center; gap: 8px; }
     .count { color: var(--faint); font-variant-numeric: tabular-nums; font-size: 11px; }
     main.ed { display: flex; flex-direction: column; min-width: 0; min-height: 0; height: 100%; }
-    .toolbar { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; border-bottom: 1px solid var(--eline); }
-    .toolbar h2 { margin: 0; font-size: 13px; font-weight: 500; }
-    .views { display: flex; gap: 2px; padding: 2px; border: 1px solid var(--eline); border-radius: 7px; }
+    .toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; min-height: 44px; padding: 8px 14px; border-bottom: 1px solid var(--eline); }
+    .toolbar h2 { margin: 0; font-size: 13px; font-weight: 500; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .views { display: flex; gap: 2px; padding: 2px; border: 1px solid var(--eline); border-radius: 7px; margin-left: auto; }
     .views button { width: 28px; height: 24px; border: 0; border-radius: 5px; background: transparent; color: var(--faint); cursor: pointer; }
     .views button.on { background: var(--active); color: var(--text); }
     .list { flex: 1; min-height: 0; overflow: auto; }
-    .list:has(.board) { overflow: hidden; display: flex; }
+    .list:has(.board) { overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
     .rowi {
       display: grid; grid-template-columns: 16px 52px minmax(0,1fr) auto auto;
       align-items: center; gap: 10px; height: 36px; padding: 0 14px;
@@ -430,16 +614,32 @@
     .pri { width: 14px; height: 14px; color: var(--faint); }
     .pri.high { color: var(--high); }
     .pri.medium { color: var(--medium); }
-    .board { display: flex; gap: 10px; flex: 1; padding: 12px; overflow: auto; }
-    .col { display: flex; flex-direction: column; flex: 0 0 260px; border: 1px solid var(--eline); border-radius: 8px; background: #0c0d0e; }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
+      padding: 12px;
+      overflow: auto;
+    }
+    .col { display: flex; flex-direction: column; min-width: 0; min-height: 0; height: 100%; max-width: none; border: 1px solid var(--eline); border-radius: 8px; background: #000; }
     .col.over { outline: 1px solid var(--accent); }
-    .col-head { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 10px; color: var(--mute); font-size: 12px; }
+    .col-head { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 10px; color: var(--mute); font-size: 12px; flex: none; }
     .col-head .count { margin-left: auto; }
-    .col-body { flex: 1; overflow: auto; padding: 8px; }
+    .col-body { flex: 1; min-height: 0; overflow: auto; padding: 8px; }
     .card { padding: 10px; margin-bottom: 8px; border: 1px solid var(--eline); border-radius: 8px; background: var(--elev); cursor: grab; }
-    .card-title { font-weight: 500; margin-bottom: 8px; }
-    .card-meta { display: flex; align-items: center; gap: 8px; }
-    .sheet { overflow: auto; background: var(--elev); border-left: 1px solid var(--eline); padding: 22px; }
+    .card-title { font-weight: 500; margin-bottom: 8px; overflow-wrap: anywhere; }
+    .card-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .sheet { position: relative; overflow: auto; background: var(--elev); border-left: 1px solid var(--eline); padding: 22px; min-height: 0; }
+    .sheet-close {
+      position: absolute; top: 12px; right: 12px;
+      width: 28px; height: 28px; border: 1px solid var(--eline); border-radius: 6px;
+      background: transparent; color: var(--mute); font: inherit; cursor: pointer;
+    }
+    .sheet-close:hover { color: var(--text); background: var(--active); }
     .issue-id { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--faint); }
     .title-edit, .notes, .sheet select, .blocked-edit {
       width: 100%; background: transparent; color: var(--text); border: 1px solid transparent;
@@ -450,70 +650,409 @@
     .notes { min-height: 140px; color: #d0d6e0; font-size: 14px; line-height: 1.55; }
     .empty { color: var(--faint); padding: 28px 16px; }
     .row.tool .bubble { width: 100%; }
-    .editor-card { height: min(70vh, 820px); background: #08090a; }
+    .editor-card { height: min(70vh, 820px); background: #000; }
     /* Embeds paint their own surface. Host --paper never shows through. */
     .kind {
       height: 100%;
       min-height: 0;
-      background: #08090a;
+      background: #000;
       color-scheme: dark;
     }
     .kind.deck {
-      display: grid; grid-template-columns: 200px minmax(0, 1fr); height: 100%;
-      background: #0c0d0e; color: #f7f8f8; font-family: Inter, "SF Pro Text", sans-serif;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto;
+      height: 100%;
+      min-height: 0;
+      background: #000;
+      color: #f7f8f8;
+      font-family: Inter, "SF Pro Text", sans-serif;
+      outline: none;
     }
-    .kind.deck nav { overflow: auto; border-right: 1px solid #232326; padding: 10px; }
+    .kind.deck .deck-stage {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(12px, 3cqi, 28px);
+      gap: 12px;
+    }
+    .kind.deck .slide {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      position: relative;
+      padding: clamp(24px, 6cqi, 56px) clamp(28px, 7cqi, 64px);
+      border: 1px solid #232326;
+      border-radius: 18px;
+      background:
+        linear-gradient(90deg, #5e6ad2 0 4px, transparent 4px),
+        radial-gradient(120% 80% at 100% 0%, #1a1c3a 0%, #050505 46%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .kind.deck .slide-no {
+      position: absolute;
+      right: clamp(16px, 4cqi, 32px);
+      top: clamp(8px, 2cqi, 18px);
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(4rem, 14cqi, 8rem);
+      line-height: 1;
+      color: rgba(247,248,248,0.06);
+      pointer-events: none;
+    }
+    .kind.deck .slide h2 {
+      margin: 0 0 22px;
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(1.8rem, 6.2cqi, 3.4rem);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      outline: none;
+      max-width: 18ch;
+    }
+    .kind.deck .slide ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+    .kind.deck .slide li {
+      font-size: clamp(1rem, 2.4cqi, 1.45rem);
+      line-height: 1.4;
+      color: #d0d6e0;
+      padding-left: 1.1em;
+      position: relative;
+      outline: none;
+    }
+    .kind.deck .slide li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0.55em;
+      width: 7px; height: 7px;
+      border-radius: 99px;
+      background: #5e6ad2;
+    }
+    .kind.deck .deck-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex: none;
+    }
+    .kind.deck .deck-bar button {
+      width: 36px; height: 32px;
+      border: 1px solid #232326;
+      border-radius: 8px;
+      background: #141516;
+      color: #f7f8f8;
+      font: inherit;
+      cursor: pointer;
+    }
+    .kind.deck .deck-bar span { color: #8a8f98; font-size: 12px; font-variant-numeric: tabular-nums; }
+    .kind.deck .ticks { display: flex; gap: 5px; list-style: none; margin: 0; padding: 0; }
+    .kind.deck .ticks li { width: 18px; height: 3px; border-radius: 99px; background: #232326; }
+    .kind.deck .ticks li.on { background: #5e6ad2; }
+    .kind.deck .film {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 12px 12px;
+      border-top: 1px solid #232326;
+      background: #000;
+    }
     .kind.deck .pick {
-      display: block; width: 100%; text-align: left; margin: 0 0 6px;
-      padding: 10px; border: 1px solid #232326; border-radius: 8px;
-      background: #141516; color: #f7f8f8; font: inherit; cursor: pointer;
+      flex: 0 0 148px;
+      height: 92px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 4px;
+      text-align: left;
+      margin: 0;
+      padding: 10px 12px;
+      border: 1px solid #232326;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #16161a, #080808);
+      color: #f7f8f8;
+      font: inherit;
+      cursor: pointer;
+      position: relative;
     }
-    .kind.deck .pick.on { outline: 1px solid #5e6ad2; }
-    .kind.deck .pick b { display: block; color: #8a8f98; font-size: 11px; margin-bottom: 4px; }
-    .kind.deck article { padding: 28px 32px; display: flex; flex-direction: column; min-width: 0; }
+    .kind.deck .pick.on { border-color: #5e6ad2; box-shadow: inset 0 0 0 1px #5e6ad2; }
+    .kind.deck .pick em {
+      position: absolute; top: 8px; right: 10px;
+      font-style: normal; font-size: 10px; color: #62666d;
+      font-variant-numeric: tabular-nums;
+    }
+    .kind.deck .pick strong {
+      font-size: 13px; font-weight: 500; line-height: 1.25;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .kind.deck .pick small {
+      color: #8a8f98; font-size: 11px; line-height: 1.3;
+      display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+    }
     .kind .kicker {
       font-family: "IBM Plex Mono", monospace; font-size: 11px;
       letter-spacing: 0.12em; text-transform: uppercase; color: #8a8f98; margin: 0 0 8px;
     }
-    .kind.deck textarea {
-      width: 100%; background: #fffcf8; color: #111; border: 0; border-radius: 4px;
-      font: inherit; padding: 12px 16px; resize: none;
-    }
-    .kind.deck .slide-title { font-size: 2rem; font-weight: 600; letter-spacing: -0.03em; min-height: 4rem; margin: 12px 0; }
-    .kind.deck .slide-body { flex: 1; font-size: 1.2rem; line-height: 1.45; }
     .kind.bill {
-      background: #fffcf8; color: #111; color-scheme: light;
-      height: 100%; overflow: auto;
-      padding: 28px 32px; font-family: "Instrument Sans", sans-serif;
+      height: 100%;
+      min-height: 0;
+      overflow: auto;
+      padding: clamp(10px, 2.4cqi, 22px);
+      background: #2a221c;
+      color: #1c1612;
+      color-scheme: light;
+      font-family: "Instrument Sans", "Segoe UI", sans-serif;
     }
-    .kind.bill h2 { margin: 0 0 16px; letter-spacing: -0.03em; font-weight: 600; }
-    .kind.bill .pair { display: grid; grid-template-columns: 64px 1fr; gap: 8px; align-items: center; margin: 6px 0; color: #6a6a66; }
-    .kind.bill input { border: 0; border-bottom: 1px solid #e4e2dc; background: transparent; font: inherit; padding: 4px 0; color: #111; }
-    .kind.bill table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    .kind.bill .bill-sheet {
+      min-height: 100%;
+      box-sizing: border-box;
+      padding: clamp(22px, 4.5cqi, 42px) clamp(20px, 4cqi, 40px) clamp(20px, 3cqi, 32px);
+      background: #f6efe4;
+      border-top: 7px solid #b4532a;
+    }
+    .kind.bill .bill-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .kind.bill .studio { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .kind.bill .harbor-mark {
+      flex: none;
+      width: 38px; height: 38px;
+      display: grid; place-items: center;
+      border: 1.5px solid #1c1612;
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 22px;
+      line-height: 1;
+      position: relative;
+    }
+    .kind.bill .harbor-mark::after {
+      content: "";
+      position: absolute;
+      left: 7px; right: 7px; bottom: 6px;
+      height: 2px;
+      background: #b4532a;
+    }
+    .kind.bill .studio-name {
+      margin: 0;
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(1.35rem, 3.2cqi, 1.85rem);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .kind.bill .studio-line { margin: 4px 0 0; color: #6a5346; font-size: 12px; }
+    .kind.bill .bill-id { text-align: right; }
+    .kind.bill .bill-id .kicker {
+      margin: 0 0 4px;
+      color: #b4532a;
+      font-size: 10px;
+    }
+    .kind.bill h2 {
+      margin: 0;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: clamp(1.35rem, 3.4cqi, 1.8rem);
+      font-weight: 500;
+      letter-spacing: -0.04em;
+    }
+    .kind.bill .parties,
+    .kind.bill .dates {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 24px;
+    }
+    .kind.bill .parties { margin: 0 0 18px; }
+    .kind.bill .dates {
+      margin: 0 0 8px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #d8cfc0;
+    }
+    .kind.bill label {
+      display: grid;
+      gap: 4px;
+      color: #8a7466;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .kind.bill input {
+      border: 0;
+      border-bottom: 1px solid transparent;
+      background: transparent;
+      font: inherit;
+      padding: 2px 0 3px;
+      color: #1c1612;
+      width: 100%;
+    }
+    .kind.bill .parties input {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 1.15rem;
+    }
+    .kind.bill input:hover,
+    .kind.bill input:focus { border-bottom-color: #b4532a; outline: none; }
+    .kind.bill table { width: 100%; border-collapse: collapse; margin: 8px 0 0; }
     .kind.bill th {
-      text-align: left; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-      color: #6a6a66; padding: 8px 6px; border-bottom: 1px solid #e4e2dc;
+      text-align: left;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #8a7466;
+      padding: 10px 8px 10px 0;
+      border-bottom: 1px solid #1c1612;
     }
-    .kind.bill td { padding: 8px 6px; border-bottom: 1px solid #e4e2dc; }
-    .kind.bill td input { width: 100%; }
-    .kind.bill .total { text-align: right; font-size: 1.4rem; font-weight: 600; margin: 0; }
-    .kind.sess { background: #0c0d0e; color: #f7f8f8; height: 100%; overflow: auto; padding: 20px; }
-    .kind.sess ol { list-style: none; margin: 0; padding: 0; }
-    .kind.sess li { margin: 0 0 14px; padding: 12px 14px; border: 1px solid #232326; border-radius: 12px; background: #141516; }
-    .kind.sess li.agent { border-color: #5e6ad2; }
-    .kind.sess b { text-transform: uppercase; font-size: 11px; letter-spacing: 0.08em; }
-    .kind.sess time { color: #8a8f98; font-size: 11px; margin-left: 8px; }
-    .kind.sess p { margin: 6px 0 0; }
-    .kind.sess .add-turn { display: flex; gap: 8px; margin-top: 16px; }
+    .kind.bill th:nth-child(2),
+    .kind.bill th:nth-child(3),
+    .kind.bill th:nth-child(4),
+    .kind.bill td:nth-child(2),
+    .kind.bill td:nth-child(3),
+    .kind.bill .amt { text-align: right; }
+    .kind.bill td { padding: 12px 8px 12px 0; border-bottom: 1px solid #d8cfc0; }
+    .kind.bill td input { width: 100%; text-align: inherit; }
+    .kind.bill td:nth-child(2),
+    .kind.bill td:nth-child(3) { width: 4.5rem; }
+    .kind.bill td:nth-child(4) { width: 6.5rem; }
+    .kind.bill .amt {
+      font-family: "IBM Plex Mono", monospace;
+      font-variant-numeric: tabular-nums;
+    }
+    .kind.bill .bill-foot {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 22px;
+    }
+    .kind.bill .note { margin: 0; color: #6a5346; font-size: 12px; max-width: 22rem; }
+    .kind.bill .total { margin: 0; text-align: right; }
+    .kind.bill .total span {
+      display: block;
+      color: #8a7466;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .kind.bill .total b {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(1.8rem, 4.5cqi, 2.5rem);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+    }
+    .kind.sess {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      height: 100%;
+      min-height: 0;
+      background: #0c0b0a;
+      color: #f3ece3;
+      font-family: "Instrument Sans", "Segoe UI", sans-serif;
+    }
+    .kind.sess .sess-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+      padding: clamp(14px, 3cqi, 24px) clamp(14px, 3cqi, 24px) 14px;
+      border-bottom: 1px solid #2a2622;
+    }
+    .kind.sess .kicker { margin: 0 0 6px; color: #c9a227; }
+    .kind.sess h2 {
+      margin: 0;
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(1.6rem, 4.2cqi, 2.2rem);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+    }
+    .kind.sess .sess-meta { margin: 6px 0 0; color: #8a8278; font-size: 12px; }
+    .kind.sess .sess-count { margin: 0; color: #8a8278; font-size: 12px; text-align: right; flex: none; }
+    .kind.sess .sess-count b {
+      display: block;
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 1.7rem;
+      font-weight: 400;
+      color: #f3ece3;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .kind.sess ol {
+      list-style: none;
+      margin: 0;
+      padding: 4px clamp(14px, 3cqi, 24px) 8px;
+      overflow: auto;
+      min-height: 0;
+    }
+    .kind.sess li {
+      display: grid;
+      grid-template-columns: 3.6rem minmax(0, 1fr);
+      gap: 14px;
+      margin: 0;
+      padding: 13px 0;
+      border: 0;
+      border-bottom: 1px solid #241f1b;
+      border-radius: 0;
+      background: transparent;
+    }
+    .kind.sess time {
+      margin: 0;
+      padding-top: 3px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: #c9a227;
+      font-variant-numeric: tabular-nums;
+    }
+    .kind.sess .turn b {
+      display: block;
+      margin: 0 0 5px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #8a8278;
+    }
+    .kind.sess li.agent .turn b { color: #8a96a6; }
+    .kind.sess .turn p {
+      margin: 0;
+      line-height: 1.45;
+      font-size: clamp(0.95rem, 2.2cqi, 1.12rem);
+    }
+    .kind.sess li.human .turn p { color: #f3ece3; }
+    .kind.sess li.agent .turn p { color: #d5dbe4; }
+    .kind.sess .add-turn {
+      display: flex;
+      gap: 8px;
+      min-width: 0;
+      padding: 12px clamp(14px, 3cqi, 24px) 14px;
+      border-top: 1px solid #2a2622;
+      background: #0c0b0a;
+    }
     .kind.sess .add-turn input {
-      flex: 1; background: #0c0d0e; color: #f7f8f8; border: 1px solid #232326;
-      border-radius: 8px; padding: 10px; font: inherit;
+      flex: 1;
+      min-width: 0;
+      background: #141210;
+      color: #f3ece3;
+      border: 1px solid #2a2622;
+      border-radius: 0;
+      padding: 10px 12px;
+      font: inherit;
     }
-      .kind.sess .add-turn button {
-      background: #f7f8f8; color: #111; border: 0; border-radius: 8px; padding: 0 12px; font: inherit; cursor: pointer;
+    .kind.sess .add-turn input:focus { outline: none; border-color: #c9a227; }
+    .kind.sess .add-turn button {
+      flex: none;
+      background: #f3ece3;
+      color: #1c1612;
+      border: 0;
+      border-radius: 0;
+      padding: 0 14px;
+      font: inherit;
+      font-weight: 500;
+      cursor: pointer;
     }
     .kind.seal {
-      height: 100%; background: #0c0d0e; color: #f7f8f8; padding: 28px 32px;
+      height: 100%; background: #000; color: #f7f8f8; padding: 28px 32px;
       font-family: Inter, "SF Pro Text", sans-serif;
     }
     .kind.seal h2 { margin: 8px 0 18px; letter-spacing: -0.03em; font-weight: 600; }
@@ -530,13 +1069,17 @@
     }
     .mcp-bar b { color: #f7f8f8; font-weight: 500; }
     .row.tool:has(.kind.arcade),
-    .row.tool:has(.kind.opff) { width: 100%; max-width: none; }
+    .row.tool:has(.kind.opff),
+    .row.tool:has(.kind.omf) { width: 100%; max-width: none; }
     .row.tool:has(.kind.arcade) .stack,
     .row.tool:has(.kind.arcade) .bubble,
     .row.tool:has(.kind.arcade) .editor-card,
     .row.tool:has(.kind.opff) .stack,
     .row.tool:has(.kind.opff) .bubble,
-    .row.tool:has(.kind.opff) .editor-card { width: 100%; max-width: none; }
+    .row.tool:has(.kind.opff) .editor-card,
+    .row.tool:has(.kind.omf) .stack,
+    .row.tool:has(.kind.omf) .bubble,
+    .row.tool:has(.kind.omf) .editor-card { width: 100%; max-width: none; }
     .editor-card:has(.kind.arcade) {
       height: calc(100dvh - 12rem);
       max-height: calc(100dvh - 12rem);
@@ -550,6 +1093,7 @@
       max-height: 100%;
     }
     .editor-card:has(.kind.opff) { height: min(78vh, 760px); }
+    .editor-card:has(.kind.omf) { height: min(78vh, 760px); }
     .kind.arcade {
       --aw: 256;
       --ah: 240;
@@ -559,7 +1103,7 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      background: #0c0d0e;
+      background: #000;
       color: #f7f8f8;
       padding: 10px 12px 8px;
     }
@@ -629,22 +1173,75 @@
       letter-spacing: 0.12em; text-transform: uppercase; color: var(--subtle);
     }
     .chats h2:first-child { margin-top: 4px; }
-    @media (max-width: 720px) {
-      .kind.deck { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); }
-      .kind.deck nav {
-        display: flex; gap: 6px; overflow: auto; border-right: 0;
-        border-bottom: 1px solid #232326; padding: 8px;
+    @container prim (min-width: 640px) {
+      .board {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-rows: minmax(0, 1fr);
       }
-      .kind.deck .pick { flex: 0 0 148px; margin: 0; }
-      .kind.deck article { padding: 18px; }
-      .kind.deck .slide-title { font-size: 1.4rem; min-height: 3rem; }
     }
-    @media (max-width: 860px) {
-      body { grid-template-columns: 1fr; }
+    @container prim (min-width: 1100px) {
+      .app { grid-template-columns: 200px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+      .app.sheet-on { grid-template-columns: 200px minmax(0, 1fr) minmax(280px, 360px); grid-template-rows: minmax(0, 1fr); }
+      .app aside {
+        display: block;
+        border-right: 1px solid var(--eline);
+        border-bottom: 0;
+        padding: 14px 10px;
+      }
+      .workspace { flex: none; padding: 4px 8px 14px; }
+      .nav-item { width: 100%; height: 30px; }
+    }
+    @container prim (max-width: 859px) {
+      .app.sheet-on { grid-template-columns: minmax(0, 1fr); }
+      .sheet { border-left: 0; border-top: 1px solid var(--eline); }
+      .rowi { grid-template-columns: 16px minmax(0, 1fr) auto; height: auto; min-height: 36px; padding: 8px 12px; }
+      .rowi .tid, .rowi .chip { display: none; }
+      .prop { grid-template-columns: 1fr; gap: 4px; }
+      .title-edit { font-size: 18px; }
+    }
+    @container prim (max-width: 479px) {
+      .board {
+        display: flex;
+        grid-template-columns: none;
+        grid-template-rows: none;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+      }
+      .col {
+        flex: 0 0 min(78%, 16.5rem);
+        height: 100%;
+        max-height: none;
+        scroll-snap-align: start;
+      }
+    }
+    @container prim (max-width: 560px) {
+      .app aside { padding: 8px; }
+      .workspace small { display: none; }
+      .kind.deck .slide { padding: 18px 16px; }
+      .kind.deck .slide h2 { max-width: none; }
+      .kind.deck .pick { flex: 0 0 120px; height: 80px; }
+      .kind.bill .bill-top { flex-direction: column; }
+      .kind.bill .bill-id { text-align: left; }
+      .kind.bill .parties,
+      .kind.bill .dates { grid-template-columns: 1fr; }
+      .kind.bill .bill-foot { display: grid; }
+      .kind.sess .sess-top { flex-direction: column; align-items: flex-start; }
+      .kind.sess .sess-count { text-align: left; display: flex; align-items: baseline; gap: 8px; }
+      .kind.sess .sess-count b { display: inline; font-size: 1.15rem; margin: 0; }
+      .kind.sess li { grid-template-columns: 1fr; gap: 4px; }
+      .kind.sess time { padding-top: 0; }
+      .kind.sess .add-turn { flex-wrap: wrap; }
+      .kind.sess .add-turn button { height: 36px; }
+      .kind.seal { padding: 18px; }
+      .kind.seal .pair { grid-template-columns: 1fr; gap: 2px; }
+    }
+    @media (max-width: 1100px) {
       .inbox {
         position: fixed; inset: 0 auto 0 0; width: min(88vw, 300px); z-index: 20;
         transform: translateX(-105%); transition: transform 180ms ease;
         box-shadow: 16px 0 40px rgba(17,17,17,0.08);
+        flex: none;
+        max-width: none;
       }
       body.show-chats .inbox { transform: none; }
       .scrim {
@@ -656,8 +1253,31 @@
       .row { max-width: 100%; }
       .composer { margin: 0 0.85rem 0.85rem; }
       .thread { padding: 1rem; }
-      body.docked { grid-template-columns: 1fr; }
-      body.docked .app-rail { min-height: 58vh; }
+      body.docked section.stage { flex: 1 1 var(--pane-stage, 38vw); }
+      body:not(.show-chats) .inbox { display: none; }
+    }
+    @media (max-width: 720px) {
+      body.docked { flex-direction: column; }
+      body.docked section.stage {
+        flex: 0 0 var(--pane-stage-h, 30vh);
+        min-width: 0;
+        min-height: 10rem;
+        max-height: 70vh;
+      }
+      body.docked .app-rail {
+        flex: 1 1 auto;
+        min-width: 0;
+        min-height: 12rem;
+        border-left: 0;
+        border-top: 1px solid #232326;
+      }
+      body.docked .split {
+        width: 100%;
+        height: 7px;
+        margin: -3px 0;
+        cursor: row-resize;
+      }
+      body.docked .split::after { top: 2px; bottom: 2px; left: 0; right: 0; }
     }
   </style>
 </head>
@@ -673,7 +1293,7 @@
       <h2>Walks</h2>
       <button class="chat-item on" type="button" data-chat="tour">
         <span class="face"><img src="../../mark.png" alt=""></span>
-        <span><span class="name">All four</span><span class="preview">Click through every kind.</span></span>
+        <span><span class="name">All six</span><span class="preview">Click through every kind.</span></span>
       </button>
       <button class="chat-item" type="button" data-chat="seal">
         <span class="face"><img src="../../mark.png" alt=""></span>
@@ -694,13 +1314,14 @@
     </section>
     </div>
   </aside>
+  <button class="split split-a" id="split-a" type="button" aria-label="Resize chats"></button>
   <section class="stage">
     <div class="chat-bar">
       <button class="menu" id="menu" type="button" aria-label="Chats">☰</button>
       <a class="home" href="/"><img src="../../mark.png" alt="Prim"></a>
-      <div class="who"><b id="title">All four</b><small id="sub">bot · click through every kind</small></div>
+      <div class="who"><b id="title">All six</b><small id="sub">bot · click through every kind</small></div>
       <button class="dock" id="dock-btn" type="button" disabled>Pop to sidebar</button>
-      <a class="dl" href="./atlas.docket.prim" download="atlas.docket.prim">four prims</a>
+      <a class="dl" href="./atlas.docket.prim" download="atlas.docket.prim">six prims</a>
     </div>
     <div class="thread" id="thread">
       <div class="day">Today</div>
@@ -709,6 +1330,7 @@
       <div class="log" id="log-deck" hidden></div>
       <div class="log" id="log-invoice" hidden></div>
       <div class="log" id="log-session" hidden></div>
+      <div class="log" id="log-omf" hidden></div>
       <div class="log" id="log-arcade" hidden></div>
       <div class="log" id="log-seal" hidden></div>
       <div class="drop" id="drop" hidden>
@@ -722,10 +1344,12 @@
     </div>
     <form class="composer" id="composer">
       <button class="tag" type="button" id="attach">.prim</button>
+      <span class="pending" id="pending" hidden></span>
       <input id="prompt" placeholder="Message Prim…" autocomplete="off">
       <button type="submit">Send</button>
     </form>
   </section>
+  <button class="split split-b" id="split-b" type="button" aria-label="Resize editor"></button>
   <aside class="app-rail" id="app-rail" hidden>
     <div class="app-rail-bar">
       <div class="who"><b id="app-rail-title">App</b><small id="app-rail-sub">cites the pack</small></div>
@@ -753,12 +1377,52 @@
     const file = document.getElementById("file");
     const thread = document.getElementById("thread");
     const prompt = document.getElementById("prompt");
+    const composer = document.getElementById("composer");
+    const pendingEl = document.getElementById("pending");
+    const stageEl = document.querySelector("section.stage");
+    let pendingFile = null;
+    let dropSeq = 0;
+    function stageFile(f) {
+      pendingFile = f;
+      pendingEl.hidden = false;
+      pendingEl.classList.add("on");
+      pendingEl.textContent = f.name;
+      prompt.placeholder = "Send to open this prim";
+    }
+    function clearPending() {
+      pendingFile = null;
+      pendingEl.hidden = true;
+      pendingEl.classList.remove("on");
+      pendingEl.textContent = "";
+      prompt.placeholder = "Message Prim…";
+    }
+    function bindFileDrop(el) {
+      el.addEventListener("dragover", (e) => {
+        if (![...e.dataTransfer.types].includes("Files")) return;
+        e.preventDefault();
+        e.stopPropagation();
+        el.classList.add("file-over");
+      });
+      el.addEventListener("dragleave", (e) => {
+        if (el.contains(e.relatedTarget)) return;
+        el.classList.remove("file-over");
+      });
+      el.addEventListener("drop", (e) => {
+        if (!e.dataTransfer.files?.length) return;
+        e.preventDefault();
+        e.stopPropagation();
+        el.classList.remove("file-over");
+        receivePrim(e.dataTransfer.files[0]);
+      });
+    }
     drop.addEventListener("click", () => file.click());
     drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
     drop.addEventListener("dragleave", () => drop.classList.remove("over"));
-    drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("over"); if (e.dataTransfer.files[0]) openFile(e.dataTransfer.files[0]); });
-    file.addEventListener("change", () => { if (file.files[0]) openFile(file.files[0]); });
+    drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("over"); if (e.dataTransfer.files[0]) receivePrim(e.dataTransfer.files[0]); });
+    file.addEventListener("change", () => { if (file.files[0]) receivePrim(file.files[0]); file.value = ""; });
     document.getElementById("attach").addEventListener("click", () => file.click());
+    bindFileDrop(stageEl);
+    bindFileDrop(composer);
     document.getElementById("menu").addEventListener("click", () => document.body.classList.toggle("show-chats"));
     document.getElementById("scrim").addEventListener("click", () => document.body.classList.remove("show-chats"));
     document.querySelectorAll("[data-chat]").forEach((el) => {
@@ -767,7 +1431,7 @@
 
     const rooms = {
       tour: {
-        title: "All four", sub: "bot · click through every kind",
+        title: "All six", sub: "bot · click through every kind",
         file: "atlas.docket.prim", size: "",
         started: false, pack: null, walk: true,
       },
@@ -786,12 +1450,12 @@
         preview: "Don’t send the slides.",
         open: "Don’t send the slides.",
         offer: "Send me the prim. The deck is a view of that file.",
-        after: "Click a slide to edit. Ask how many slides.",
+        after: "Arrows move the slides. Click a line to edit. Ask how many slides.",
         started: false, pack: null,
       },
       invoice: {
         title: "Invoice", sub: "bot · the pack is the bill",
-        file: "harbor.invoice.prim", size: "618 B",
+        file: "harbor.invoice.prim", size: "647 B",
         preview: "The pack is the bill.",
         open: "Don’t send the PDF.",
         offer: "Send me the prim. The pack is the bill.",
@@ -805,6 +1469,15 @@
         open: "Don’t paste the transcript.",
         offer: "Send the session prim. The next window opens the same file.",
         after: "Log a turn in the editor, or ask what was last said.",
+        started: false, pack: null,
+      },
+      omf: {
+        title: "Meeting", sub: "bot · the occurrence is the pack",
+        file: "june.omf.prim", size: "5.7 KB",
+        preview: "RSVP is not attendance.",
+        open: "Don’t send the calendar.",
+        offer: "Send the meeting prim. omf-editor cites that file.",
+        after: "Invite, record, and outcome stay separate. Ask who attended or what was decided.",
         started: false, pack: null,
       },
       arcade: {
@@ -823,6 +1496,10 @@
       },
     };
     for (const [id, f] of Object.entries(FACES)) {
+      if (rooms[id]) {
+        rooms[id].face = true;
+        continue;
+      }
       rooms[id] = {
         title: f.title,
         sub: "bot · " + id,
@@ -849,24 +1526,24 @@
       el.hidden = true;
       thread.insertBefore(el, drop);
     }
-    function chatButton(id) {
+    function chatButton(id, label) {
       const r = rooms[id];
       const b = document.createElement("button");
       b.className = "chat-item" + (r.dim ? " dim" : "");
       b.type = "button";
       b.dataset.chat = id;
-      b.innerHTML = `<span class="face"><img src="../../mark.png" alt=""></span><span><span class="name">${esc(r.title)}</span><span class="preview">${esc(r.preview || r.open)}</span></span>`;
+      b.innerHTML = `<span class="face"><img src="../../mark.png" alt=""></span><span><span class="name">${esc(label || r.title)}</span><span class="preview">${esc(r.preview || r.open)}</span></span>`;
       b.addEventListener("click", () => openChat(id));
       return b;
     }
     function mountPrimChats() {
       const okf = document.getElementById("okf-chats");
       const kinds = document.getElementById("kind-chats");
-      for (const id of Object.keys(FACES)) {
+      for (const [id, f] of Object.entries(FACES)) {
         ensureLog(id);
-        okf.appendChild(chatButton(id));
+        okf.appendChild(chatButton(id, f.title));
       }
-      for (const id of ["docket", "deck", "invoice", "session", "arcade"]) {
+      for (const id of ["docket", "deck", "invoice", "session", "omf", "arcade"]) {
         ensureLog(id);
         kinds.appendChild(chatButton(id));
       }
@@ -939,13 +1616,84 @@
       return document.getElementById("frame-" + id);
     }
     const shelf = { items: [], active: null };
-    const appRailHold = document.getElementById("app-rail-hold");
     const appRailDeck = document.getElementById("app-rail-deck");
+    const inboxEl = document.getElementById("inbox");
+    const splitA = document.getElementById("split-a");
+    const splitB = document.getElementById("split-b");
+    const PANE_KEY = "prim-docket-panes";
+    const paneState = (() => {
+      try {
+        const raw = JSON.parse(localStorage.getItem(PANE_KEY) || "{}");
+        const order = Array.isArray(raw.order) && raw.order.length === 3 ? raw.order : ["inbox", "stage", "rail"];
+        return {
+          inbox: Number(raw.inbox) || 0,
+          stage: Number(raw.stage) || 0,
+          rail: Number(raw.rail) || 0,
+          stageH: Number(raw.stageH) || 0,
+          order,
+        };
+      } catch {
+        return { inbox: 0, stage: 0, rail: 0, stageH: 0, order: ["inbox", "stage", "rail"] };
+      }
+    })();
+    function savePanes() {
+      localStorage.setItem(PANE_KEY, JSON.stringify(paneState));
+    }
+    function paneMap() {
+      return { inbox: inboxEl, stage: stageEl, rail: appRail };
+    }
+    function drawerInbox() {
+      return window.matchMedia("(max-width: 1100px)").matches;
+    }
+    function stackedPanes() {
+      return document.body.classList.contains("docked") && window.matchMedia("(max-width: 720px)").matches;
+    }
+    function applyPaneVars() {
+      const b = document.body.style;
+      if (paneState.inbox) b.setProperty("--pane-inbox", paneState.inbox + "px");
+      if (paneState.stage) b.setProperty("--pane-stage", paneState.stage + "px");
+      if (paneState.rail) b.setProperty("--pane-rail", paneState.rail + "px");
+      if (paneState.stageH) b.setProperty("--pane-stage-h", paneState.stageH + "px");
+    }
+    function layoutPanes() {
+      applyPaneVars();
+      const map = paneMap();
+      const docked = document.body.classList.contains("docked");
+      const vis = paneState.order.filter((id) => {
+        if (id === "rail" && !docked) return false;
+        if (id === "inbox" && drawerInbox()) return false;
+        return true;
+      });
+      const splits = [splitA, splitB];
+      const kids = [document.getElementById("scrim")];
+      vis.forEach((id, i) => {
+        kids.push(map[id]);
+        if (i < vis.length - 1) {
+          const split = splits[i];
+          split.hidden = false;
+          split.dataset.left = id;
+          split.dataset.right = vis[i + 1];
+          split.setAttribute("aria-label", "Resize panes");
+          kids.push(split);
+        }
+      });
+      splits.forEach((s) => { if (!kids.includes(s)) { s.hidden = true; document.body.appendChild(s); } });
+      [inboxEl, stageEl, appRail].forEach((n) => { if (!kids.includes(n)) kids.push(n); });
+      kids.forEach((n) => n && document.body.appendChild(n));
+    }
 
     function frameKind(frame) {
-      const kind = frame?.querySelector(".kind");
+      if (!frame) return "prim";
+      if (frame.querySelector(".app")) return "docket";
+      const kind = frame.querySelector(".kind");
       if (!kind) return "prim";
       return [...kind.classList].find((c) => c !== "kind") || "prim";
+    }
+    function titleFor(frame) {
+      const known = shelf.items.find((row) => row.frameId === frame?.id);
+      if (known) return known.title;
+      const text = frame?.querySelector(".workspace h1, h2, .kicker")?.textContent || "";
+      return text.split("·")[0].trim() || frameKind(frame);
     }
     function shelfHas(frameId) {
       return shelf.items.some((item) => item.frameId === frameId);
@@ -953,26 +1701,75 @@
     function shelfHasArcade() {
       return shelf.items.some((item) => document.getElementById(item.frameId)?.querySelector(".kind.arcade"));
     }
+    function looseFrames(roomId = current) {
+      const log = logEl(roomId);
+      if (!log) return [];
+      return [...log.querySelectorAll(".editor-card")].filter((el) => el.id && !shelfHas(el.id));
+    }
+    function frameIdForRow(row) {
+      return row?.querySelector(".chat-thumb")?.dataset.frame
+        || row?.querySelector(".editor-card")?.id
+        || "";
+    }
     function paintDock() {
-      const frame = activeFrame();
-      const onShelf = !!(frame && shelfHas(frame.id));
+      const loose = looseFrames();
       dockBtn.hidden = false;
-      dockBtn.disabled = !frame && !shelf.items.length;
-      dockBtn.textContent = onShelf ? "Pop back to chat" : "Pop to sidebar";
-      dockBtn.setAttribute("aria-pressed", onShelf ? "true" : "false");
+      dockBtn.disabled = !loose.length && !shelf.items.length;
+      dockBtn.textContent = loose.length ? "Pop to sidebar" : "Pop back to chat";
+      dockBtn.setAttribute("aria-pressed", loose.length ? "false" : "true");
       document.querySelectorAll(".pop-side").forEach((btn) => {
-        const card = btn.closest(".row.tool")?.querySelector(".editor-card");
-        btn.textContent = card && shelfHas(card.id) ? "Pop back to chat" : "Pop to sidebar";
+        const id = frameIdForRow(btn.closest(".row.tool"));
+        btn.textContent = id && shelfHas(id) ? "Pop back to chat" : "Pop to sidebar";
       });
     }
     function paintDeck() {
       appRailDeck.hidden = shelf.items.length < 2;
-      appRailDeck.innerHTML = shelf.items.map((item) => `
-        <button type="button" class="rail-thumb${item.frameId === shelf.active ? " on" : ""}" data-frame="${esc(item.frameId)}">
-          <span class="rail-thumb-preview kind-${esc(item.kind)}"></span>
-          <span class="rail-thumb-cap">${esc(item.title)}</span>
-        </button>`).join("");
-      const on = appRailDeck.querySelector(".rail-thumb.on");
+      const keep = new Set(shelf.items.map((item) => item.frameId));
+      [...appRailDeck.querySelectorAll("[data-ph]")].forEach((el) => {
+        if (!keep.has(el.dataset.ph)) el.remove();
+      });
+      for (const item of shelf.items) {
+        const frame = document.getElementById(item.frameId);
+        if (item.frameId === shelf.active) {
+          let ph = appRailDeck.querySelector(`[data-ph="${item.frameId}"]`);
+          if (!ph) {
+            ph = document.createElement("button");
+            ph.type = "button";
+            ph.dataset.ph = item.frameId;
+            ph.dataset.frame = item.frameId;
+            ph.className = "rail-thumb on";
+          }
+          ph.className = "rail-thumb on";
+          ph.innerHTML = `<span class="rail-thumb-preview kind-${esc(item.kind)}"></span><span class="rail-thumb-cap">${esc(item.title)}</span>`;
+          appRailDeck.appendChild(ph);
+          if (frame) {
+            frame.classList.remove("is-thumb");
+            if (frame.parentElement !== appRailBody) appRailBody.appendChild(frame);
+          }
+        } else if (frame) {
+          const arcade = !!frame.querySelector(".kind.arcade");
+          if (arcade) {
+            let ph = appRailDeck.querySelector(`[data-ph="${item.frameId}"]`);
+            if (!ph) {
+              ph = document.createElement("button");
+              ph.type = "button";
+              ph.dataset.ph = item.frameId;
+              ph.dataset.frame = item.frameId;
+            }
+            ph.className = "rail-thumb";
+            ph.innerHTML = `<span class="rail-thumb-preview kind-arcade"></span><span class="rail-thumb-cap">${esc(item.title)}</span>`;
+            appRailDeck.appendChild(ph);
+            frame.classList.remove("is-thumb");
+            document.getElementById("app-rail-hold").appendChild(frame);
+          } else {
+            appRailDeck.querySelector(`[data-ph="${item.frameId}"]`)?.remove();
+            frame.dataset.title = item.title;
+            frame.classList.add("is-thumb");
+            appRailDeck.appendChild(frame);
+          }
+        }
+      }
+      const on = appRailDeck.querySelector(".rail-thumb.on, .editor-card.is-thumb");
       if (on) on.scrollIntoView({ inline: "nearest", block: "nearest", behavior: "smooth" });
     }
     function markChatThumb(home, item, on) {
@@ -982,6 +1779,7 @@
       const thumb = home.querySelector(".chat-thumb");
       if (!thumb) return;
       thumb.hidden = !on;
+      if (item.frameId) thumb.dataset.frame = item.frameId;
       const preview = thumb.querySelector(".chat-thumb-preview");
       if (preview) preview.className = "chat-thumb-preview kind-" + item.kind;
       const title = thumb.querySelector("b");
@@ -991,40 +1789,148 @@
     }
     function parkFrame(frame) {
       if (!frame || !frame._home) return;
+      frame.classList.remove("is-thumb");
       const bubble = frame._home.querySelector(".bubble");
       if (bubble && frame.parentElement !== bubble) bubble.appendChild(frame);
     }
     function openRail() {
       appRail.hidden = false;
       document.body.classList.add("docked");
+      layoutPanes();
     }
     function closeRail() {
       document.body.classList.remove("docked");
       appRail.hidden = true;
       shelf.active = null;
       paintDeck();
+      paintChatThumbs();
       paintDock();
+      layoutPanes();
+    }
+    function nudgeFit() {
+      window.dispatchEvent(new Event("resize"));
+    }
+    function bindPanes() {
+      const bindSplit = (split) => {
+        split.addEventListener("pointerdown", (e) => {
+          if (split.hidden) return;
+          e.preventDefault();
+          split.classList.add("on");
+          const vert = stackedPanes();
+          document.body.classList.add("resizing", vert ? "resizing-row" : "resizing-col");
+          const map = paneMap();
+          const left = map[split.dataset.left];
+          const right = map[split.dataset.right];
+          if (!left || !right) return;
+          const l0 = vert ? left.getBoundingClientRect().height : left.getBoundingClientRect().width;
+          const r0 = vert ? right.getBoundingClientRect().height : right.getBoundingClientRect().width;
+          const start = vert ? e.clientY : e.clientX;
+          const minL = split.dataset.left === "inbox" ? 140 : 220;
+          const minR = split.dataset.right === "inbox" ? 140 : 220;
+          const move = (ev) => {
+            const d = (vert ? ev.clientY : ev.clientX) - start;
+            const nl = Math.max(minL, Math.min(l0 + r0 - minR, l0 + d));
+            const nr = l0 + r0 - nl;
+            const lid = split.dataset.left;
+            const rid = split.dataset.right;
+            if (vert) {
+              if (lid === "stage") paneState.stageH = Math.round(nl);
+              if (rid === "stage") paneState.stageH = Math.round(nr);
+            } else {
+              paneState[lid] = Math.round(nl);
+              paneState[rid] = Math.round(nr);
+            }
+            applyPaneVars();
+          };
+          const up = () => {
+            split.classList.remove("on");
+            document.body.classList.remove("resizing", "resizing-col", "resizing-row");
+            window.removeEventListener("pointermove", move);
+            window.removeEventListener("pointerup", up);
+            savePanes();
+            nudgeFit();
+          };
+          window.addEventListener("pointermove", move);
+          window.addEventListener("pointerup", up);
+        });
+      };
+      bindSplit(splitA);
+      bindSplit(splitB);
+      const bindDrag = (handle, id) => {
+        handle.addEventListener("pointerdown", (e) => {
+          if (e.button || e.target.closest("button, a, input")) return;
+          const origin = { x: e.clientX, y: e.clientY, go: false };
+          const move = (ev) => {
+            if (!origin.go && Math.hypot(ev.clientX - origin.x, ev.clientY - origin.y) < 8) return;
+            origin.go = true;
+            document.body.classList.add("dragging-pane");
+          };
+          const up = (ev) => {
+            window.removeEventListener("pointermove", move);
+            window.removeEventListener("pointerup", up);
+            document.body.classList.remove("dragging-pane");
+            if (!origin.go) return;
+            const hit = document.elementFromPoint(ev.clientX, ev.clientY);
+            const over = hit && hit.closest("#inbox, section.stage, #app-rail");
+            const dest = over === inboxEl ? "inbox" : over === stageEl ? "stage" : over === appRail ? "rail" : "";
+            if (!dest || dest === id) return;
+            const i = paneState.order.indexOf(id);
+            const j = paneState.order.indexOf(dest);
+            if (i < 0 || j < 0) return;
+            const next = paneState.order.slice();
+            next[i] = dest;
+            next[j] = id;
+            paneState.order = next;
+            savePanes();
+            layoutPanes();
+            nudgeFit();
+          };
+          window.addEventListener("pointermove", move);
+          window.addEventListener("pointerup", up);
+        });
+      };
+      bindDrag(inboxEl.querySelector(".inbox-head"), "inbox");
+      bindDrag(document.querySelector(".chat-bar .who"), "stage");
+      bindDrag(document.querySelector(".app-rail-bar .who"), "rail");
+      const mqDrawer = window.matchMedia("(max-width: 1100px)");
+      const mqStack = window.matchMedia("(max-width: 720px)");
+      mqDrawer.addEventListener("change", () => layoutPanes());
+      mqStack.addEventListener("change", () => layoutPanes());
+      layoutPanes();
+    }
+    function paintChatThumbs() {
+      document.querySelectorAll(".row.tool").forEach((row) => {
+        const id = frameIdForRow(row);
+        const item = shelf.items.find((rowItem) => rowItem.frameId === id);
+        if (!item) return;
+        item.home = row;
+        if (document.getElementById(id)) document.getElementById(id)._home = row;
+        markChatThumb(row, item, true);
+      });
     }
     function selectShelf(frameId) {
-      const next = document.getElementById(frameId);
-      if (!next) return;
-      const sitting = appRailBody.firstElementChild;
-      if (sitting && sitting !== next) appRailHold.appendChild(sitting);
-      if (next.parentElement !== appRailBody) appRailBody.appendChild(next);
+      if (!frameId) return;
+      if (!shelfHas(frameId)) {
+        const loose = document.getElementById(frameId);
+        if (loose) dockFrame(loose, titleFor(loose));
+        return;
+      }
       shelf.active = frameId;
       const item = shelf.items.find((row) => row.frameId === frameId);
       document.getElementById("app-rail-title").textContent = item?.title || "App";
       document.getElementById("app-rail-sub").textContent = (item?.kind || "prim") + " · chat still points this";
       openRail();
       paintDeck();
+      paintChatThumbs();
       paintDock();
+      nudgeFit();
     }
     function dockFrame(frame, title, sub) {
       if (!frame) return;
       const home = frame.closest(".row.tool") || frame._home;
       if (home) frame._home = home;
       const kind = frameKind(frame) || String(sub || "").split(" ")[0] || "prim";
-      const name = title || kind;
+      const name = title || titleFor(frame) || kind;
       let item = shelf.items.find((row) => row.frameId === frame.id);
       if (!item) {
         item = { frameId: frame.id, title: name, kind, roomId: current, home };
@@ -1035,6 +1941,14 @@
         item.home = home || item.home;
       }
       markChatThumb(item.home, item, true);
+      if (shelf.active === frame.id) {
+        openRail();
+        paintDeck();
+        paintChatThumbs();
+        paintDock();
+        nudgeFit();
+        return;
+      }
       selectShelf(frame.id);
     }
     function popFrame(frameId) {
@@ -1056,28 +1970,42 @@
     }
     function syncDock() {
       const r = room();
-      const frame = activeFrame();
-      if (frame && r.docked !== false) {
-        dockFrame(frame, r.pack?.project?.name || r.title, (r.pack?.kind || "prim") + " · chat still points this");
+      if (r.docked === false) {
+        popRoom(current);
         return;
       }
-      if (frame) popFrame(frame.id);
-      else if (shelf.items.length) {
+      looseFrames().forEach((frame) => dockFrame(frame, titleFor(frame)));
+      if (shelf.items.length) {
         openRail();
         paintDeck();
+        paintChatThumbs();
+        paintDock();
+      } else {
         paintDock();
       }
     }
     function toggleDock() {
-      const frame = activeFrame();
-      if (frame && shelfHas(frame.id)) {
-        room().docked = false;
-        popFrame(frame.id);
+      const loose = looseFrames();
+      if (loose.length) {
+        room().docked = true;
+        loose.forEach((frame) => dockFrame(frame, titleFor(frame)));
         return;
       }
+      if (shelf.active) {
+        room().docked = false;
+        popFrame(shelf.active);
+      }
+    }
+    function toggleDockFrame(frameId) {
+      if (!frameId) return;
+      if (shelfHas(frameId)) {
+        popFrame(frameId);
+        return;
+      }
+      const frame = document.getElementById(frameId);
       if (!frame) return;
       room().docked = true;
-      dockFrame(frame, room().pack?.project?.name || room().title, (room().pack?.kind || "prim") + " · chat still points this");
+      dockFrame(frame, titleFor(frame));
     }
 
     dockBtn.addEventListener("click", toggleDock);
@@ -1089,6 +2017,13 @@
       }
     });
     document.addEventListener("click", (e) => {
+      const live = e.target.closest(".editor-card.is-thumb");
+      if (live?.id) {
+        const item = shelf.items.find((row) => row.frameId === live.id);
+        if (item?.roomId && item.roomId !== current) openChat(item.roomId, { skipPlay: true });
+        selectShelf(live.id);
+        return;
+      }
       const thumb = e.target.closest(".rail-thumb, .chat-thumb");
       if (thumb?.dataset.frame) {
         const item = shelf.items.find((row) => row.frameId === thumb.dataset.frame);
@@ -1096,7 +2031,8 @@
         selectShelf(thumb.dataset.frame);
         return;
       }
-      if (e.target.closest(".pop-side")) toggleDock();
+      const pop = e.target.closest(".pop-side");
+      if (pop) toggleDockFrame(frameIdForRow(pop.closest(".row.tool")));
     });
 
     function openChat(id, opts = {}) {
@@ -1119,11 +2055,18 @@
       else syncDock();
     }
 
-    document.getElementById("composer").addEventListener("submit", (e) => {
+    composer.addEventListener("submit", (e) => {
       e.preventDefault();
       const text = prompt.value.trim();
-      if (!text) return;
+      const f = pendingFile;
       prompt.value = "";
+      if (f) {
+        clearPending();
+        if (text) add("me", esc(text));
+        receivePrim(f);
+        return;
+      }
+      if (!text) return;
       add("me", esc(text));
       reply(text);
     });
@@ -1144,7 +2087,8 @@
     function attachHTML(name, note) {
       return `<div class="attach"><div><span class="mono">${name}</span><small>${note}</small></div></div>`;
     }
-    function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+    const FAST = new URLSearchParams(location.search).has("fast");
+    function sleep(ms) { return new Promise((r) => setTimeout(r, FAST ? 0 : ms)); }
     async function say(html, id = current) {
       const typing = add("them", `<div class="typing"><i></i><i></i><i></i></div>`, "", id);
       await sleep(480);
@@ -1162,6 +2106,7 @@
     function openedLine(parsed) {
       if (parsed.kind === "arcade") return "Opened. Prim Arcade cites the cart — it isn’t a copy.";
       if (parsed.kind === "opff") return "Opened. The ledger cites the pack — it isn’t a copy.";
+      if (parsed.kind === "omf") return "Opened. The occurrence editor cites the pack — invite, record, and outcome stay separate.";
       if (parsed.face) return "Opened. The face cites the pack — it isn’t a copy.";
       return "Opened. The editor cites the pack — it isn’t a copy.";
     }
@@ -1302,57 +2247,53 @@
       await say(answerKind(r.pack, text));
     }
 
-    async function openFile(f) {
-      const parsed = await readPack(f);
+    async function receivePrim(f) {
+      if (!f) return;
+      clearPending();
       if (current === "seal" && rooms.seal.manual) {
         add("me", attachHTML(f.name, "attached"), "", "seal");
         drop.hidden = true;
+        const parsed = await readPack(f);
         rooms.seal.pack = parsed;
         await seal.fromDrop(parsed, f.name);
         return;
       }
-      if (current === "tour" && rooms.tour.manual) {
-        add("me", attachHTML(f.name, "attached"), "", "tour");
-        drop.hidden = true;
-        rooms.tour.pack = parsed;
-        await say(openedLine(parsed), "tour");
-        const id = "frame-tour-" + parsed.kind;
-        add("them", toolMount(id), "tool", "tour");
-        rooms.tour.frameId = id;
-        rooms.tour.pack = parsed;
-        if (parsed.kind === "docket") render(id, parsed, tourDocketUI);
-        else await renderKind(document.getElementById(id), parsed, () => {});
-        const frame = document.getElementById(id);
-        rooms.tour.surface = frame?._surface || null;
-        rooms.tour.docked = true;
-        if (frame) dockFrame(frame, parsed.project?.name || parsed.kind, parsed.kind + " · chat still points this");
-        offerRetry("tour");
+      add("me", attachHTML(f.name, "attached"));
+      drop.hidden = true;
+      let parsed;
+      try {
+        parsed = await readPack(f);
+      } catch {
+        await say("Couldn’t read that as a prim.");
         return;
       }
-      if (!rooms[parsed.kind]) {
-        rooms[parsed.kind] = {
-          title: parsed.project?.name || parsed.kind,
-          sub: "bot · the file is the prim",
-          file: f.name,
-          size: "",
-          after: "The face cites this file.",
-          started: true,
-          pack: parsed,
-          face: true,
-        };
-        ensureLog(parsed.kind);
+      if (!parsed?.kind) {
+        await say("That file isn’t a prim I can open.");
+        return;
       }
-      rooms[parsed.kind].started = true;
-      rooms[parsed.kind].manual = false;
-      if (parsed.kind !== current) openChat(parsed.kind, { skipPlay: true });
-      const r = rooms[parsed.kind];
+      const r = room();
       r.pack = parsed;
-      if (parsed.kind === "docket") pack = parsed;
-      add("me", attachHTML(f.name || r.file, "attached"), "", parsed.kind);
-      await say(openedLine(parsed), parsed.kind);
-      await showEditor(parsed.kind, parsed);
-      await say(r.after, parsed.kind);
-      offerRetry(parsed.kind);
+      r.docked = true;
+      if (parsed.kind === "docket" && current === "docket") pack = parsed;
+      await say(openedLine(parsed));
+      const id = "frame-" + current + "-" + parsed.kind + "-" + (++dropSeq);
+      add("them", toolMount(id), "tool");
+      r.frameId = id;
+      if (parsed.kind === "arcade") stopArcade();
+      const frame = document.getElementById(id);
+      if (parsed.kind === "docket") {
+        const ui = current === "docket" ? docketUI : current === "seal" ? sealDocketUI : { selected: "", view: "board", filter: "all" };
+        render(id, parsed, ui);
+      } else {
+        await renderKind(frame, parsed, () => {});
+      }
+      r.surface = frame?._surface || null;
+      const raw = parsed.project?.name || f.name || parsed.kind;
+      const title = String(raw).replace(/\.(prim|zip|nes|z64|n64|v64|wad)$/i, "") || parsed.kind;
+      if (frame) dockFrame(frame, title, parsed.kind + " · chat still points this");
+    }
+    async function openFile(f) {
+      return receivePrim(f);
     }
 
     async function readPack(f) {
@@ -1365,7 +2306,8 @@
         const zip = unzipSync(buf);
         const files = {};
         for (const [k, v] of Object.entries(zip)) {
-          const name = k.replace(/^.*\//, "");
+          if (k.endsWith("/") || k.includes("__MACOSX")) continue;
+          const name = k.replace(/^\.\//, "");
           files[name] = /\.(nes|z64|n64|v64|wad)$/i.test(name) ? v : strFromU8(v);
         }
         return parseKind(files);
@@ -1478,6 +2420,7 @@
     function sheetHTML(t, src) {
       const ms = src.milestones.map((m) => `<option value="${esc(m.id)}" ${m.id===t.milestone?"selected":""}>${esc(m.title)}</option>`).join("");
       return `<section class="sheet">
+        <button type="button" class="sheet-close" data-close aria-label="Close issue">×</button>
         <div class="issue-id">${esc(t.id)}</div>
         <textarea class="title-edit" data-field="title">${esc(t.title)}</textarea>
         <label class="prop"><span>Status</span><select data-field="status">${["To Do","In Progress","Done","Draft"].map((s)=>`<option ${s===t.status?"selected":""}>${s}</option>`).join("")}</select></label>
@@ -1491,6 +2434,7 @@
     function bind(root, src, ui, rootId) {
       root.querySelectorAll("[data-filter]").forEach((el) => el.addEventListener("click", () => { ui.filter = el.dataset.filter; render(rootId, src, ui); }));
       root.querySelectorAll("[data-view]").forEach((el) => el.addEventListener("click", () => { ui.view = el.dataset.view; render(rootId, src, ui); }));
+      root.querySelector("[data-close]")?.addEventListener("click", () => { ui.selected = ""; render(rootId, src, ui); });
       root.querySelectorAll(".rowi, .card").forEach((el) => el.addEventListener("click", () => { ui.selected = el.dataset.id; render(rootId, src, ui); }));
       root.querySelectorAll("[data-field]").forEach((el) => {
         const ev = el.tagName === "SELECT" ? "change" : "blur";
@@ -1595,10 +2539,47 @@
       },
     });
 
+    bindPanes();
     mountPrimChats();
     loadReg();
     paintDock();
-    play("tour");
+    const BARE = new URLSearchParams(location.search);
+    function roomForViewer(q) {
+      const raw = String(q || "").toLowerCase();
+      if (raw === "seal" || raw === "docket-webmcp") return "seal";
+      if (raw === "prim-arcade" || raw === "arcade") return "arcade";
+      const cites = raw.replace(/-editor$/, "");
+      return rooms[cites] ? cites : "";
+    }
+    async function bootBare() {
+      if (!BARE.has("bare")) return false;
+      document.body.classList.add("bare", "docked");
+      document.getElementById("app-rail").hidden = false;
+      const id = roomForViewer(BARE.get("kind") || BARE.get("tool")) || "opff";
+      openChat(id, { skipPlay: true });
+      const parsed = await fetchPrim(rooms[id].file);
+      rooms[id].pack = parsed;
+      rooms[id].started = true;
+      rooms[id].docked = true;
+      if (parsed.kind === "docket") pack = parsed;
+      await showEditor(id, parsed);
+      window.parent.postMessage({ type: "prim-bare-ready", kind: id }, "*");
+      return true;
+    }
+    window.addEventListener("message", async (e) => {
+      if (!document.body.classList.contains("bare")) return;
+      if (e.data?.type !== "prim-drop") return;
+      const f = new File([e.data.bytes], e.data.name || "drop.prim");
+      const parsed = await readPack(f);
+      const id = rooms[parsed.kind] ? parsed.kind : current;
+      if (id !== current) openChat(id, { skipPlay: true });
+      rooms[id].pack = parsed;
+      rooms[id].started = true;
+      rooms[id].docked = true;
+      if (parsed.kind === "docket") pack = parsed;
+      await showEditor(id, parsed);
+    });
+    bootBare().then((bare) => { if (!bare) play("tour"); });
   </script>
 </body>
 </html>

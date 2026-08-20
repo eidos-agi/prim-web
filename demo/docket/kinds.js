@@ -1,6 +1,7 @@
 /** Parse a prim zip and render kind editors. Docket board stays in the host. */
 
 import { answerOpff, steerOpff } from "./opff.js";
+import { answerOmf, parseOmf, steerOmf } from "./omf.js";
 
 export function jsonl(s) {
   return String(s || "")
@@ -104,6 +105,7 @@ export function parseKind(files) {
       goals: jsonl(get("goals.jsonl")),
     };
   }
+  if (kind === "omf") return parseOmf(files);
   const face = faceMatter(get("index.md"));
   const names = Object.keys(files).map((k) => k.replace(/^.*\//, "")).filter((n) => n && n !== ".");
   return {
@@ -133,6 +135,10 @@ export async function renderKind(el, pack, onChange) {
     const { renderOpff } = await import("./opff.js");
     return renderOpff(el, pack);
   }
+  if (pack.kind === "omf") {
+    const { renderOmf } = await import("./omf.js");
+    return renderOmf(el, pack, onChange);
+  }
   return renderFace(el, pack);
 }
 
@@ -149,53 +155,136 @@ function renderFace(el, pack) {
   </div>`;
 }
 
+function slidePoints(body) {
+  const raw = String(body || "").trim();
+  if (!raw) return [];
+  if (raw.includes("\n")) return raw.split(/\n+/).map((s) => s.trim()).filter(Boolean);
+  return raw.split(/(?<=\.)\s+/).map((s) => s.trim()).filter(Boolean);
+}
+
 function renderDeck(el, pack, onChange) {
   let i = 0;
+  const go = (n) => {
+    i = (n + pack.slides.length) % pack.slides.length;
+    draw();
+  };
+  const save = (field, value) => {
+    if (!pack.slides[i]) return;
+    pack.slides[i][field] = value;
+    onChange?.(pack);
+  };
   const draw = () => {
     const s = pack.slides[i] || { title: "", body: "" };
-    el.innerHTML = `<div class="kind deck">
-      <nav>${pack.slides.map((sl, n) => `<button type="button" class="pick ${n===i?"on":""}" data-i="${n}"><b>${esc(sl.id)}</b>${esc(sl.title)}</button>`).join("")}</nav>
-      <article>
-        <p class="kicker">${esc(pack.project.name)} · ${esc(s.id || "")}</p>
-        <textarea class="slide-title" data-f="title">${esc(s.title)}</textarea>
-        <textarea class="slide-body" data-f="body">${esc(s.body)}</textarea>
-      </article>
+    const points = slidePoints(s.body);
+    el.innerHTML = `<div class="kind deck" tabindex="0">
+      <div class="deck-stage">
+        <article class="slide">
+          <span class="slide-no">${String(i + 1).padStart(2, "0")}</span>
+          <p class="kicker">${esc(pack.project.name)} · ${esc(s.id || "")}</p>
+          <h2 contenteditable="true" data-f="title">${esc(s.title)}</h2>
+          <ul>${points.map((p) => `<li contenteditable="true">${esc(p)}</li>`).join("")}</ul>
+        </article>
+        <div class="deck-bar">
+          <button type="button" data-go="-1" aria-label="Previous slide">←</button>
+          <span>${i + 1} / ${pack.slides.length}</span>
+          <button type="button" data-go="1" aria-label="Next slide">→</button>
+          <ol class="ticks" aria-hidden="true">${pack.slides.map((_, n) => `<li class="${n === i ? "on" : ""}"></li>`).join("")}</ol>
+        </div>
+      </div>
+      <nav class="film">${pack.slides.map((sl, n) => `
+        <button type="button" class="pick ${n === i ? "on" : ""}" data-i="${n}">
+          <em>${String(n + 1).padStart(2, "0")}</em>
+          <strong>${esc(sl.title)}</strong>
+          <small>${esc(slidePoints(sl.body)[0] || "")}</small>
+        </button>`).join("")}</nav>
     </div>`;
-    el.querySelectorAll("[data-i]").forEach((b) => b.addEventListener("click", () => { i = +b.dataset.i; draw(); }));
-    el.querySelectorAll("[data-f]").forEach((f) => {
-      f.addEventListener("blur", () => {
-        if (!pack.slides[i]) return;
-        pack.slides[i][f.dataset.f] = f.value;
-        onChange?.(pack);
-        draw();
+    const root = el.querySelector(".kind.deck");
+    root?.focus({ preventScroll: true });
+    el.querySelectorAll("[data-i]").forEach((b) => b.addEventListener("click", () => go(+b.dataset.i)));
+    el.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => go(i + +b.dataset.go)));
+    const title = el.querySelector("[data-f=title]");
+    title?.addEventListener("blur", () => {
+      save("title", title.textContent.trim());
+      const cap = el.querySelector(".pick.on strong");
+      if (cap) cap.textContent = title.textContent.trim();
+    });
+    el.querySelectorAll(".slide li").forEach((li) => {
+      li.addEventListener("blur", () => {
+        const next = [...el.querySelectorAll(".slide li")].map((n) => n.textContent.trim()).filter(Boolean);
+        save("body", next.join("\n"));
       });
     });
+    if (el._deckKey) document.removeEventListener("keydown", el._deckKey);
+    el._deckKey = (e) => {
+      if (!el.isConnected) {
+        document.removeEventListener("keydown", el._deckKey);
+        return;
+      }
+      if (e.target.closest("input, textarea, [contenteditable=true]")) return;
+      const card = el.closest(".editor-card");
+      if (card && !card.closest("#app-rail-body") && !el.contains(document.activeElement)) return;
+      if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(i + 1); }
+      if (e.key === "ArrowLeft") { e.preventDefault(); go(i - 1); }
+    };
+    document.addEventListener("keydown", el._deckKey);
   };
   draw();
+}
+
+function money(n, cur = "USD") {
+  const v = Number(n || 0);
+  try {
+    return new Intl.NumberFormat("en-US", { style: "currency", currency: cur, maximumFractionDigits: 0 }).format(v);
+  } catch {
+    return `${cur} ${v.toLocaleString()}`;
+  }
 }
 
 function renderInvoice(el, pack, onChange) {
   const total = () => pack.lines.reduce((n, l) => n + Number(l.qty || 0) * Number(l.rate || 0), 0);
   const draw = () => {
     const m = pack.project;
+    const cur = m.currency || "USD";
+    const house = (m.from || "Invoice").trim();
+    const mark = house.charAt(0) || "I";
+    const tag = /harbor/i.test(house) ? "Identity for launches" : "";
     el.innerHTML = `<div class="kind bill">
-      <header>
-        <p class="kicker">Invoice</p>
-        <h2>${esc(m.number)}</h2>
-        <div class="pair"><span>From</span><input data-m="from" value="${esc(m.from || "")}"></div>
-        <div class="pair"><span>To</span><input data-m="to" value="${esc(m.to || "")}"></div>
-        <div class="pair"><span>Due</span><input data-m="due" value="${esc(m.due || "")}"></div>
-      </header>
-      <table>
-        <thead><tr><th>Line</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead>
-        <tbody>${pack.lines.map((l, n) => `<tr>
-          <td><input data-l="${n}" data-f="desc" value="${esc(l.desc)}"></td>
-          <td><input data-l="${n}" data-f="qty" value="${esc(l.qty)}"></td>
-          <td><input data-l="${n}" data-f="rate" value="${esc(l.rate)}"></td>
-          <td>${(Number(l.qty||0)*Number(l.rate||0)).toLocaleString()}</td>
-        </tr>`).join("")}</tbody>
-      </table>
-      <p class="total">${esc(m.currency || "USD")} ${total().toLocaleString()}</p>
+      <div class="bill-sheet">
+        <header class="bill-top">
+          <div class="studio">
+            <span class="harbor-mark" aria-hidden="true">${esc(mark)}</span>
+            <div>
+              <p class="studio-name">${esc(house)}</p>
+              ${tag ? `<p class="studio-line">${esc(tag)}</p>` : ""}
+            </div>
+          </div>
+          <div class="bill-id">
+            <p class="kicker">Invoice</p>
+            <h2>${esc(m.number)}</h2>
+          </div>
+        </header>
+        <section class="parties">
+          <label>From<input data-m="from" value="${esc(m.from || "")}"></label>
+          <label>Bill to<input data-m="to" value="${esc(m.to || "")}"></label>
+        </section>
+        <section class="dates">
+          <label>Issued<input data-m="date" value="${esc(m.date || "")}"></label>
+          <label>Due<input data-m="due" value="${esc(m.due || "")}"></label>
+        </section>
+        <table>
+          <thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead>
+          <tbody>${pack.lines.map((l, n) => `<tr>
+            <td><input data-l="${n}" data-f="desc" value="${esc(l.desc)}"></td>
+            <td><input data-l="${n}" data-f="qty" value="${esc(l.qty)}"></td>
+            <td><input data-l="${n}" data-f="rate" value="${esc(l.rate)}"></td>
+            <td class="amt">${money(Number(l.qty || 0) * Number(l.rate || 0), cur)}</td>
+          </tr>`).join("")}</tbody>
+        </table>
+        <footer class="bill-foot">
+          <p class="note">${esc(m.note || "The pack is the bill.")}</p>
+          <p class="total"><span>Amount due</span><b>${money(total(), cur)}</b></p>
+        </footer>
+      </div>
     </div>`;
     el.querySelectorAll("[data-m]").forEach((f) => {
       f.addEventListener("blur", () => { pack.project[f.dataset.m] = f.value; onChange?.(pack); draw(); });
@@ -214,19 +303,36 @@ function renderInvoice(el, pack, onChange) {
 }
 
 function renderSession(el, pack, onChange) {
+  const voice = (who) => (who === "agent" ? "Agent" : "Human");
   const draw = () => {
+    const n = pack.turns.length;
     el.innerHTML = `<div class="kind sess">
-      <p class="kicker">${esc(pack.project.title)} · ${esc(pack.project.started || "")}</p>
-      <ol>${pack.turns.map((t) => `<li class="${t.who}"><b>${esc(t.who)}</b> <time>${esc(t.at || "")}</time><p>${esc(t.text)}</p></li>`).join("")}</ol>
-      <form class="add-turn"><input name="text" placeholder="Add a turn…" required><button type="submit">Log</button></form>
+      <header class="sess-top">
+        <div>
+          <p class="kicker">Session</p>
+          <h2>${esc(pack.project.title || "Session")}</h2>
+          <p class="sess-meta">${esc(pack.project.started || "")} · next window opens this file</p>
+        </div>
+        <p class="sess-count"><b>${n}</b> ${n === 1 ? "turn" : "turns"}</p>
+      </header>
+      <ol>${pack.turns.map((t) => `<li class="${esc(t.who || "human")}">
+        <time datetime="${esc(t.at || "")}">${esc(t.at || "")}</time>
+        <div class="turn"><b>${esc(voice(t.who))}</b><p>${esc(t.text)}</p></div>
+      </li>`).join("")}</ol>
+      <form class="add-turn">
+        <input name="text" placeholder="Log the next turn…" required>
+        <button type="submit">Log</button>
+      </form>
     </div>`;
+    const tape = el.querySelector("ol");
+    if (tape) tape.scrollTop = tape.scrollHeight;
     el.querySelector("form").addEventListener("submit", (e) => {
       e.preventDefault();
       const text = new FormData(e.target).get("text").trim();
       if (!text) return;
-      const n = pack.turns.length + 1;
+      const i = pack.turns.length + 1;
       pack.turns.push({
-        id: "T-" + String(n).padStart(2, "0"),
+        id: "T-" + String(i).padStart(2, "0"),
         who: "human",
         at: new Date().toTimeString().slice(0, 5),
         text,
@@ -240,13 +346,14 @@ function renderSession(el, pack, onChange) {
 
 export function steerKind(pack, q) {
   if (pack?.kind === "opff") return steerOpff(pack, q);
+  if (pack?.kind === "omf") return steerOmf(pack, q);
   return null;
 }
 
 export function answerKind(pack, q) {
   q = q.toLowerCase();
   if (pack.kind === "deck") {
-    if (/slide|how many|what/.test(q)) return `${pack.slides.length} slides in ${pack.project.name}. Click a slide to edit.`;
+    if (/slide|how many|what/.test(q)) return `${pack.slides.length} slides in ${pack.project.name}. Arrows move. Click a line to edit.`;
     return "The deck is a view of this file. Ask how many slides.";
   }
   if (pack.kind === "invoice") {
@@ -255,6 +362,7 @@ export function answerKind(pack, q) {
     return "The pack is the bill. Ask for the total.";
   }
   if (pack.kind === "opff") return answerOpff(pack, q);
+  if (pack.kind === "omf") return answerOmf(pack, q);
   if (pack.kind === "arcade") {
     if (pack.system === "doom") {
       return `${pack.project.name} is Freedoom — a free IWAD, not the id Software dump. Play loads EmulatorJS (prboom).`;

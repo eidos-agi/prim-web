@@ -1,10 +1,10 @@
-/** Auto-walk: docket → deck → invoice → session. A try-yourself button resets to a real drop. */
+/** Auto-walk: docket → deck → invoice → session → finance → meeting. A try-yourself button resets to a real drop. */
 
-const ORDER = ["docket", "deck", "invoice", "session"];
+const ORDER = ["docket", "deck", "invoice", "session", "opff", "omf"];
 
 export function createWalk(host) {
   async function start() {
-    await host.say("Four files. Same split every time: the pack is the work, the editor cites it.");
+    await host.say("Six files. Same split every time: the pack is the work, the editor cites it.");
     await host.say("Watch it once. Then you can do the file yourself.");
     for (let i = 0; i < ORDER.length; i++) {
       if (!host.alive()) return;
@@ -22,7 +22,7 @@ export function createWalk(host) {
       await host.say(r.after);
     }
     if (!host.alive()) return;
-    await host.say("That’s the category. File + editor. Four times. The other chats are one kind each.");
+    await host.say("That’s the category. File + editor. Six times. The other chats are one kind each.");
     host.tryYourself();
   }
 

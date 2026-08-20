@@ -81,6 +81,9 @@ export function renderOpff(el, pack) {
       go: (id) => ctl.go(id),
       acct: (id) => { acct = id; view = "activity"; draw(); },
     });
+    const nav = el.querySelector(".nav");
+    const on = nav?.querySelector("button.on");
+    if (nav && on) nav.scrollTo({ left: Math.max(0, on.offsetLeft - 12) });
     el._surface = ctl;
   };
   draw();
