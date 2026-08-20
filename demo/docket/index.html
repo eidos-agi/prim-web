@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Docket demo — Prim</title>
-  <meta name="description" content="Download a docket prim. Drop it on the chat. It becomes the editor.">
+  <title>Prim demo — docket, deck, invoice, session</title>
+  <meta name="description" content="Download a prim. Drop it on the chat. It becomes the editor.">
   <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -133,6 +133,7 @@
       background: var(--raised); display: grid; place-items: center;
       text-align: center; color: var(--muted); padding: 1.4rem 1.5rem; cursor: pointer;
     }
+    .drop[hidden] { display: none; }
     .drop.over { border-style: solid; border-color: var(--ink); color: var(--ink); }
     .drop .label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--subtle); }
     .drop strong { display: block; margin: 0.4rem 0 0.2rem; font-weight: 500; letter-spacing: -0.02em; color: var(--ink); }
@@ -236,6 +237,70 @@
     .empty { color: var(--faint); padding: 28px 16px; }
     .row.tool .bubble { width: 100%; }
     .editor-card { height: min(70vh, 820px); }
+    .kind { height: 100%; min-height: 0; }
+    .kind.deck {
+      display: grid; grid-template-columns: 200px minmax(0, 1fr); height: 100%;
+      background: #0c0d0e; color: #f7f8f8; font-family: Inter, "SF Pro Text", sans-serif;
+    }
+    .kind.deck nav { overflow: auto; border-right: 1px solid #232326; padding: 10px; }
+    .kind.deck .pick {
+      display: block; width: 100%; text-align: left; margin: 0 0 6px;
+      padding: 10px; border: 1px solid #232326; border-radius: 8px;
+      background: #141516; color: #f7f8f8; font: inherit; cursor: pointer;
+    }
+    .kind.deck .pick.on { outline: 1px solid #5e6ad2; }
+    .kind.deck .pick b { display: block; color: #8a8f98; font-size: 11px; margin-bottom: 4px; }
+    .kind.deck article { padding: 28px 32px; display: flex; flex-direction: column; min-width: 0; }
+    .kind .kicker {
+      font-family: "IBM Plex Mono", monospace; font-size: 11px;
+      letter-spacing: 0.12em; text-transform: uppercase; color: #8a8f98; margin: 0 0 8px;
+    }
+    .kind.deck textarea {
+      width: 100%; background: #fffcf8; color: #111; border: 0; border-radius: 4px;
+      font: inherit; padding: 12px 16px; resize: none;
+    }
+    .kind.deck .slide-title { font-size: 2rem; font-weight: 600; letter-spacing: -0.03em; min-height: 4rem; margin: 12px 0; }
+    .kind.deck .slide-body { flex: 1; font-size: 1.2rem; line-height: 1.45; }
+    .kind.bill {
+      background: #fffcf8; color: #111; height: 100%; overflow: auto;
+      padding: 28px 32px; font-family: "Instrument Sans", sans-serif;
+    }
+    .kind.bill h2 { margin: 0 0 16px; letter-spacing: -0.03em; font-weight: 600; }
+    .kind.bill .pair { display: grid; grid-template-columns: 64px 1fr; gap: 8px; align-items: center; margin: 6px 0; color: #6a6a66; }
+    .kind.bill input { border: 0; border-bottom: 1px solid #e4e2dc; background: transparent; font: inherit; padding: 4px 0; color: #111; }
+    .kind.bill table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    .kind.bill th {
+      text-align: left; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: #6a6a66; padding: 8px 6px; border-bottom: 1px solid #e4e2dc;
+    }
+    .kind.bill td { padding: 8px 6px; border-bottom: 1px solid #e4e2dc; }
+    .kind.bill td input { width: 100%; }
+    .kind.bill .total { text-align: right; font-size: 1.4rem; font-weight: 600; margin: 0; }
+    .kind.sess { background: #0c0d0e; color: #f7f8f8; height: 100%; overflow: auto; padding: 20px; }
+    .kind.sess ol { list-style: none; margin: 0; padding: 0; }
+    .kind.sess li { margin: 0 0 14px; padding: 12px 14px; border: 1px solid #232326; border-radius: 12px; background: #141516; }
+    .kind.sess li.agent { border-color: #5e6ad2; }
+    .kind.sess b { text-transform: uppercase; font-size: 11px; letter-spacing: 0.08em; }
+    .kind.sess time { color: #8a8f98; font-size: 11px; margin-left: 8px; }
+    .kind.sess p { margin: 6px 0 0; }
+    .kind.sess .add-turn { display: flex; gap: 8px; margin-top: 16px; }
+    .kind.sess .add-turn input {
+      flex: 1; background: #0c0d0e; color: #f7f8f8; border: 1px solid #232326;
+      border-radius: 8px; padding: 10px; font: inherit;
+    }
+      .kind.sess .add-turn button {
+      background: #f7f8f8; color: #111; border: 0; border-radius: 8px; padding: 0 12px; font: inherit; cursor: pointer;
+    }
+    @media (max-width: 720px) {
+      .kind.deck { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); }
+      .kind.deck nav {
+        display: flex; gap: 6px; overflow: auto; border-right: 0;
+        border-bottom: 1px solid #232326; padding: 8px;
+      }
+      .kind.deck .pick { flex: 0 0 148px; margin: 0; }
+      .kind.deck article { padding: 18px; }
+      .kind.deck .slide-title { font-size: 1.4rem; min-height: 3rem; }
+    }
     @media (max-width: 860px) {
       body { grid-template-columns: 1fr; }
       .inbox {
@@ -291,8 +356,10 @@
     </div>
     <div class="thread" id="thread">
       <div class="day">Today</div>
-      <div id="log"></div>
-      <div id="other" hidden></div>
+      <div class="log" id="log-docket"></div>
+      <div class="log" id="log-deck" hidden></div>
+      <div class="log" id="log-invoice" hidden></div>
+      <div class="log" id="log-session" hidden></div>
       <div class="drop" id="drop" hidden>
         <div>
           <p class="label">Attach</p>
@@ -310,16 +377,17 @@
   </section>
   <script type="module">
     import { unzipSync, strFromU8 } from "https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js";
+    import { parseKind, renderKind, answerKind } from "./kinds.js";
 
     const COLUMNS = ["To Do", "In Progress", "Done", "Draft"];
     let pack = { project: { name: "docket" }, tasks: [], milestones: [] };
     let selected = "";
     let view = "board";
     let filter = "all";
+    let current = "docket";
 
     const drop = document.getElementById("drop");
     const file = document.getElementById("file");
-    const log = document.getElementById("log");
     const thread = document.getElementById("thread");
     const prompt = document.getElementById("prompt");
     drop.addEventListener("click", () => file.click());
@@ -335,33 +403,60 @@
     });
 
     const rooms = {
-      docket: { title: "Docket", sub: "bot · the file is the message" },
-      deck: { title: "Deck", sub: "bot · slides come out of the file" },
-      invoice: { title: "Invoice", sub: "bot · the pack is the bill" },
-      session: { title: "Session", sub: "bot · pick up the same file" },
+      docket: {
+        title: "Docket", sub: "bot · the file is the message",
+        file: "atlas.docket.prim", size: "2 KB",
+        open: "Don’t send the spreadsheet.",
+        offer: "Send me the prim. I can open a docket editor on it.",
+        after: "You can keep talking. Ask what’s blocked, or what’s to do.",
+        started: false, pack: null,
+      },
+      deck: {
+        title: "Deck", sub: "bot · slides come out of the file",
+        file: "north.deck.prim", size: "686 B",
+        open: "Don’t send the slides.",
+        offer: "Send me the prim. The deck is a view of that file.",
+        after: "Click a slide to edit. Ask how many slides.",
+        started: false, pack: null,
+      },
+      invoice: {
+        title: "Invoice", sub: "bot · the pack is the bill",
+        file: "harbor.invoice.prim", size: "618 B",
+        open: "Don’t send the PDF.",
+        offer: "Send me the prim. The pack is the bill.",
+        after: "Ask for the total, or edit a line.",
+        started: false, pack: null,
+      },
+      session: {
+        title: "Session", sub: "bot · pick up the same file",
+        file: "june.session.prim", size: "666 B",
+        open: "Don’t paste the transcript.",
+        offer: "Send the session prim. The next window opens the same file.",
+        after: "Log a turn in the editor, or ask what was last said.",
+        started: false, pack: null,
+      },
     };
-    function openChat(id) {
+
+    function logEl(id = current) { return document.getElementById("log-" + id); }
+    function room(id = current) { return rooms[id]; }
+
+    function openChat(id, opts = {}) {
+      current = id;
+      const r = rooms[id];
       document.querySelectorAll("[data-chat]").forEach((el) => el.classList.toggle("on", el.dataset.chat === id));
-      document.getElementById("title").textContent = rooms[id].title;
-      document.getElementById("sub").textContent = rooms[id].sub;
+      document.getElementById("title").textContent = r.title;
+      document.getElementById("sub").textContent = r.sub;
+      const dl = document.querySelector(".chat-bar .dl");
+      dl.href = "./" + r.file;
+      dl.download = r.file;
+      dl.textContent = r.file;
       document.body.classList.remove("show-chats");
-      const other = document.getElementById("other");
-      const live = id === "docket";
-      log.hidden = !live;
-      drop.hidden = !live || pack.tasks.length > 0;
-      other.hidden = live;
-      if (live) return;
-      const lines = {
-        deck: "This thread would open a deck prim. Same split: file + editor. Switch to Docket to drop a file.",
-        invoice: "This thread would open an invoice prim. The pack is the bill. Docket is the live bot in this demo.",
-        session: "A session is a prim too. This demo only opens a docket. Switch back to drop the file.",
-      };
-      other.innerHTML = `
-        <div class="row them" style="opacity:1;transform:none">
-          <div class="face"><img src="../../mark.png" alt=""></div>
-          <div class="stack"><div class="meta">Prim</div><div class="bubble">${lines[id]}</div></div>
-        </div>`;
+      ["docket", "deck", "invoice", "session"].forEach((k) => { logEl(k).hidden = k !== id; });
+      drop.hidden = !!r.pack;
+      pack = r.pack || { project: { name: id }, tasks: [], milestones: [] };
+      if (!r.started && !opts.skipPlay) play(id);
     }
+
     document.getElementById("composer").addEventListener("submit", (e) => {
       e.preventDefault();
       const text = prompt.value.trim();
@@ -371,7 +466,7 @@
       reply(text);
     });
 
-    function add(who, html, extra) {
+    function add(who, html, extra, id = current) {
       const row = document.createElement("div");
       row.className = "row " + who + (extra ? " " + extra : "");
       row.innerHTML = `
@@ -380,7 +475,7 @@
           <div class="meta">${who === "me" ? "You" : "Prim"}</div>
           <div class="bubble">${html}</div>
         </div>`;
-      log.appendChild(row);
+      logEl(id).appendChild(row);
       thread.scrollTop = thread.scrollHeight;
       return row;
     }
@@ -388,88 +483,90 @@
       return `<div class="attach"><div><span class="mono">${name}</span><small>${note}</small></div></div>`;
     }
     function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
-    async function say(html) {
-      const typing = add("them", `<div class="typing"><i></i><i></i><i></i></div>`);
+    async function say(html, id = current) {
+      const typing = add("them", `<div class="typing"><i></i><i></i><i></i></div>`, "", id);
       await sleep(480);
       typing.remove();
-      add("them", html);
+      add("them", html, "", id);
     }
-    async function play() {
-      await say("Don’t send the spreadsheet.");
-      await say("Send me the prim. I can open a docket editor on it.");
-      await say(`Need a file? <a href="./atlas.docket.prim" download="atlas.docket.prim">Download atlas.docket.prim</a> — 2 KB — then drop it here or tap <span class="mono">.prim</span>.`);
-      drop.hidden = false;
+    function sampleLink(id) {
+      const r = rooms[id];
+      return `<a href="./${r.file}" download="${r.file}">${r.file}</a> — ${r.size}`;
     }
-    play();
+    async function play(id) {
+      const r = rooms[id];
+      if (r.started) return;
+      r.started = true;
+      await say(r.open, id);
+      await say(r.offer, id);
+      await say(`Need a file? ${sampleLink(id)} — then drop it here or tap <span class="mono">.prim</span>.`, id);
+      if (current === id && !r.pack) drop.hidden = false;
+    }
 
     async function reply(text) {
+      const r = room();
       const q = text.toLowerCase();
-      if (!pack.tasks.length) {
-        if (/download|sample|file|docket|prim/.test(q)) {
-          await say(`Here: <a href="./atlas.docket.prim" download="atlas.docket.prim">atlas.docket.prim</a>. Drop it on the thread and I’ll open it.`);
+      if (!r.pack) {
+        if (/download|sample|file|prim|deck|invoice|session|docket/.test(q)) {
+          await say(`Here: ${sampleLink(current)}. Drop it on the thread and I’ll open it.`);
           drop.hidden = false;
           return;
         }
         await say("I need the file first. Download the sample or attach a .prim.");
         return;
       }
-      const blocked = pack.tasks.filter((t) => t.blocked_reason);
-      const todo = pack.tasks.filter((t) => t.status === "To Do");
-      if (/block/.test(q)) {
-        await say(blocked.length ? blocked.map((t) => `${t.id} ${t.title} — ${t.blocked_reason}`).join("<br>") : "Nothing is blocked.");
+      if (r.pack.kind === "docket") {
+        const blocked = r.pack.tasks.filter((t) => t.blocked_reason);
+        const todo = r.pack.tasks.filter((t) => t.status === "To Do");
+        if (/block/.test(q)) {
+          await say(blocked.length ? blocked.map((t) => `${t.id} ${t.title} — ${t.blocked_reason}`).join("<br>") : "Nothing is blocked.");
+          return;
+        }
+        if (/todo|to do|open/.test(q)) {
+          await say(`${todo.length} to do: ${todo.map((t) => t.title).join("; ") || "none"}.`);
+          return;
+        }
+        if (/what|status|how many|board/.test(q)) {
+          await say(`${r.pack.project.name}: ${r.pack.tasks.length} issues. The board above cites this file. Drag a card to change status.`);
+          return;
+        }
+        await say("Still this thread. The editor is just a tool I opened on the file you sent.");
         return;
       }
-      if (/todo|to do|open/.test(q)) {
-        await say(`${todo.length} to do: ${todo.map((t) => t.title).join("; ") || "none"}.`);
-        return;
-      }
-      if (/what|status|how many|board/.test(q)) {
-        await say(`${pack.project.name}: ${pack.tasks.length} issues. The board above cites this file. Drag a card to change status.`);
-        return;
-      }
-      await say("Still this thread. The editor is just a tool I opened on the file you sent.");
+      await say(answerKind(r.pack, text));
     }
 
     async function openFile(f) {
-      pack = await readPack(f);
-      add("me", attachHTML(f.name || "atlas.docket.prim", "attached"));
-      await say("Opened. The editor cites the pack — it isn’t a copy.");
-      const tool = add("them", `<div class="editor-card" id="frame"></div>`, "tool");
+      const parsed = await readPack(f);
+      rooms[parsed.kind].started = true;
+      if (parsed.kind !== current) openChat(parsed.kind, { skipPlay: true });
+      const r = rooms[parsed.kind];
+      r.pack = parsed;
+      if (parsed.kind === "docket") pack = parsed;
+      add("me", attachHTML(f.name || r.file, "attached"), "", parsed.kind);
+      await say("Opened. The editor cites the pack — it isn’t a copy.", parsed.kind);
+      const tool = add("them", `<div class="editor-card" id="frame-${parsed.kind}"></div>`, "tool", parsed.kind);
       drop.hidden = true;
-      render();
-      await say("You can keep talking. Ask what’s blocked, or what’s to do.");
+      if (parsed.kind === "docket") render();
+      else renderKind(document.getElementById("frame-" + parsed.kind), parsed, () => {});
+      await say(r.after, parsed.kind);
       thread.scrollTop = tool.offsetTop;
     }
 
     async function readPack(f) {
       const buf = new Uint8Array(await f.arrayBuffer());
       if (buf[0] === 0x50 && buf[1] === 0x4b) {
-        const files = unzipSync(buf);
-        const get = (name) => {
-          const key = Object.keys(files).find((k) => k.replace(/^.*\//, "") === name);
-          return key ? strFromU8(files[key]) : "";
-        };
-        return fromTexts(get("docket.json"), get("tasks.jsonl"), get("milestones.jsonl"));
+        const zip = unzipSync(buf);
+        const files = {};
+        for (const [k, v] of Object.entries(zip)) files[k.replace(/^.*\//, "")] = strFromU8(v);
+        return parseKind(files);
       }
       const text = new TextDecoder().decode(buf);
       if (text.trim().startsWith("{") && text.includes('"tasks"')) {
         const j = JSON.parse(text);
-        return { project: j.project || { name: j.name || f.name }, tasks: j.tasks || [], milestones: j.milestones || [] };
+        return { kind: "docket", project: j.project || { name: j.name || f.name }, tasks: j.tasks || [], milestones: j.milestones || [] };
       }
-      return fromTexts("{}", text, "");
-    }
-
-    function fromTexts(meta, tasks, miles) {
-      let project = { name: "docket" };
-      try { if (meta.trim()) project = { name: "docket", ...JSON.parse(meta) }; } catch {}
-      return {
-        project,
-        tasks: jsonl(tasks),
-        milestones: jsonl(miles),
-      };
-    }
-    function jsonl(s) {
-      return String(s || "").split(/\n/).map((l) => l.trim()).filter(Boolean).map((l) => JSON.parse(l));
+      return parseKind({ "tasks.jsonl": text });
     }
 
     function kind(t) {
@@ -514,7 +611,7 @@
       const c = counts();
       const t = pack.tasks.find((x) => x.id === selected);
       const filters = [["all","All issues"],["To Do","Todo"],["In Progress","In Progress"],["Done","Done"],["Draft","Draft"],["blocked","Blocked"]];
-      document.getElementById("frame").innerHTML = `
+      document.getElementById("frame-docket").innerHTML = `
         <div class="app ${t ? "sheet-on" : ""}" id="app">
           <aside>
             <div class="workspace"><div class="mark-team"></div><div><h1>${esc(pack.project.name || "docket")}</h1><small>docket editor · cites this file</small></div></div>
@@ -609,6 +706,8 @@
     function esc(s) {
       return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
     }
+
+    play("docket");
   </script>
 </body>
 </html>
