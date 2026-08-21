@@ -262,9 +262,8 @@
       [data-reveal] { opacity: 0; transform: translateY(1.15rem); transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1); }
       [data-reveal].is-in { opacity: 1; transform: none; }
       .beat-num { font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; letter-spacing: 0.14em; color: var(--subtle); margin: 0 0 0.85rem; }
-      .story-pin { display: grid; gap: 2rem; margin-top: 3rem; }
-      .story-beat { padding: 4.5rem 0 6rem; opacity: 0.38; transition: opacity .45s ease; }
-      .story-beat.is-on { opacity: 1; }
+      .story-pin { display: grid; gap: 2rem; margin-top: 2.5rem; }
+      .story-beat { padding: 2.5rem 0 3.5rem; }
       .story-beat h2 { font-size: clamp(2rem, 4.6vw, 3.6rem); font-weight: 500; letter-spacing: -0.04em; line-height: 1.05; margin: 0; }
       .story-body { margin-top: 1.25rem; max-width: 36rem; font-size: 1.125rem; line-height: 1.55; color: var(--muted); }
       .story-stage { display: none; }
@@ -275,15 +274,18 @@
       .story-stage-frame.single img { aspect-ratio: 16/10; }
       .story-stage-cap { grid-column: 1 / -1; margin: 0; font-size: 0.9rem; color: var(--muted); }
       @media (min-width: 980px) {
-        .story-pin { grid-template-columns: minmax(0,1fr) minmax(0,1.05fr); align-items: start; gap: 3rem; }
+        .story-pin { grid-template-columns: minmax(0,1fr) minmax(0,1.05fr); align-items: start; gap: 3.5rem; }
+        .story-copy { padding-bottom: 10vh; }
+        .story-beat { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0; }
+        .story-beat .beat-num, .story-beat h2, .story-beat .story-body { transition: opacity .4s ease; }
+        .story-beat:not(.is-on) .beat-num, .story-beat:not(.is-on) h2, .story-beat:not(.is-on) .story-body { opacity: 0; }
         .story-stage { display: block; position: sticky; top: 5.5rem; height: calc(100vh - 7rem); }
-        .story-stage-slide { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1); }
-        .story-stage-slide.is-on { opacity: 1; transform: none; pointer-events: auto; }
+        .story-stage-slide { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .45s cubic-bezier(.22,1,.36,1); }
+        .story-stage-slide.is-on { opacity: 1; pointer-events: auto; }
         .story-mobile-stage { display: none; }
-        .story-beat { padding: 18vh 0 22vh; }
       }
       @media (prefers-reduced-motion: reduce) {
-        [data-reveal], .story-beat, .story-stage-slide { opacity: 1; transform: none; transition: none; }
+        [data-reveal], .story-beat .beat-num, .story-beat h2, .story-beat .story-body, .story-stage-slide { opacity: 1 !important; transform: none; transition: none; }
       }
     </style>
   </head>
@@ -727,15 +729,26 @@
           beats.forEach(function (b, n) { b.classList.toggle("is-on", n === i); });
           slides.forEach(function (s, n) { s.classList.toggle("is-on", n === i); });
         }
-        if (reduce) { setOn(beats.length - 1); return; }
-        var io2 = new IntersectionObserver(function (entries) {
-          var vis = entries.filter(function (e) { return e.isIntersecting; })
-            .sort(function (a, b) { return b.intersectionRatio - a.intersectionRatio; })[0];
-          if (!vis) return;
-          var i = beats.indexOf(vis.target);
-          if (i >= 0) setOn(i);
-        }, { rootMargin: "-35% 0px -45% 0px", threshold: [0.15, 0.4, 0.7] });
-        beats.forEach(function (b) { io2.observe(b); });
+        if (reduce) { setOn(0); return; }
+        var frame = 0;
+        function pick() {
+          frame = 0;
+          var mid = window.innerHeight * 0.42;
+          var best = 0, bestDist = Infinity;
+          beats.forEach(function (el, i) {
+            var r = el.getBoundingClientRect();
+            var dist = Math.abs(r.top + r.height / 2 - mid);
+            if (dist < bestDist) { bestDist = dist; best = i; }
+          });
+          setOn(best);
+        }
+        function onScroll() {
+          if (frame) return;
+          frame = requestAnimationFrame(pick);
+        }
+        pick();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", onScroll);
       })();
     </script>
   </body>
