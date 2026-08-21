@@ -259,6 +259,32 @@
       .foot { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; }
       .foot nav { display: flex; gap: 1.5rem; }
       @media (max-width: 700px) { .links { display: none; } }
+      [data-reveal] { opacity: 0; transform: translateY(1.15rem); transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1); }
+      [data-reveal].is-in { opacity: 1; transform: none; }
+      .beat-num { font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; letter-spacing: 0.14em; color: var(--subtle); margin: 0 0 0.85rem; }
+      .story-pin { display: grid; gap: 2rem; margin-top: 3rem; }
+      .story-beat { padding: 4.5rem 0 6rem; opacity: 0.38; transition: opacity .45s ease; }
+      .story-beat.is-on { opacity: 1; }
+      .story-beat h2 { font-size: clamp(2rem, 4.6vw, 3.6rem); font-weight: 500; letter-spacing: -0.04em; line-height: 1.05; margin: 0; }
+      .story-body { margin-top: 1.25rem; max-width: 36rem; font-size: 1.125rem; line-height: 1.55; color: var(--muted); }
+      .story-stage { display: none; }
+      .story-stage-frame { display: grid; gap: 0.75rem; }
+      .story-stage-frame.pair { grid-template-columns: 1fr 1fr; }
+      .story-stage-frame figure { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); margin: 0; }
+      .story-stage-frame img { display: block; width: 100%; height: 100%; aspect-ratio: 1; object-fit: cover; }
+      .story-stage-frame.single img { aspect-ratio: 16/10; }
+      .story-stage-cap { grid-column: 1 / -1; margin: 0; font-size: 0.9rem; color: var(--muted); }
+      @media (min-width: 980px) {
+        .story-pin { grid-template-columns: minmax(0,1fr) minmax(0,1.05fr); align-items: start; gap: 3rem; }
+        .story-stage { display: block; position: sticky; top: 5.5rem; height: calc(100vh - 7rem); }
+        .story-stage-slide { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1); }
+        .story-stage-slide.is-on { opacity: 1; transform: none; pointer-events: auto; }
+        .story-mobile-stage { display: none; }
+        .story-beat { padding: 18vh 0 22vh; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        [data-reveal], .story-beat, .story-stage-slide { opacity: 1; transform: none; transition: none; }
+      }
     </style>
   </head>
   <body>
@@ -277,8 +303,6 @@
           <a href="#what">What</a>
           <a href="#say">Language</a>
           <a href="#family">Family</a>
-          <a href="/demo/docket/">Demo</a>
-          <a href="/viewers/">Viewers</a>
           <a href="https://github.com/eidos-agi/prim">Spec</a>
         </nav>
       </div>
@@ -293,45 +317,84 @@
       </section>
 
       <section id="press" class="section wrap">
-        <p class="era-line" style="margin-top:0">To understand why AIs need Prims, and not PDFs, we first have to understand why the printing press didn’t use a feather.</p>
-        <h2 class="era" style="margin-top:8rem">Before the printing press</h2>
-        <p class="lede">Monks like Cassiodorus’s scribes copied every book by hand, page onto page. A Bible took about a year.</p>
-        <div class="shots">
-          <figure class="shot">
-            <img src="./then-scribe.jpg" alt="A monk at a sloped desk, copying a manuscript by hand." />
-            <figcaption><span>The copyist was the machine.</span></figcaption>
-          </figure>
-          <figure class="shot">
-            <img src="./then-scriptorium.jpg" alt="Medieval illumination of a scriptorium — scribes at desks." />
-            <figcaption><span>A scriptorium. Output was a person at a desk.</span></figcaption>
-          </figure>
+        <p class="beat-num">01</p>
+        <p class="era-line" style="margin-top:0" data-reveal>To understand why AIs need Prims, and not PDFs, we first have to understand why the printing press didn’t use a feather.</p>
+        <div class="story-pin">
+          <div class="story-copy">
+            <article class="story-beat is-on" id="before">
+              <p class="beat-num">02</p>
+              <h2>Before the printing press</h2>
+              <p class="story-body">Monks like Cassiodorus’s scribes copied every book by hand, page onto page. A Bible took about a year.</p>
+              <div class="story-mobile-stage">
+                <div class="story-stage-frame pair">
+                  <figure><img src="./then-scribe.jpg" alt="A monk at a sloped desk, copying a manuscript by hand." /></figure>
+                  <figure><img src="./then-scriptorium.jpg" alt="Medieval illumination of a scriptorium — scribes at desks." /></figure>
+                </div>
+              </div>
+            </article>
+            <article class="story-beat" id="after">
+              <p class="beat-num">03</p>
+              <h2>After the printing press</h2>
+              <p class="story-body">Mainz, 1455. A press could pull in a day what a monk copied in months. That is a productivity shock — not a new kind of book.</p>
+              <div class="story-mobile-stage">
+                <div class="story-stage-frame single">
+                  <figure><img src="./then-press.jpg" alt="A fifteenth-century printing workshop." /></figure>
+                  <p class="story-stage-cap">The press didn’t use a feather.</p>
+                </div>
+              </div>
+            </article>
+            <article class="story-beat" id="hundred">
+              <p class="beat-num">04</p>
+              <h2>In the span of 20 years, book output increased 100x per worker.</h2>
+              <p class="story-body">One year, one book. One year, about a hundred.</p>
+              <div class="story-mobile-stage">
+                <div class="story-stage-frame pair">
+                  <figure><img src="./book-one.jpg" alt="One book." /></figure>
+                  <figure><img src="./book-hundred.jpg" alt="A stack of about a hundred books." /></figure>
+                </div>
+              </div>
+            </article>
+            <article class="story-beat" id="instrument">
+              <p class="beat-num">05</p>
+              <h2>They did not scale the feather to a hundred feathers. The instrument itself changed to a press.</h2>
+              <p class="story-body">Excel files, PDFs, files like that — those are the feathers of the computing world. They were built for a time when we wrote everything by hand.</p>
+              <div class="story-mobile-stage">
+                <div class="story-stage-frame pair">
+                  <figure><img src="./hundred-feathers.jpg" alt="A table covered in quills." /></figure>
+                  <figure><img src="./one-press.jpg" alt="A single printing press." /></figure>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="story-stage" aria-hidden="true">
+            <div class="story-stage-slide is-on">
+              <div class="story-stage-frame pair">
+                <figure><img src="./then-scribe.jpg" alt="" /></figure>
+                <figure><img src="./then-scriptorium.jpg" alt="" /></figure>
+              </div>
+            </div>
+            <div class="story-stage-slide">
+              <div class="story-stage-frame single">
+                <figure><img src="./then-press.jpg" alt="" /></figure>
+                <p class="story-stage-cap">The press didn’t use a feather.</p>
+              </div>
+            </div>
+            <div class="story-stage-slide">
+              <div class="story-stage-frame pair">
+                <figure><img src="./book-one.jpg" alt="" /></figure>
+                <figure><img src="./book-hundred.jpg" alt="" /></figure>
+              </div>
+            </div>
+            <div class="story-stage-slide">
+              <div class="story-stage-frame pair">
+                <figure><img src="./hundred-feathers.jpg" alt="" /></figure>
+                <figure><img src="./one-press.jpg" alt="" /></figure>
+              </div>
+            </div>
+          </div>
         </div>
-        <h2 class="era" style="margin-top:10rem">After the printing press</h2>
-        <p class="lede">Mainz, 1455. A press could pull in a day what a monk copied in months. That is a productivity shock — not a new kind of book.</p>
-        <figure class="shot" style="margin-top:2.5rem">
-          <img src="./then-press.jpg" alt="A fifteenth-century printing workshop: press, type, stacks of sheets." />
-          <figcaption><span>The press didn’t use a feather.</span></figcaption>
-        </figure>
-        <h2 class="era" style="margin-top:10rem">In the span of 20 years, book output increased 100x per worker.</h2>
-        <div class="shots" style="margin-top:2.5rem">
-          <figure class="shot">
-            <img src="./book-one.jpg" alt="One book." />
-          </figure>
-          <figure class="shot">
-            <img src="./book-hundred.jpg" alt="A stack of about a hundred books." />
-          </figure>
-        </div>
-        <p class="era-line">They did not scale the feather to a hundred feathers. The instrument itself changed to a press.</p>
-        <div class="shots" style="margin-top:2.5rem">
-          <figure class="shot">
-            <img src="./hundred-feathers.jpg" alt="A table covered in quills — a hundred feathers." />
-          </figure>
-          <figure class="shot">
-            <img src="./one-press.jpg" alt="A single printing press." />
-          </figure>
-        </div>
-        <p class="lede">Excel files, PDFs, files like that — those are the feathers of the computing world. They were built for a time when we wrote everything by hand.</p>
-        <p class="era-line">PDFs are the feather. Prims are the press.</p>
+        <p class="beat-num" style="margin-top:8rem">06</p>
+        <p class="era-line" style="margin-top:0" data-reveal>PDFs are the feather. Prims are the press.</p>
         <p class="lede">Before AI, a person sat at a machine and made a file. That file became the idea, the product, the company, the mission, the trip. Spreadsheet, deck, PDF — that was the work. That’s file hell: humans living inside formats that never end.</p>
         <div class="file-river" aria-hidden="true">
           <div class="file-river-mask"><div class="file-river-track">
@@ -647,5 +710,33 @@
         </nav>
       </div>
     </footer>
+    <script>
+      (function () {
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        document.querySelectorAll("[data-reveal]").forEach(function (n) {
+          if (reduce) { n.classList.add("is-in"); return; }
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) { if (e.isIntersecting) e.target.classList.add("is-in"); });
+          }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+          io.observe(n);
+        });
+        var beats = Array.prototype.slice.call(document.querySelectorAll(".story-beat"));
+        var slides = Array.prototype.slice.call(document.querySelectorAll(".story-stage-slide"));
+        if (!beats.length) return;
+        function setOn(i) {
+          beats.forEach(function (b, n) { b.classList.toggle("is-on", n === i); });
+          slides.forEach(function (s, n) { s.classList.toggle("is-on", n === i); });
+        }
+        if (reduce) { setOn(beats.length - 1); return; }
+        var io2 = new IntersectionObserver(function (entries) {
+          var vis = entries.filter(function (e) { return e.isIntersecting; })
+            .sort(function (a, b) { return b.intersectionRatio - a.intersectionRatio; })[0];
+          if (!vis) return;
+          var i = beats.indexOf(vis.target);
+          if (i >= 0) setOn(i);
+        }, { rootMargin: "-35% 0px -45% 0px", threshold: [0.15, 0.4, 0.7] });
+        beats.forEach(function (b) { io2.observe(b); });
+      })();
+    </script>
   </body>
 </html>
