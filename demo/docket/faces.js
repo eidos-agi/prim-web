@@ -73,7 +73,7 @@ export const FACES = {
   },
   obif: {
     title: "Brand",
-    file: "mark.obif.prim", size: "204 B",
+    file: "mark.obif.prim", size: "1.1 KB",
     preview: "The brand prim is the source.",
     open: "Don’t send the brand zip.",
     offer: "Send the brand prim.",

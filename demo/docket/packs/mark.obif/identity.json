@@ -1,0 +1,81 @@
+{
+  "obif_version": "0.1.0",
+  "brand": {
+    "id": "brand:northline-studio",
+    "display_name": "Northline Studio",
+    "legal_name": "Northline Studio (illustrative)",
+    "positioning": "Quiet tools for serious makers.",
+    "personality": ["precise", "calm", "unshowy"]
+  },
+  "logo": {
+    "variants": [
+      {
+        "id": "logo:primary",
+        "role": "primary",
+        "modes": ["full", "mono", "reverse"],
+        "clear_space": { "unit": "x", "value": 1.0, "note": "x = height of mark" },
+        "min_size": { "digital_px": 24 },
+        "asset_id": "asset:logo-primary-svg",
+        "misuse": ["no_stretch", "no_recolor", "no_shadow", "no_rotate"]
+      }
+    ]
+  },
+  "color": {
+    "tokens": [
+      {
+        "id": "color:ink",
+        "role": "primary",
+        "hex": "#121212",
+        "rgb": [18, 18, 18]
+      },
+      {
+        "id": "color:paper",
+        "role": "neutral",
+        "hex": "#F6F4F0",
+        "rgb": [246, 244, 240]
+      },
+      {
+        "id": "color:signal",
+        "role": "accent",
+        "hex": "#2F6FED",
+        "rgb": [47, 111, 237],
+        "constraints": ["accent_only"]
+      }
+    ]
+  },
+  "typography": {
+    "roles": [
+      {
+        "id": "type:body",
+        "role": "body",
+        "family": "Inter",
+        "weights": [400, 600],
+        "fallback": ["system-ui", "sans-serif"]
+      }
+    ]
+  },
+  "voice": {
+    "attributes": ["direct", "technical", "warm without hype"],
+    "rules": [
+      {
+        "id": "voice:no-hype",
+        "context": ["marketing", "product"],
+        "do_not_say": ["revolutionary", "game-changer", "synergy"],
+        "do_say": ["precise", "reliable", "quiet power"]
+      }
+    ]
+  },
+  "assets": [
+    {
+      "id": "asset:logo-primary-svg",
+      "path": "assets/logo-primary.svg",
+      "kind": "logo",
+      "note": "Placeholder path in illustrative pack"
+    }
+  ],
+  "provenance": {
+    "by": "human:illustrative",
+    "at": "2026-08-19",
+    "method": "illustrative example only"
+  }
+}

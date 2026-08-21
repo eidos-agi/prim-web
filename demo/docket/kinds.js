@@ -106,6 +106,19 @@ export function parseKind(files) {
     };
   }
   if (kind === "omf") return parseOmf(files);
+  if (kind === "obif" || has("identity.json")) {
+    let identity = {};
+    try { identity = JSON.parse(get("identity.json") || "{}"); } catch {}
+    const face = faceMatter(get("index.md"));
+    return {
+      kind: "obif",
+      project: { name: identity.brand?.display_name || face.title || "brand" },
+      identity,
+      files,
+      face,
+      names: Object.keys(files).map((k) => k.replace(/^.*\//, "")).filter(Boolean),
+    };
+  }
   const face = faceMatter(get("index.md"));
   const names = Object.keys(files).map((k) => k.replace(/^.*\//, "")).filter((n) => n && n !== ".");
   return {
@@ -138,6 +151,10 @@ export async function renderKind(el, pack, onChange) {
   if (pack.kind === "omf") {
     const { renderOmf } = await import("./omf.js");
     return renderOmf(el, pack, onChange);
+  }
+  if (pack.kind === "obif") {
+    const { renderObif } = await import("./showprim.js");
+    return renderObif(el, pack);
   }
   return renderFace(el, pack);
 }

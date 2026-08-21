@@ -166,6 +166,14 @@
       "repo": "eidos-agi/prim.arcade"
     },
     {
+      "name": "prim-viewer",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "*",
+      "as": "viewer",
+      "repo": "eidos-agi/prim"
+    },
+    {
       "name": "docket-webmcp",
       "kind": "connector",
       "direction": "talk",

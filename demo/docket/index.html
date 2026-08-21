@@ -1580,7 +1580,7 @@
       tools.innerHTML = data.tools.map((t) => {
         const mark = `${t.kind}/${t.direction}`;
         const line = (t.as ? `(${t.as}) ` : "") + `${t.kind}/${t.direction} cites ${t.cites}`;
-        const open = live.has(t.cites);
+        const open = live.has(t.cites) || t.name === "prim-viewer";
         const inner = `<span class="nm">${esc(t.name)}</span><span class="mk">${esc(mark)}</span><span class="sub">${esc(line)}</span>`;
         return open
           ? `<li><button class="reg-item" type="button" data-cites="${esc(t.cites)}" data-tool="${esc(t.name)}">${inner}</button></li>`
@@ -1592,7 +1592,7 @@
       tools.querySelectorAll("[data-cites]").forEach((el) => {
         if (el.tagName !== "BUTTON") return;
         el.addEventListener("click", () => {
-          openChat(el.dataset.tool === "docket-webmcp" ? "seal" : el.dataset.cites);
+          openChat(el.dataset.tool === "docket-webmcp" ? "seal" : el.dataset.tool === "prim-viewer" ? "obif" : el.dataset.cites);
         });
       });
       paintReg(current);
@@ -2548,6 +2548,7 @@
       const raw = String(q || "").toLowerCase();
       if (raw === "seal" || raw === "docket-webmcp") return "seal";
       if (raw === "prim-arcade" || raw === "arcade") return "arcade";
+      if (raw === "prim-viewer") return "obif";
       const cites = raw.replace(/-editor$/, "");
       return rooms[cites] ? cites : "";
     }
