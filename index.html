@@ -285,6 +285,38 @@
         .story-mobile-stage { display: none; }
       }
 
+
+      .copy-head { margin: 5.5rem 0 0; max-width: 40rem; font-size: clamp(1.6rem, 3.2vw, 2.35rem); font-weight: 500; letter-spacing: -0.04em; line-height: 1.12; }
+      .copy-body { margin: 1.1rem 0 0; max-width: 36rem; font-size: 1.15rem; line-height: 1.55; color: var(--muted); }
+      .hand-list { display: grid; gap: 4.5rem; margin: 3.5rem 0 0; }
+      .hand-row { display: grid; gap: 1.25rem; }
+      @media (min-width: 860px) {
+        .hand-row { grid-template-columns: 1.15fr 0.85fr; gap: 2.5rem; align-items: center; }
+        .hand-row:nth-child(even) { grid-template-columns: 0.85fr 1.15fr; }
+        .hand-row:nth-child(even) .hand-copy { order: -1; }
+      }
+      .hand-row figure { margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); }
+      .hand-row img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+      .hand-when { margin: 0; font-family: "IBM Plex Mono", monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--subtle); }
+      .hand-how { margin: 0.45rem 0 0; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 500; letter-spacing: -0.035em; }
+      .hand-job { margin: 0.9rem 0 0; font-size: 1.05rem; line-height: 1.5; color: var(--muted); max-width: 28rem; }
+      .body-list { display: flex; flex-wrap: wrap; gap: 0.7rem 1.75rem; list-style: none; margin: 2.25rem 0 0; padding: 0; }
+      .body-list li { font-size: clamp(1.6rem, 3vw, 2.1rem); font-weight: 500; letter-spacing: -0.04em; }
+      .now-table, .now-split figure { margin: 2.5rem 0 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); }
+      .now-table img, .now-split img { display: block; width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+      .now-table figcaption { border-top: 1px solid var(--line); padding: 0.85rem 1.2rem; font-size: 0.95rem; color: var(--muted); }
+      .now-split { display: grid; gap: 1.5rem; margin-top: 1.5rem; }
+      @media (min-width: 800px) { .now-split { grid-template-columns: 1.4fr 0.8fr; } }
+      .intent-list { list-style: none; margin: 0; padding: 1.5rem 1.6rem; border: 1px solid var(--ink); border-radius: var(--radius); background: var(--ink); color: var(--paper); display: flex; flex-direction: column; justify-content: center; gap: 0.15rem; }
+      .intent-list li { padding: 0.55rem 0; border-bottom: 1px solid color-mix(in srgb, var(--paper) 16%, transparent); font-size: 1.05rem; font-weight: 500; }
+      .intent-list li:last-child { border-bottom: 0; }
+      .then-photos { display: grid; gap: 1rem; margin-top: 3.5rem; }
+      @media (min-width: 800px) { .then-photos { grid-template-columns: 1fr 1fr 1fr; } }
+      .then-photos figure { margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); }
+      .then-photos img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+      .then-photos figcaption { border-top: 1px solid var(--line); padding: 0.7rem 1rem; font-size: 0.85rem; color: var(--muted); }
+      .lineage-head { margin: 0 0 1.5rem; max-width: 36rem; font-size: clamp(1.7rem, 3.4vw, 2.4rem); font-weight: 500; letter-spacing: -0.035em; line-height: 1.12; }
+      .lineage-note { margin: 0.4rem 0 0; font-size: 1rem; color: var(--muted); }
       .story-screen { min-height: calc(100vh - 6rem); display: flex; flex-direction: column; justify-content: center; padding: 4rem 0 5rem; }
       .story-screen-line { margin: 0; max-width: 44rem; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 500; letter-spacing: -0.04em; line-height: 1.12; }
       .story-screen-line br { content: ""; display: block; margin-top: 0.55em; }
@@ -385,7 +417,7 @@
             <article class="story-beat is-on" id="before">
               <p class="beat-num">02</p>
               <h2>Before the printing press</h2>
-              <p class="story-body">Monks like Cassiodorus’s scribes copied every book by hand, page onto page. A Bible took about a year.</p>
+              <p class="story-body">Scribes used a feather to copy every book by hand. A Bible took about a year.</p>
               <div class="story-mobile-stage">
                 <div class="story-stage-frame pair">
                   <figure><img src="./then-scribe.jpg" alt="A monk at a sloped desk, copying a manuscript by hand." /></figure>
@@ -396,7 +428,7 @@
             <article class="story-beat" id="after">
               <p class="beat-num">03</p>
               <h2>After the printing press</h2>
-              <p class="story-body">Mainz, 1455. A press could pull in a day what a monk copied in months. That is a productivity shock — not a new kind of book.</p>
+              <p class="story-body">Mainz, 1455. A press could create in a day what a monk copied in months. Not a new kind of book. A different rate of making them.</p>
               <div class="story-mobile-stage">
                 <div class="story-stage-frame single">
                   <figure><img src="./then-press.jpg" alt="A fifteenth-century printing workshop." /></figure>
@@ -407,7 +439,7 @@
             <article class="story-beat" id="hundred">
               <p class="beat-num">04</p>
               <h2>In the span of 20 years, book output increased 100x per worker.</h2>
-              <p class="story-body">One year, one book. One year, about a hundred.</p>
+              <p class="story-body">By 1500, fifty years of print, Europe had more than nine million books.</p>
               <div class="story-mobile-stage">
                 <div class="story-stage-frame pair">
                   <figure><img src="./book-one.jpg" alt="One book." /></figure>
@@ -418,7 +450,7 @@
             <article class="story-beat" id="instrument">
               <p class="beat-num">05</p>
               <h2>They did not scale the feather to a hundred feathers. The instrument itself changed to a press.</h2>
-              <p class="story-body">Excel files, PDFs, files like that — those are the feathers of the computing world. They were built for a time when we wrote everything by hand.</p>
+              <p class="story-body">A feather was for human hands to write every letter. A press was for human hands to press a page.</p>
               <div class="story-mobile-stage">
                 <div class="story-stage-frame pair">
                   <figure><img src="./hundred-feathers.jpg" alt="A table covered in quills." /></figure>
@@ -454,9 +486,144 @@
             </div>
           </div>
         </div>
-        <p class="beat-num" style="margin-top:8rem">06</p>
-        <p class="era-line" style="margin-top:0" data-reveal>PDFs are the feather. Prims are the press.</p>
-        <p class="lede">Before AI, a person sat at a machine and made a file. That file became the idea, the product, the company, the mission, the trip. Spreadsheet, deck, PDF — that was the work. That’s file hell: humans living inside formats that never end.</p>
+        <div class="story-screen">
+          <p class="era-line" style="margin-top:0">How will AI change how humans interact with data?</p>
+        </div>
+        <p class="copy-body" style="margin-top:0">Knowledge work is a factory. Raw material in, finished idea out. Since Turing described a machine that could compute anything, a person sat with it and did that conversion. The tools changed. The factory did not.</p>
+        <div class="hand-list">
+          <article class="hand-row">
+            <figure><img src="./then-punch.jpg" alt="1950s operator feeding punch cards into a room-sized computer." /></figure>
+            <div class="hand-copy">
+              <p class="hand-when">1940s–50s</p>
+              <p class="hand-how">Punch cards</p>
+              <p class="hand-job">You punched every hole. Overnight, the machine tabulated. You read the listing.</p>
+            </div>
+          </article>
+          <article class="hand-row">
+            <figure><img src="./then-keys.jpg" alt="A person at a keyboard, waiting on a printout." /></figure>
+            <div class="hand-copy">
+              <p class="hand-when">1960s–70s</p>
+              <p class="hand-how">Command line</p>
+              <p class="hand-job">You typed every line. A cursor, a command, a wait. One instruction at a time.</p>
+            </div>
+          </article>
+          <article class="hand-row">
+            <figure><img src="./then-excel.jpg" alt="1980s office worker at a CRT spreadsheet." /></figure>
+            <div class="hand-copy">
+              <p class="hand-when">1979–</p>
+              <p class="hand-how">Mouse and sheet</p>
+              <p class="hand-job">VisiCalc put a ledger on the glass. Then Word. Then slides. You clicked every cell. The file was the work.</p>
+            </div>
+          </article>
+          <article class="hand-row">
+            <figure><img src="./now-speak.jpg" alt="Two people talking. The work is spoken, not typed into a format." /></figure>
+            <div class="hand-copy">
+              <p class="hand-when">Now</p>
+              <p class="hand-how">Chat</p>
+              <p class="hand-job">You ask. It drafts the whole thing.</p>
+            </div>
+          </article>
+        </div>
+        <p class="copy-head">Every decade, humans improved the tools they used to refine raw data into knowledge.</p>
+        <p class="copy-head" style="margin-top:2rem">Now, AI refines raw data into knowledge with near autonomy.</p>
+        <div class="story-pin">
+          <div class="story-copy">
+            <article class="story-beat is-on" id="floor-not-product">
+              <h2>Pre-AI, most files were not the finished product.</h2>
+              <p class="story-body">They were part of the factory floor.</p>
+              <div class="story-mobile-stage">
+                <div class="story-stage-frame pair">
+                  <figure><img src="./then-excel.jpg" alt="" /></figure>
+                  <figure><img src="./then-word.jpg" alt="" /></figure>
+                </div>
+              </div>
+            </article>
+            <article class="story-beat" id="floor-sheet">
+              <h2>A spreadsheet became an insight.</h2>
+              <p class="story-body">A person sat in Excel until a number meant something.</p>
+              <div class="story-mobile-stage">
+                <div class="story-stage-frame single"><figure><img src="./then-excel.jpg" alt="" /></figure></div>
+              </div>
+            </article>
+            <article class="story-beat" id="floor-deck">
+              <h2>A deck became a board pack.</h2>
+              <p class="story-body">The slides were how the meeting ran.</p>
+              <div class="story-mobile-stage">
+                <div class="story-stage-frame single"><figure><img src="./then-slides.jpg" alt="" /></figure></div>
+              </div>
+            </article>
+            <article class="story-beat" id="floor-firm">
+              <h2>A week of both became a firm.</h2>
+              <p class="story-body">Deloitte. IBM Consulting. People converting raw data into advice, one file at a time.</p>
+              <div class="story-mobile-stage">
+                <div class="story-stage-frame single"><figure><img src="./then-board.jpg" alt="" /></figure></div>
+              </div>
+            </article>
+          </div>
+          <div class="story-stage" aria-hidden="true">
+            <div class="story-stage-slide is-on">
+              <div class="story-stage-frame pair">
+                <figure><img src="./then-excel.jpg" alt="" /></figure>
+                <figure><img src="./then-word.jpg" alt="" /></figure>
+              </div>
+            </div>
+            <div class="story-stage-slide">
+              <div class="story-stage-frame single"><figure><img src="./then-excel.jpg" alt="" /></figure></div>
+            </div>
+            <div class="story-stage-slide">
+              <div class="story-stage-frame single"><figure><img src="./then-slides.jpg" alt="" /></figure></div>
+            </div>
+            <div class="story-stage-slide">
+              <div class="story-stage-frame single"><figure><img src="./then-board.jpg" alt="" /></figure></div>
+            </div>
+          </div>
+        </div>
+        <p class="copy-head">Knowledge work is becoming idea work and validation work.</p>
+        <p class="copy-body">AI converts the raw material. People choose the idea. People check the result.</p>
+        <p class="copy-head">People show up because they want their intent to change the world.</p>
+        <p class="copy-body">In a positive way. Or to help a customer succeed with an outside perspective. That is the job.</p>
+        <p class="copy-head">Starting in 2027, we work with our eyes, ears, mouths, and hand signs more than ever.</p>
+        <p class="copy-body">The interface need not be a computer with a mouse and a keyboard any longer.</p>
+        <ul class="body-list">
+          <li>Eyes</li><li>Ears</li><li>Mouths</li><li>Hand signs</li>
+        </ul>
+        <p class="copy-head">The new floor is a table.</p>
+        <p class="copy-body">Record. Debate. A couple of microphones, and a screen of what you’re all discussing. The files come out the other side.</p>
+        <figure class="now-table">
+          <img src="./now-room.jpg" alt="A table, microphones, a screen of the work." />
+          <figcaption>Eyes. Ears. Mouths. Hand signs.</figcaption>
+        </figure>
+        <div class="story-screen">
+          <p class="beat-num">06</p>
+          <p class="story-screen-line">PDFs are the feather. Prims are the press.</p>
+        </div>
+        <div class="story-screen">
+          <p class="beat-num">07</p>
+          <p class="story-screen-line">Those feathers went into a cabinet. SharePoint. Drive. Then we started the next file.</p>
+        </div>
+        <div class="then-photos">
+          <figure><img src="./then-excel.jpg" alt="1980s office worker at a CRT, trapped in a spreadsheet." /><figcaption>Spreadsheet</figcaption></figure>
+          <figure><img src="./then-word.jpg" alt="1980s office worker typing a report." /><figcaption>Document</figcaption></figure>
+          <figure><img src="./then-slides.jpg" alt="1980s conference room, overhead projector." /><figcaption>Deck</figcaption></figure>
+        </div>
+        <p class="lineage-note">Their work was the file. Then the file went into the cabinet.</p>
+        <p class="beat-num" style="margin-top:5.5rem">08</p>
+        <p class="lineage-head">Their grandchildren sit at the table.</p>
+        <figure class="now-table">
+          <img src="./now-table.jpg" alt="Their grandchildren around a table, talking — the work is the meeting." />
+          <figcaption>They speak. That becomes the next meeting.</figcaption>
+        </figure>
+        <div class="now-split">
+          <figure><img src="./now-speak.jpg" alt="Two of them mid-conversation." /></figure>
+          <ol class="intent-list">
+            <li>Meeting</li>
+            <li>Voice</li>
+            <li>Intent</li>
+            <li>Output</li>
+            <li>Next meeting</li>
+          </ol>
+        </div>
+        <p class="copy-body">The press didn’t give the monk’s children more feathers. It gave them books. Prim is that, for their grandchildren: a meeting, spoken; intents; outputs that shape the next time they sit down. The instrument changed.</p>
         <div class="file-river" aria-hidden="true">
           <div class="file-river-mask"><div class="file-river-track">
             <span class="file-chip"><img src="./file-xls.svg" alt="">.xlsx</span><span class="file-chip"><img src="./file-doc.svg" alt="">.docx</span><span class="file-chip"><img src="./file-ppt.svg" alt="">.pptx</span><span class="file-chip"><img src="./file-pdf.svg" alt="">.pdf</span><span class="file-chip"><img src="./file-xls.svg" alt="">.csv</span><span class="file-chip"><img src="./file-txt.svg" alt="">.txt</span><span class="file-chip"><img src="./file-mail.svg" alt="">.eml</span><span class="file-chip"><img src="./file-zip.svg" alt="">.zip</span><span class="file-chip"><img src="./file-xls.svg" alt="">.xlsx</span><span class="file-chip"><img src="./file-doc.svg" alt="">.docx</span><span class="file-chip"><img src="./file-ppt.svg" alt="">.pptx</span><span class="file-chip"><img src="./file-pdf.svg" alt="">.pdf</span><span class="file-chip"><img src="./file-xls.svg" alt="">.csv</span><span class="file-chip"><img src="./file-txt.svg" alt="">.txt</span><span class="file-chip"><img src="./file-mail.svg" alt="">.eml</span><span class="file-chip"><img src="./file-zip.svg" alt="">.zip</span>
@@ -781,33 +948,35 @@
           }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
           io.observe(n);
         });
-        var beats = Array.prototype.slice.call(document.querySelectorAll(".story-beat"));
-        var slides = Array.prototype.slice.call(document.querySelectorAll(".story-stage-slide"));
-        if (!beats.length) return;
-        function setOn(i) {
-          beats.forEach(function (b, n) { b.classList.toggle("is-on", n === i); });
-          slides.forEach(function (s, n) { s.classList.toggle("is-on", n === i); });
-        }
-        if (reduce) { setOn(0); return; }
-        var frame = 0;
-        function pick() {
-          frame = 0;
-          var mid = window.innerHeight * 0.42;
-          var best = 0, bestDist = Infinity;
-          beats.forEach(function (el, i) {
-            var r = el.getBoundingClientRect();
-            var dist = Math.abs(r.top + r.height / 2 - mid);
-            if (dist < bestDist) { bestDist = dist; best = i; }
-          });
-          setOn(best);
-        }
-        function onScroll() {
-          if (frame) return;
-          frame = requestAnimationFrame(pick);
-        }
-        pick();
-        window.addEventListener("scroll", onScroll, { passive: true });
-        window.addEventListener("resize", onScroll);
+        document.querySelectorAll(".story-pin").forEach(function (pin) {
+          var beats = Array.prototype.slice.call(pin.querySelectorAll(".story-beat"));
+          var slides = Array.prototype.slice.call(pin.querySelectorAll(".story-stage-slide"));
+          if (!beats.length) return;
+          function setOn(i) {
+            beats.forEach(function (b, n) { b.classList.toggle("is-on", n === i); });
+            slides.forEach(function (s, n) { s.classList.toggle("is-on", n === i); });
+          }
+          if (reduce) { setOn(0); return; }
+          var frame = 0;
+          function pick() {
+            frame = 0;
+            var mid = window.innerHeight * 0.42;
+            var best = 0, bestDist = Infinity;
+            beats.forEach(function (el, i) {
+              var r = el.getBoundingClientRect();
+              var dist = Math.abs(r.top + r.height / 2 - mid);
+              if (dist < bestDist) { bestDist = dist; best = i; }
+            });
+            setOn(best);
+          }
+          function onScroll() {
+            if (frame) return;
+            frame = requestAnimationFrame(pick);
+          }
+          pick();
+          window.addEventListener("scroll", onScroll, { passive: true });
+          window.addEventListener("resize", onScroll);
+        });
       })();
     </script>
   </body>
