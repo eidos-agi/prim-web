@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prim</title>
+    <meta
+      name="description"
+      content="Prim is the source of truth. This page is the vessel. The pack is the file."
+    />
+    <meta name="theme-color" content="#f4f3ef" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #f4f3ef;
+        --raised: #fffcf8;
+        --ink: #111111;
+        --muted: #6a6a66;
+        --subtle: #8a8a84;
+        --line: #e4e2dc;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; }
+      body {
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr);
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Instrument Sans", "Segoe UI", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      ::selection { background: var(--ink); color: var(--paper); }
+      a { color: inherit; text-decoration: none; }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        border-bottom: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+        background: color-mix(in srgb, var(--paper) 90%, transparent);
+        backdrop-filter: blur(8px);
+      }
+      .nav {
+        height: 4rem;
+        max-width: 72rem;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .brand { display: flex; align-items: center; }
+      .brand img { height: 2rem; width: auto; }
+      .links { display: flex; gap: 1.75rem; font-size: 0.9rem; color: var(--muted); }
+      .links a:hover, .links a[aria-current="page"] { color: var(--ink); }
+      main { min-height: 0; }
+      show-prim { display: block; height: 100%; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav">
+        <a class="brand" href="/">
+          <img src="/logo.png" alt="Prim" />
+        </a>
+        <nav class="links">
+          <a href="/docs/" aria-current="page">Docs</a>
+          <a href="https://github.com/eidos-agi/prim">Spec</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <script type="module" src="./showprim.js"></script>
+      <show-prim src="./pack/" chrome="0"></show-prim>
+    </main>
+  </body>
+</html>

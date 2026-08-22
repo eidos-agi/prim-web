@@ -15,7 +15,8 @@ Open `index.html` or serve the repo root.
 
 Demo: [`/demo/docket/`](https://prim.eidosagi.com/demo/docket/) — All four walks the kinds. Seal is the first connector. Arcade is Prim Arcade: a JSNES surface on a cart prim.
 
-Viewer lab: [`/viewers/`](https://prim.eidosagi.com/viewers/) — resize a real Prim tool (rail, phone, chat card). The pack stays the file. `prim-viewer` is the category player (`<showprim filename="yadda.prim">`).
+Docs: [`/docs/`](https://prim.eidosagi.com/docs/) — the docs prim, opened in prim-viewer. The pack is `docs/pack/`. The HTML is not the file.
+
 
 Prim Browser:
 - Framed preview (not the product path): [`/examples/docket/`](https://prim.eidosagi.com/examples/docket/)
