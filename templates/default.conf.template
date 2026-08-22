@@ -15,6 +15,9 @@ server {
     location /demo/docket {
         try_files $uri $uri/ /demo/docket/index.html;
     }
+    location /docs/pack/ {
+        try_files $uri =404;
+    }
     location /docs {
         try_files $uri $uri/ /docs/index.html;
     }
