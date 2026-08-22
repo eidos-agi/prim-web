@@ -37,6 +37,7 @@
       }
       ::selection { background: var(--ink); color: var(--paper); }
       a { color: inherit; text-decoration: none; }
+      button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
       header {
         position: sticky;
         top: 0;
@@ -52,10 +53,19 @@
         padding: 0 1.5rem;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        gap: 1.75rem;
       }
       .brand { display: flex; align-items: center; }
       .brand img { height: 2rem; width: auto; }
+      .viewers {
+        display: flex;
+        gap: 1.25rem;
+        margin-left: auto;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+      .viewers button:hover,
+      .viewers button[aria-current="true"] { color: var(--ink); }
       .links { display: flex; gap: 1.75rem; font-size: 0.9rem; color: var(--muted); }
       .links a:hover, .links a[aria-current="page"] { color: var(--ink); }
       main { min-height: 0; }
@@ -68,6 +78,11 @@
         <a class="brand" href="/">
           <img src="/logo.png" alt="Prim" />
         </a>
+        <nav class="viewers" aria-label="View">
+          <button type="button" data-tab="read" aria-current="true">Read</button>
+          <button type="button" data-tab="face">Face</button>
+          <button type="button" data-tab="pack">Pack</button>
+        </nav>
         <nav class="links">
           <a href="/docs/" aria-current="page">Docs</a>
           <a href="https://github.com/eidos-agi/prim">Spec</a>
@@ -76,7 +91,17 @@
     </header>
     <main>
       <script type="module" src="./showprim.js"></script>
-      <show-prim src="./pack/" chrome="0"></show-prim>
+      <show-prim src="./pack/" chrome="0" tab="read"></show-prim>
     </main>
+    <script type="module">
+      const el = document.querySelector("show-prim");
+      const buttons = [...document.querySelectorAll(".viewers [data-tab]")];
+      function pick(tab) {
+        el.setAttribute("tab", tab);
+        try { el.setTab(tab); } catch { /* pack still opening */ }
+        buttons.forEach((b) => b.setAttribute("aria-current", b.dataset.tab === tab ? "true" : "false"));
+      }
+      buttons.forEach((b) => b.addEventListener("click", () => pick(b.dataset.tab)));
+    </script>
   </body>
 </html>
