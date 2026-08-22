@@ -284,6 +284,25 @@
         .story-stage-slide.is-on { opacity: 1; pointer-events: auto; }
         .story-mobile-stage { display: none; }
       }
+
+      .story-screen { min-height: calc(100vh - 6rem); display: flex; flex-direction: column; justify-content: center; padding: 4rem 0 5rem; }
+      .story-screen-line { margin: 0; max-width: 44rem; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 500; letter-spacing: -0.04em; line-height: 1.12; }
+      .story-screen-line br { content: ""; display: block; margin-top: 0.55em; }
+      .out-in { display: flex; flex-wrap: wrap; align-items: end; gap: 1.25rem 1.75rem; margin: 0 0 2.75rem; }
+      .out-in-out { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 1.1rem 1.35rem; }
+      .out-in-out li, .out-in-in { margin: 0; display: grid; justify-items: center; gap: 0.5rem; }
+      .out-in-icon { position: relative; display: grid; place-items: center; width: 4.5rem; height: 5.6rem; }
+      .file-doc { position: relative; width: 4.15rem; height: 5.35rem; background: #f7f4ee; border: 1px solid #d9d4cb; border-radius: 4px 14px 4px 4px; }
+      .file-doc::before { content: ""; position: absolute; top: -1px; right: -1px; width: 0.95rem; height: 0.95rem; background: #efece6; border-bottom: 1px solid #d9d4cb; border-left: 1px solid #d9d4cb; border-radius: 0 12px 0 4px; }
+      .file-doc img { position: absolute; left: 50%; top: 54%; width: 2.35rem; height: 2.35rem; transform: translate(-50%, -50%); object-fit: contain; }
+      .kind-pdf .file-doc img { width: 2.1rem; height: 2.55rem; }
+      .out-badge { position: absolute; right: -0.4rem; top: -0.3rem; width: 1.4rem; height: 1.4rem; z-index: 2; }
+      .out-in-name { font-size: 0.8rem; font-weight: 500; color: var(--muted); }
+      .out-in-in .out-in-name { color: var(--ink); }
+      .out-in-icon.is-in { width: 5.5rem; height: 5.5rem; }
+      .out-in-icon.is-in img { width: 5.5rem; height: 5.5rem; display: block; object-fit: contain; }
+      .out-in-verb { margin: 0 0.4rem 1.7rem; display: grid; justify-items: center; font-family: "IBM Plex Mono", monospace; font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--subtle); }
+      .out-in-verb span { color: var(--ink); }
       @media (prefers-reduced-motion: reduce) {
         [data-reveal], .story-beat .beat-num, .story-beat h2, .story-beat .story-body, .story-stage-slide { opacity: 1 !important; transform: none; transition: none; }
       }
@@ -315,12 +334,52 @@
         <p class="kicker">The primitive unit of knowledge and memory for AI</p>
         <img src="./logo.png" alt="Prim" />
         <h1 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Prim</h1>
-        <p class="lede thesis">Every file format today was made for humans. Prims are for AIs.</p>
+        <p class="lede thesis">Prims are files for AI + Human collaboration.</p>
       </section>
 
       <section id="press" class="section wrap">
-        <p class="beat-num">01</p>
-        <p class="era-line" style="margin-top:0" data-reveal>To understand why AIs need Prims, and not PDFs, we first have to understand why the printing press didn’t use a feather.</p>
+        <div class="story-screen">
+          <p class="beat-num">01</p>
+          <div class="out-in" aria-label="Excel, Word, PowerPoint, and PDF are out. Prim is in.">
+            <ul class="out-in-out">
+              <li>
+                <span class="out-in-icon is-out">
+                  <span class="file-doc"><img src="./file-icons/excel.svg" alt="" /></span>
+                  <svg class="out-badge" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#d1242f"/><path d="M8 8l8 8M16 8l-8 8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+                </span>
+                <span class="out-in-name">Excel</span>
+              </li>
+              <li>
+                <span class="out-in-icon is-out">
+                  <span class="file-doc"><img src="./file-icons/word.svg" alt="" /></span>
+                  <svg class="out-badge" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#d1242f"/><path d="M8 8l8 8M16 8l-8 8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+                </span>
+                <span class="out-in-name">Word</span>
+              </li>
+              <li>
+                <span class="out-in-icon is-out">
+                  <span class="file-doc"><img src="./file-icons/ppt.svg" alt="" /></span>
+                  <svg class="out-badge" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#d1242f"/><path d="M8 8l8 8M16 8l-8 8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+                </span>
+                <span class="out-in-name">PowerPoint</span>
+              </li>
+              <li>
+                <span class="out-in-icon is-out kind-pdf">
+                  <span class="file-doc"><img src="./file-icons/pdf.svg" alt="" /></span>
+                  <svg class="out-badge" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#d1242f"/><path d="M8 8l8 8M16 8l-8 8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+                </span>
+                <span class="out-in-name">PDF</span>
+              </li>
+            </ul>
+            <p class="out-in-verb" aria-hidden="true">out<span>in</span></p>
+            <figure class="out-in-in">
+              <span class="out-in-icon is-in"><img src="./mark.png" alt="" /></span>
+              <figcaption class="out-in-name">Prim</figcaption>
+            </figure>
+          </div>
+          <p class="story-screen-line">Please join us for three minutes.<br />As we journey into Prims, a brand new file system necessary for the AI age.</p>
+        </div>
+        <p class="era-line" data-reveal>To understand why AI and humans need Prims, not PDFs, we have to understand why the printing press needed movable type, not feathers.</p>
         <div class="story-pin">
           <div class="story-copy">
             <article class="story-beat is-on" id="before">
